@@ -176,8 +176,8 @@
       const ph = (ex.working && ex.working.placeholder) || defaultPlaceholder(spec);
       box.innerHTML = '<div class="working-intro">Write your working <strong>one step per line</strong>. Each line is tested against the correct answer, so you can see exactly where a slip happens. Plain-English notes are fine — they are skipped.</div>' +
         '<textarea class="working-text" rows="7" spellcheck="false" placeholder="' + esc(ph) + '"></textarea>' +
-        '<div class="working-ctrl"><button class="btn btn-primary act-check-working">Check my working</button> <button class="btn act-ai">🤖 AI feedback</button> <span class="working-mode">' + modeLabel(spec) + '</span></div>' +
-        '<div class="working-results"></div><div class="ai-results"></div>';
+        '<div class="working-ctrl"><button class="btn btn-primary act-check-working">Check my working</button> <span class="working-mode">' + modeLabel(spec) + '</span></div>' +
+        '<div class="working-results"></div>';
       const ta = $('textarea', box);
       ta.addEventListener('focus', () => { card._lastInput = ta; });
       if (stored && stored.working) ta.value = stored.working;
@@ -187,21 +187,6 @@
         $('.working-results', box).innerHTML = workingHtml(res);
         card._lastWorking = res;
       });
-      $('.act-ai', box).addEventListener('click', () => aiFeedback(ex, spec, ta.value, box));
-    }
-    function aiFeedback(ex, spec, working, box) {
-      const out = $('.ai-results', box);
-      if (!S.apiKey) { out.innerHTML = '<div class="ai-box ai-warn">To use AI feedback, add your Anthropic API key in <a href="#/settings">Settings</a>. The built-in checker above works without it.</div>'; return; }
-      const res = C.checkWorking(working, spec);
-      const checkerText = res.lines.length ? res.lines.map(l => 'line ' + l.n + ' [' + l.status + ']: ' + l.raw + '  -> ' + l.message).join('\n') + '\nSummary: ' + res.summary : '(no working)';
-      const studentAnswer = inputs.map((i, k) => (isMulti ? (i.spec.label || 'part ' + (k + 1)) + ': ' : '') + (i.get() || '(blank)')).join('; ');
-      const answerText = parts.map((p, k) => (isMulti ? (p.label || 'part ' + (k + 1)) + ': ' : '') + '$' + specAnswerTex(p) + '$').join('; ');
-      const solutionText = solutionPlain(ex);
-      out.innerHTML = '<div class="ai-box ai-loading">Asking ' + esc(S.setting('model')) + '… (this usually takes a few seconds)</div>';
-      CH.AI.feedback({ problem: ex.prompt, answer: answerText, solution: solutionText, studentAnswer, working, checker: checkerText },
-        { apiKey: S.apiKey, model: S.setting('model'), name: S.setting('name') })
-        .then(r => { out.innerHTML = '<div class="ai-box"><div class="ai-title">🤖 Feedback from ' + esc(r.model) + '</div>' + R.md(r.text) + '</div>'; })
-        .catch(e => { out.innerHTML = '<div class="ai-box ai-warn">' + esc(e.message) + '</div>'; });
     }
     if (opts.practice) $('.act-next', card).addEventListener('click', () => opts.onNext && opts.onNext());
     return card;
@@ -259,10 +244,6 @@
     const parts = partsOf(ex);
     html += '<div class="solution-answer"><strong>Answer:</strong> ' + parts.map(p => (parts.length > 1 ? R.md(p.label || '').replace(/^<p>|<\/p>$/g, '') + ' ' : '') + R.tex(specAnswerTex(p))).join('; &nbsp;') + '</div>';
     return html;
-  }
-  function solutionPlain(ex) {
-    const steps = ex.solution ? (Array.isArray(ex.solution) ? ex.solution : [ex.solution]) : [];
-    return steps.map(s => typeof s === 'string' ? s : s.text + (s.math ? ' $$' + s.math + '$$' : '')).join('\n');
   }
 
   // ---------- generated practice ----------
@@ -389,25 +370,13 @@
 
   function renderSettings() {
     setMode('learn');
-    const models = CH.AI.MODELS;
     let html = '<div class="page settings"><h1>Settings</h1>';
     html += '<section class="card"><h2>You</h2><label class="field">Name <input type="text" id="set-name" value="' + esc(S.setting('name') || '') + '"></label>' +
       '<label class="field">Theme <select id="set-theme">' + ['auto', 'light', 'dark'].map(t => '<option value="' + t + '"' + (S.setting('theme') === t ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></label></section>';
-    html += '<section class="card"><h2>AI feedback (optional)</h2><p>Everything on this site works without AI. If you add an <a href="https://console.anthropic.com/" target="_blank" rel="noopener">Anthropic API key</a>, the <em>AI feedback</em> button on each exercise sends the question, the model answer, and your working to Claude and shows its comments. The key is stored only in this browser (localStorage) and is sent only to <code>api.anthropic.com</code>. Use a key with a spending limit.</p>' +
-      '<label class="field">API key <span class="key-row"><input type="password" id="set-key" value="' + esc(S.apiKey) + '" placeholder="sk-ant-…" autocomplete="off"><button class="btn btn-sm" id="key-show" type="button">show</button></span></label>' +
-      '<label class="field">Model <select id="set-model">' + models.map(m => '<option value="' + m.id + '"' + (S.setting('model') === m.id ? ' selected' : '') + '>' + esc(m.label) + '</option>').join('') + '</select></label>' +
-      '<div class="row"><button class="btn" id="key-test">Test the key</button> <span id="key-status" class="muted"></span></div></section>';
     html += '<section class="card"><h2>Progress</h2><p>Progress lives in this browser. Export it to move to another device.</p><div class="row"><button class="btn" id="prog-export">Export progress</button> <label class="btn">Import progress <input type="file" id="prog-import" accept="application/json" hidden></label> <button class="btn btn-danger" id="prog-reset">Reset all progress</button></div><p id="prog-status" class="muted"></p></section></div>';
     main().innerHTML = html;
     $('#set-name').addEventListener('input', e => S.setting('name', e.target.value.trim() || 'Z'));
     $('#set-theme').addEventListener('change', e => { S.setting('theme', e.target.value); applyTheme(); });
-    $('#set-key').addEventListener('input', e => { S.apiKey = e.target.value.trim(); });
-    $('#key-show').addEventListener('click', () => { const i = $('#set-key'); i.type = i.type === 'password' ? 'text' : 'password'; $('#key-show').textContent = i.type === 'password' ? 'show' : 'hide'; });
-    $('#set-model').addEventListener('change', e => S.setting('model', e.target.value));
-    $('#key-test').addEventListener('click', () => {
-      const st = $('#key-status'); st.textContent = 'Testing…';
-      CH.AI.testKey(S.apiKey, S.setting('model')).then(r => { st.textContent = '✓ Works (' + r.model + ')'; }).catch(e => { st.textContent = '✗ ' + e.message; });
-    });
     $('#prog-export').addEventListener('click', () => {
       const blob = new Blob([S.exportJSON()], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'calchelper-progress.json'; a.click();

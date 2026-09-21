@@ -2,7 +2,6 @@
 (function (root) {
   'use strict';
   const KEY = 'calchelper.v1';
-  const KEY_API = 'calchelper.apikey';
   let data = null;
 
   function load() {
@@ -11,7 +10,7 @@
     if (!data || typeof data !== 'object') data = {};
     data.exercises = data.exercises || {};
     data.practice = data.practice || {};
-    data.settings = Object.assign({ name: 'Z', theme: 'auto', model: 'claude-opus-5' }, data.settings || {});
+    data.settings = Object.assign({ name: 'Z', theme: 'auto' }, data.settings || {});
     data.visited = data.visited || {};
     return data;
   }
@@ -42,8 +41,6 @@
       if (v === undefined) return d.settings[k];
       d.settings[k] = v; save(); return v;
     },
-    get apiKey() { try { return localStorage.getItem(KEY_API) || ''; } catch (e) { return ''; } },
-    set apiKey(v) { try { if (v) localStorage.setItem(KEY_API, v); else localStorage.removeItem(KEY_API); } catch (e) { /* ignore */ } },
     visit(sectionId) { const d = load(); d.visited.last = sectionId; d.visited.at = Date.now(); save(); },
     get lastVisited() { return load().visited.last || null; },
     sectionStats(section) {

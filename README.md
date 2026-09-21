@@ -7,7 +7,6 @@ A gentle, interactive precalculus textbook that runs entirely in the browser and
 - **Exercises** — type an answer and it is marked instantly (any algebraically equivalent form is accepted).
 - **Check my working** — write your steps one per line; each line is tested against the correct answer so slips are pinpointed.
 - **Practice** — endless randomised questions with generated solutions, plus a mixed-practice mode.
-- **AI feedback (optional)** — paste an Anthropic API key in *Settings* to get teacher-style comments on your working. The key stays in your browser.
 
 Progress is saved in the browser (localStorage) and can be exported/imported from Settings.
 

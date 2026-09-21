@@ -747,7 +747,7 @@
 
     let summary;
     if (!out.length) summary = 'Nothing to check yet — type your steps, one per line.';
-    else if (mode === 'none') summary = 'Step checking is not available for this exercise type, but you can still get AI feedback.';
+    else if (mode === 'none') summary = 'Step checking is not available for this exercise type.';
     else if (checked === 0) summary = 'No lines could be checked. Write each step as a full equation or expression.';
     else if (bad === 0) summary = 'All ' + checked + ' checked line' + (checked > 1 ? 's are' : ' is') + ' consistent with the correct answer.';
     else summary = bad + ' of ' + checked + ' checked lines look wrong. The first problem is on line ' + firstBad + '.';

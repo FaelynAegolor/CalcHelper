@@ -278,10 +278,6 @@ figcaption, .figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 6
 .wk-line { overflow-x: auto; }
 .wk-msg { font-size: 0.9rem; color: var(--muted); }
 .wk-bad .wk-msg { color: var(--bad); font-weight: 700; }
-.ai-box { margin-top: 10px; padding: 12px 16px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); }
-.ai-title { font-weight: 900; color: var(--accent-text); margin-bottom: 4px; }
-.ai-warn { background: var(--warn-soft); }
-.ai-loading { color: var(--muted); font-style: italic; }
 .ex-solution { padding: 12px 18px 16px; border-top: 1px solid var(--border); background: color-mix(in srgb, var(--ok-soft) 50%, var(--surface)); animation: fadein 0.3s; }
 .solution-title { font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.8rem; color: var(--ok); }
 .solution-steps { padding-left: 1.4em; }
@@ -309,8 +305,6 @@ figcaption, .figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 6
 .card h2 { margin-top: 0; }
 .field { display: flex; flex-direction: column; gap: 4px; margin: 10px 0; font-weight: 800; color: var(--muted); max-width: 520px; }
 .field input, .field select { font-weight: 500; }
-.key-row { display: flex; gap: 8px; }
-.key-row input { flex: 1; }
 .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .help table td:nth-child(2) { white-space: nowrap; }
 
