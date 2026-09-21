@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CalcHelper — Z's Precalculus Companion</title>
+  <meta name="description" content="A gentle, interactive precalculus textbook with worked examples, self-marking exercises and step-by-step working checks.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+</head>
+<body data-mode="learn">
+  <header class="topbar">
+    <button id="menu-btn" class="icon-btn" aria-label="Menu">☰</button>
+    <a class="brand" href="#/">🌸 CalcHelper <span>for Z</span></a>
+    <nav class="topnav">
+      <a href="#/">Home</a>
+      <a href="#/practice/1">Mixed practice</a>
+      <a href="#/help">Typing maths</a>
+      <a href="#/settings">Settings</a>
+      <button id="theme-btn" class="icon-btn keep" aria-label="Toggle light/dark" title="Light / dark">☀️/🌙</button>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main id="main"><div class="page"><p class="muted">Loading…</p></div></main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <!-- engine -->
+  <script src="js/rng.js"></script>
+  <script src="js/mathparse.js"></script>
+  <script src="js/checker.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/viz.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/registry.js"></script>
+  <script src="js/widgets.js"></script>
+  <!-- content: one file per section (order = order in the book) -->
+  <script src="js/content/ch1/index.js"></script>
+  <script src="js/content/ch1/s01-real-numbers.js"></script>
+  <script src="js/content/ch1/s02-exponents-radicals.js"></script>
+  <script src="js/content/ch1/s03-algebraic-expressions.js"></script>
+  <script src="js/content/ch1/s04-rational-expressions.js"></script>
+  <script src="js/content/ch1/s05-equations.js"></script>
+  <script src="js/content/ch1/s08-inequalities.js"></script>
+  <script src="js/content/ch1/s09-coordinate-plane.js"></script>
+  <script src="js/content/ch1/s10-lines.js"></script>
+  <!-- app -->
+  <script src="js/app.js"></script>
+</body>
+</html>
