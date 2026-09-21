@@ -28,6 +28,13 @@ node tools/validate-content.js
 
 loads every section in Node, checks each exercise's reference answer, and runs every practice generator 60 times.
 
+```
+npm install --no-save katex
+node tools/check-latex.js
+```
+
+renders every formula on the site (including generated ones) through KaTeX and reports anything that does not parse.
+
 ## Adding content
 
 Each section is one file in `js/content/ch1/` and registers itself with `CH.registerSection({...})`. Add the file to the script list in `index.html`. A section has:

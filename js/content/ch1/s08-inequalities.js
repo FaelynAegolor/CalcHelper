@@ -49,7 +49,7 @@
 
       { h: 'Absolute value inequalities' },
       '$|A| < c$ says "$A$ is within $c$ of zero", which is a **single stretch** around $0$. $|A| > c$ says "$A$ is further than $c$ from zero" — **two pieces**, one on each side.',
-      { key: 'Two shapes to remember', md: '$$|A| < c \\iff -c < A < c \\qquad\\qquad |A| > c \\iff A < -c \\;\\text{ or }\\; A > c$$\n\n(With $\\le$ and $\\ge$ the same, but with $\\le$, $\\ge$.) Think **"less than: between"** and **"greater than: outside"** — *less-than-and*, *great-or*.' },
+      { key: 'Two shapes to remember', md: '$$|A| < c \\iff -c < A < c \\qquad\\qquad |A| > c \\iff A < -c \\;\\text{ or }\\; A > c$$\n\nThe same shapes work with $\\le$ and $\\ge$ — just keep the "or equal" part. Think **"less than: between"** and **"greater than: outside"**.' },
       { widget: 'abs-inequality' },
       { example: {
         title: 'Less than: a single interval',

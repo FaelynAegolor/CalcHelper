@@ -187,7 +187,7 @@
         make(r) {
           const A = r.nz(-6, 6), B = r.nz(-6, 6), Cc = r.nz(-10, 10);
           const m = M.frac(-A, B), b = M.frac(Cc, B);
-          const eq = r.bool() ? M.polyTex([A, 0]) + ' ' + (B > 0 ? '+ ' : '- ') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + 'y = ' + Cc : (Math.abs(B) === 1 ? (B < 0 ? '-' : '') : B) + 'y = ' + M.polyTex([-A, Cc]);
+          const eq = (r.bool() || Math.abs(B) === 1) ? M.polyTex([A, 0]) + ' ' + (B > 0 ? '+ ' : '- ') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + 'y = ' + Cc : B + 'y = ' + M.polyTex([-A, Cc]);
           return { prompt: 'Find the slope and the $y$-intercept of the line $' + eq + '$.', answer: { type: 'multi', parts: [{ label: 'Slope $m$', type: 'number', value: -A / B, display: fr(m.n, m.d) }, { label: '$y$-intercept $b$', type: 'number', value: Cc / B, display: fr(b.n, b.d) }] },
             hints: ['Get $y$ by itself: $y = mx + b$.'], solution: [{ math: 'y = ' + fr(m.n, m.d) + 'x ' + (b.n >= 0 ? '+ ' : '- ') + fr(Math.abs(b.n), b.d) + ' \\;\\Rightarrow\\; m = ' + fr(m.n, m.d) + ',\\ b = ' + fr(b.n, b.d), text: 'Solve for $y$ and read off.' }] };
         } },

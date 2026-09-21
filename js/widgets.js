@@ -140,11 +140,11 @@
       if (lo < hi) {
         el.querySelector('.widget-chart').innerHTML = V.signChart({
           zeros: [lo, hi],
-          rows: [{ label: 'x - (' + lo + ')', signs: ['-', '+', '+'] }, { label: 'x - (' + hi + ')', signs: ['-', '-', '+'] }],
-          result: { label: '(x - (' + lo + '))(x - (' + hi + '))', signs: ['+', '-', '+'] },
+          rows: [{ label: M.polyTex([1, -lo]), signs: ['-', '+', '+'] }, { label: M.polyTex([1, -hi]), signs: ['-', '-', '+'] }],
+          result: { label: '(' + M.polyTex([1, -lo]) + ')(' + M.polyTex([1, -hi]) + ')', signs: ['+', '-', '+'] },
           solution: [false, true, false], includeZeros: [true, true]
         });
-        el.querySelector('.widget-text').innerHTML = R.md('Between the zeros one factor is negative and one is positive, so the product is **negative** there — that is exactly where the parabola dips **below** the $x$-axis. So $(x - (' + lo + '))(x - (' + hi + ')) \\le 0$ has solution $[' + lo + ', ' + hi + ']$, and $> 0$ has solution $(-\\infty, ' + lo + ') \\cup (' + hi + ', \\infty)$.');
+        el.querySelector('.widget-text').innerHTML = R.md('Between the zeros one factor is negative and one is positive, so the product is **negative** there — that is exactly where the parabola dips **below** the $x$-axis. So $(' + M.polyTex([1, -lo]) + ')(' + M.polyTex([1, -hi]) + ') \\le 0$ has solution $[' + lo + ', ' + hi + ']$, and $> 0$ has solution $(-\\infty, ' + lo + ') \\cup (' + hi + ', \\infty)$.');
       } else {
         el.querySelector('.widget-chart').innerHTML = '';
         el.querySelector('.widget-text').innerHTML = R.md('With $p = q$ the expression is $(x - ' + p + ')^2$, which is never negative: it is $0$ at $x = ' + p + '$ and positive everywhere else.');

@@ -242,7 +242,8 @@
             const g = M.gcd(a, b);
             const display = (a / g === 1 ? '' : a / g) + '\\sqrt{' + b + '}' + (b / g === 1 ? '' : '') ;
             const value = a + '*sqrt(' + b + ')/' + b;
-            const finalTex = '\\frac{' + a + '\\sqrt{' + b + '}}{' + b + '}' + (g > 1 ? ' = ' + (a / g === 1 ? '' : a / g) + '\\sqrt{' + b + '}' + (b / g === 1 ? '' : '/' + b / g) : '');
+            const simpTex = b / g === 1 ? (a / g === 1 ? '' : a / g) + '\\sqrt{' + b + '}' : '\\frac{' + (a / g === 1 ? '' : a / g) + '\\sqrt{' + b + '}}{' + (b / g) + '}';
+            const finalTex = '\\frac{' + a + '\\sqrt{' + b + '}}{' + b + '}' + (g > 1 ? ' = ' + simpTex : '');
             return { prompt: 'Rationalise the denominator: $\\dfrac{' + a + '}{\\sqrt{' + b + '}}$.', answer: { type: 'expression', value, form: 'no-radical-denominator', display: g > 1 ? (b / g === 1 ? (a / g === 1 ? '' : a / g) + '\\sqrt{' + b + '}' : '\\frac{' + (a / g) + '\\sqrt{' + b + '}}{' + (b / g) + '}') : '\\frac{' + a + '\\sqrt{' + b + '}}{' + b + '}' },
               hints: ['Multiply top and bottom by $\\sqrt{' + b + '}$.'], solution: [{ math: '\\frac{' + a + '}{\\sqrt{' + b + '}} \\cdot \\frac{\\sqrt{' + b + '}}{\\sqrt{' + b + '}} = ' + finalTex, text: 'Multiply by $\\sqrt{' + b + '}/\\sqrt{' + b + '}$.' }] };
           }
