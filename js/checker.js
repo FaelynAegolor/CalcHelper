@@ -387,12 +387,21 @@
     if (n.t === 'call') return n.args.some(a => hasNode(a, pred));
     return false;
   }
-  function checkForm(ast, form) {
+  // number of non-constant factors in a product, counting powers: 2x(x-5)^2 -> 3
+  function countFactors(n) {
+    n = stripNeg(n);
+    if (freeVars(n).size === 0) return 0;
+    if (n.t === 'bin' && n.op === '*') return countFactors(n.a) + countFactors(n.b);
+    if (n.t === 'bin' && n.op === '^' && n.b.t === 'num' && Number.isInteger(n.b.v) && n.b.v > 0) return n.b.v * countFactors(n.a);
+    return 1;
+  }
+  function checkForm(ast, form, refAst) {
     const r = stripNeg(ast);
     switch (form) {
       case 'factored':
         if (isSum(r)) return { ok: false, msg: 'This is equivalent, but it is not written as a product of factors.' };
         if (r.t === 'bin' && r.op === '/') return { ok: false, msg: 'This is equivalent, but the answer should be a product of factors, not a fraction.' };
+        if (refAst && countFactors(r) < countFactors(refAst)) return { ok: false, msg: 'This is equivalent, but one of your factors can still be factored further.' };
         return { ok: true };
       case 'expanded':
         if (hasNode(r, n => n.t === 'bin' && n.op === '*' && (isSum(n.a) || isSum(n.b))) || hasNode(r, n => n.t === 'bin' && n.op === '^' && isSum(n.a)))
@@ -455,7 +464,7 @@
           const cmp = compareExpr(astS, astR, [...allowed]);
           if (cmp.equal === null) return { ok: false, readAs: P.toLatex(astS), message: 'Could not compare — is the expression defined for ordinary values?' };
           if (!cmp.equal) return { ok: false, readAs: P.toLatex(astS), message: 'Not equivalent to the correct answer. For example, when ' + Object.entries(cmp.point).map(([k, x]) => k + ' = ' + fmt(x)).join(', ') + ' yours gives ' + fmt(cmp.s) + ' but the answer gives ' + fmt(cmp.r) + '.' };
-          if (spec.form) { const f = checkForm(astS, spec.form); if (!f.ok) return { ok: false, readAs: P.toLatex(astS), message: f.msg, equivalent: true }; }
+          if (spec.form) { const f = checkForm(astS, spec.form, astR); if (!f.ok) return { ok: false, readAs: P.toLatex(astS), message: f.msg, equivalent: true }; }
           return { ok: true, readAs: P.toLatex(astS), message: 'Correct!' };
         }
         case 'set': {
