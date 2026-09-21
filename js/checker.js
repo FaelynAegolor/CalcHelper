@@ -404,6 +404,27 @@
           return { ok: false, msg: 'This is equivalent, but it should be written as a single simplified fraction.' };
         return { ok: true };
       }
+      case 'simplified-radical': {
+        let bad = null;
+        const squareFree = (n, k) => { for (let p = 2; Math.pow(p, k) <= n; p++) if (n % Math.pow(p, k) === 0) return false; return true; };
+        hasNode(r, n => {
+          if (n.t === 'call' && (n.fn === 'sqrt' || n.fn === 'cbrt' || n.fn === 'root') && n.args[0].t === 'num' && Number.isInteger(n.args[0].v)) {
+            const k = n.fn === 'sqrt' ? 2 : n.fn === 'cbrt' ? 3 : (n.args[1] && n.args[1].t === 'num' ? n.args[1].v : 2);
+            if (!squareFree(n.args[0].v, k) || n.args[0].v === 1) bad = n.args[0].v;
+          }
+          if (n.t === 'bin' && n.op === '/' && n.b.t === 'call' && n.b.fn === 'sqrt') bad = bad || 'den';
+          return false;
+        });
+        if (bad === 'den') return { ok: false, msg: 'This is equivalent, but there is still a root in the denominator.' };
+        if (bad !== null) return { ok: false, msg: 'This is equivalent, but the root of ' + bad + ' can be simplified further — look for a perfect-square (or cube) factor.' };
+        return { ok: true };
+      }
+      case 'positive-exponents': {
+        let bad = false;
+        hasNode(r, n => { if (n.t === 'bin' && n.op === '^' && ((n.b.t === 'num' && n.b.v < 0) || n.b.t === 'neg')) bad = true; return false; });
+        if (bad) return { ok: false, msg: 'This is equivalent, but the answer should use positive exponents only (move negative powers to the other side of the fraction bar).' };
+        return { ok: true };
+      }
       case 'no-radical-denominator': {
         let bad = false;
         hasNode(r, n => { if (n.t === 'bin' && n.op === '/' && hasNode(n.b, m => (m.t === 'call' && (m.fn === 'sqrt' || m.fn === 'root' || m.fn === 'cbrt')) || (m.t === 'bin' && m.op === '^' && m.b.t === 'bin' && m.b.op === '/'))) bad = true; return false; });
