@@ -58,7 +58,7 @@
   // LaTeX for n/d (reduced). Integers print without a fraction bar.
   function fracTex(n, d, opts) {
     const f = frac(n, d);
-    const cmd = (opts && opts.small) ? '\tfrac' : '\frac';
+    const cmd = (opts && opts.small) ? '\\tfrac' : '\\frac';
     if (f.d === 1) return String(f.n);
     return (f.n < 0 ? '-' : '') + cmd + '{' + Math.abs(f.n) + '}{' + f.d + '}';
   }
@@ -147,7 +147,7 @@
   function sqrtTex(n) {
     const s = sqrtSimplify(n);
     if (s.rad === 1) return String(s.coef);
-    return (s.coef === 1 ? '' : s.coef) + '\sqrt{' + s.rad + '}';
+    return (s.coef === 1 ? '' : s.coef) + '\\sqrt{' + s.rad + '}';
   }
   function sqrtStr(n) {
     const s = sqrtSimplify(n);
@@ -155,7 +155,7 @@
     return (s.coef === 1 ? '' : s.coef + '*') + 'sqrt(' + s.rad + ')';
   }
 
-  function pointTex(x, y) { return '(' + x + ',\, ' + y + ')'; }
+  function pointTex(x, y) { return '(' + x + ',\\, ' + y + ')'; }
 
   function isPerfectSquare(n) { const r = Math.round(Math.sqrt(n)); return n >= 0 && r * r === n; }
 
