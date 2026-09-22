@@ -41,15 +41,20 @@
       { svg: V.graph({ xmin: -1, xmax: 6, ymin: -2, ymax: 5, width: 360, id: 'sc', fns: [{ f: x => (x - 2) * (x - 3), label: 'y = (x−2)(x−3)' }], shade: [{ x1: 2, x2: 3, y1: -2, y2: 5, color: 'var(--viz-2)' }], points: [{ x: 2, y: 0, label: '2' }, { x: 3, y: 0, label: '3' }] }), caption: 'The same thing as a picture: the parabola is **below** the axis exactly between $2$ and $3$.' },
       { widget: 'sign-explorer' },
       { tip: 'Reading signs without a calculator', md: 'A factor $x - a$ is **negative to the left** of $a$ and **positive to the right**. So each row of the chart is just "$-$ until its zero, then $+$". Then count the minuses in each column: an odd number of minuses makes the product negative.' },
+      { key: 'Get zero on one side first', md: 'The sign chart only works against **zero**. If the inequality has terms on both sides, move everything over before you factor:\n\n$$5x^2 + 3x \\ge 3x^2 + 2 \\;\\Rightarrow\\; 2x^2 + 3x - 2 \\ge 0 \\;\\Rightarrow\\; (2x - 1)(x + 2) \\ge 0$$\n\nNow the zeros are $\\tfrac12$ and $-2$, and the answer is $(-\\infty, -2] \\cup [\\tfrac12, \\infty)$.' },
+      { warn: 'A squared factor does NOT change the sign', md: 'A factor like $(x+2)^2$ is a square, so it is **never negative** — it is positive everywhere except at $x = -2$, where it is $0$. Passing through $-2$ does **not** flip the sign of the product.\n\nFor $(x - 4)(x + 2)^2 < 0$ the sign is decided entirely by $(x - 4)$, so the answer is everything left of $4$ — **except** $x = -2$ itself, where the whole product is $0$ and the strict $<$ is not satisfied:\n\n$$S = (-\\infty, -2) \\cup (-2, 4)$$\n\nThat single missing point is easy to lose. A factor raised to an **even** power behaves this way; an **odd** power flips the sign as usual.' },
 
       { h: 'Quotients (fractions)' },
       'The same method works when there is a denominator — with two extra cares: the **denominator\'s zero** is also a place where the sign can change, and it can **never** be included (division by zero), even with $\\le$ or $\\ge$.',
       { html: V.signChart({ zeros: [-3, 1, 3], rows: [{ label: 'x + 3', signs: ['-', '+', '+', '+'] }, { label: 'x - 1', signs: ['-', '-', '+', '+'] }, { label: 'x - 3', signs: ['-', '-', '-', '+'] }], result: { label: '\\frac{(x-3)(x+3)}{x-1}', signs: ['-', '+', '-', '+'] }, solution: [true, false, true, false], includeZeros: [true, false, true], excludeZeros: [false, true, false] }), caption: '$\\dfrac{(x-3)(x+3)}{x-1} \\le 0$. Negative in the first and third regions. Include $-3$ and $3$ (zeros of the top, $\\le$), exclude $1$ (zero of the bottom): $S = (-\\infty, -3] \\cup (1, 3]$.' },
       { warn: 'Never multiply both sides by something with x in it', md: 'It is tempting to clear the fraction in $\\dfrac{4x - 5}{x + 2} \\le 0$ by multiplying by $x + 2$. But $x + 2$ might be negative — and then the sign should flip — and you do not know which. Use the sign chart instead. (The working checker flags this step as not equivalent.)' },
+      { key: 'When the fraction is not against zero yet', md: 'Move everything to one side and combine into a **single** fraction first. For $\\dfrac{4}{x} < x$:\n\n$$\\frac{4}{x} - x < 0 \\;\\Rightarrow\\; \\frac{4 - x^2}{x} < 0 \\;\\Rightarrow\\; \\frac{(2-x)(2+x)}{x} < 0$$\n\nZeros at $-2$, $0$ (from the bottom) and $2$. Testing each region gives $S = (-2, 0) \\cup (2, \\infty)$. Note $x = 0$ is excluded because the original fraction is undefined there.' },
 
       { h: 'Absolute value inequalities' },
       '$|A| < c$ says "$A$ is within $c$ of zero", which is a **single stretch** around $0$. $|A| > c$ says "$A$ is further than $c$ from zero" — **two pieces**, one on each side.',
       { key: 'Two shapes to remember', md: '$$|A| < c \\iff -c < A < c \\qquad\\qquad |A| > c \\iff A < -c \\;\\text{ or }\\; A > c$$\n\nThe same shapes work with $\\le$ and $\\ge$ — just keep the "or equal" part. Think **"less than: between"** and **"greater than: outside"**.' },
+      { key: 'Get the bars on their own first', md: 'The two shapes only work when the absolute value is **alone** on one side. If it is not, rearrange before you split:\n\n$$8 - |2x - 1| \\ge 6 \\;\\Rightarrow\\; -|2x-1| \\ge -2 \\;\\Rightarrow\\; |2x - 1| \\le 2$$\n\n(Dividing by $-1$ flipped the sign, as always.) Now it is a "less than: between" problem: $-2 \\le 2x - 1 \\le 2$, giving $\\left[-\\tfrac12, \\tfrac32\\right]$.' },
+      { tip: 'A fraction inside the bars', md: '$\\left|\\dfrac{x-2}{3}\\right| < 2$ works exactly the same way — "less than: between" gives $-2 < \\dfrac{x-2}{3} < 2$, then multiply all three parts by $3$: $-6 < x - 2 < 6$, so $(-4, 8)$.' },
       { widget: 'abs-inequality' },
       { example: {
         title: 'Less than: a single interval',
@@ -160,7 +165,27 @@
       { id: '1.8-e13', prompt: 'Solve $x^2 < 9$.',
         answer: { type: 'interval', value: '(-3, 3)' },
         hints: ['Careful — the answer is **not** $x < 3$. Rewrite as $x^2 - 9 < 0$ and factor.', '$(x - 3)(x + 3) < 0$: negative between the zeros.'],
-        solution: ['$x^2 - 9 < 0 \\Rightarrow (x-3)(x+3) < 0$, which holds between the zeros: $S = (-3, 3)$. (Check: $x = -5$ gives $25 < 9$, false — so $x < 3$ alone is wrong.)'] }
+        solution: ['$x^2 - 9 < 0 \\Rightarrow (x-3)(x+3) < 0$, which holds between the zeros: $S = (-3, 3)$. (Check: $x = -5$ gives $25 < 9$, false — so $x < 3$ alone is wrong.)'] },
+      { id: '1.8-e14', prompt: 'Solve $5x^2 + 3x \\ge 3x^2 + 2$.',
+        answer: { type: 'interval', value: '(-inf, -2] U [1/2, inf)' },
+        hints: ['Move everything to one side first: $2x^2 + 3x - 2 \\ge 0$.', 'Factor: $(2x - 1)(x + 2) \\ge 0$. Zeros at $\\tfrac12$ and $-2$.'],
+        solution: [{ text: 'Collect on one side.', math: '5x^2 + 3x - 3x^2 - 2 \\ge 0 \\Rightarrow 2x^2 + 3x - 2 \\ge 0' }, { text: 'Factor and read the sign chart — the product is positive outside the zeros.', math: '(2x - 1)(x + 2) \\ge 0 \\Rightarrow S = (-\\infty, -2] \\cup [\\tfrac12, \\infty)' }] },
+      { id: '1.8-e15', prompt: 'Solve $(x - 4)(x + 2)^2 < 0$.',
+        answer: { type: 'interval', value: '(-inf, -2) U (-2, 4)' },
+        hints: ['$(x+2)^2$ is a **square** — it is never negative, so it cannot flip the sign of the product.', 'So the sign is decided by $(x - 4)$ alone: the product is negative when $x < 4$.', 'But at $x = -2$ the whole product is $0$, and $0 < 0$ is false — so that one point must be left out.'],
+        solution: [{ text: 'The squared factor is positive everywhere except at $x = -2$, where it is $0$. So the sign comes from $(x-4)$.' }, { text: 'That gives $x < 4$, but $x = -2$ makes the product $0$, which does not satisfy a strict $<$.', math: 'S = (-\\infty, -2) \\cup (-2, 4)' }] },
+      { id: '1.8-e16', prompt: 'Solve $\\dfrac{4}{x} < x$.',
+        answer: { type: 'interval', value: '(-2, 0) U (2, inf)' },
+        hints: ['Do **not** multiply both sides by $x$ — you do not know its sign. Move everything to one side instead.', '$\\dfrac{4}{x} - x < 0 \\Rightarrow \\dfrac{4 - x^2}{x} < 0$.', 'Zeros at $x = \\pm 2$, and the denominator is zero at $x = 0$ — four regions.'],
+        solution: [{ text: 'Put everything over one denominator.', math: '\\frac{4}{x} - x < 0 \\Rightarrow \\frac{4 - x^2}{x} < 0' }, { text: 'The sign changes at $-2$, $0$ and $2$. Testing each region gives negative on $(-2, 0)$ and $(2, \\infty)$.', math: 'S = (-2, 0) \\cup (2, \\infty)' }] },
+      { id: '1.8-e17', prompt: 'Solve $8 - |2x - 1| \\ge 6$.',
+        answer: { type: 'interval', value: '[-1/2, 3/2]' },
+        hints: ['Get the absolute value on its own first.', '$-|2x-1| \\ge -2$, and dividing by $-1$ flips the sign: $|2x - 1| \\le 2$.'],
+        solution: [{ text: 'Isolate the bars (dividing by $-1$ flips the inequality).', math: '-|2x-1| \\ge -2 \\Rightarrow |2x - 1| \\le 2' }, { text: 'Less than → between.', math: '-2 \\le 2x - 1 \\le 2 \\Rightarrow -1 \\le 2x \\le 3 \\Rightarrow -\\tfrac12 \\le x \\le \\tfrac32' }] },
+      { id: '1.8-e18', prompt: 'Solve $\\left|\\dfrac{x - 2}{3}\\right| < 2$.',
+        answer: { type: 'interval', value: '(-4, 8)' },
+        hints: ['Less than → between: $-2 < \\dfrac{x-2}{3} < 2$.', 'Multiply all three parts by $3$.'],
+        solution: [{ math: '-2 < \\frac{x-2}{3} < 2 \\Rightarrow -6 < x - 2 < 6 \\Rightarrow -4 < x < 8', text: 'Between, then clear the fraction from all three parts.' }] }
     ],
 
     generators: [
@@ -241,6 +266,52 @@
           return { prompt: 'Solve $\\dfrac{' + lin(a, p) + '}{' + lin(1, q) + '} ' + OPS[op] + ' 0$.', answer: { type: 'interval', value: val },
             hints: ['Zero of the numerator: $x = ' + C.fmtTex(zn) + '$. Zero of the denominator: $x = ' + zd + '$.', 'Sign chart with three regions. ' + (closed ? 'Include the numerator\'s zero, but never the denominator\'s.' : 'Neither endpoint is included.')],
             solution: [{ text: 'The quotient can change sign at $x = ' + C.fmtTex(zn) + '$ (top) and $x = ' + zd + '$ (bottom). Its sign is $+$ outside these two values and $-$ between them.' }, { text: 'We want ' + (wantNeg ? 'negative' : 'positive') + (closed ? ' or zero. The numerator zero $' + C.fmtTex(zn) + '$ is included; $' + zd + '$ is excluded (division by zero).' : '.'), math: 'S = ' + C.intervalsToLatex(C.parseIntervalSet(val)) }] };
+        } },
+      { id: '1.8-g-repeated', title: 'Repeated (squared) factors', desc: 'A squared factor never changes the sign.',
+        make(r) {
+          const p = r.int(-6, 2), q = p + r.int(2, 6);       // q is the simple zero, p the squared one
+          const sqFirst = r.bool();
+          const [zsq, zlin] = sqFirst ? [p, q] : [q, p];
+          const op = r.pick(['<', '<=', '>', '>=']);
+          const closed = op.includes('='), wantNeg = op[0] === '<';
+          const wrap = t => /^[a-z]$/.test(t) ? t : paren(t);   // don't write "(x)" for a bare x
+          const lhs = wrap(lin(1, -zlin)) + paren(lin(1, -zsq)) + '^2';
+          // the sign of the product follows (x - zlin) alone; the squared factor only adds a zero at zsq
+          let set = wantNeg ? [{ lo: -Infinity, hi: zlin, loC: false, hiC: closed }]
+            : [{ lo: zlin, hi: Infinity, loC: closed, hiC: false }];
+          const inside = set.some(I => zsq > I.lo && zsq < I.hi);
+          if (!closed) {
+            // strict: at zsq the whole product is 0, so punch that single point out of the interval
+            set = set.flatMap(I => (zsq > I.lo && zsq < I.hi)
+              ? [{ lo: I.lo, hi: zsq, loC: I.loC, hiC: false }, { lo: zsq, hi: I.hi, loC: false, hiC: I.hiC }]
+              : [I]);
+          } else if (!inside) {
+            // "or equal": the product IS 0 at zsq, so that single point is a solution on its own
+            set = CH.C.normalizeIntervals(set.concat([{ lo: zsq, hi: zsq, loC: true, hiC: true }]));
+          }
+          const val = CH.C.intervalsToInput(set);
+          const isolated = closed && !inside;
+          return { prompt: 'Solve $' + lhs + ' ' + OPS[op] + ' 0$.',
+            answer: { type: 'interval', value: val },
+            hints: ['$' + paren(lin(1, -zsq)) + '^2$ is a **square**, so it is never negative — it cannot flip the sign of the product.', 'So the sign comes from $' + lin(1, -zlin) + '$ alone. Now think about $x = ' + zsq + '$ separately: there the whole product is $0$.',
+              closed ? 'The inequality allows $0$, so $x = ' + zsq + '$ **is** a solution' + (isolated ? ' — an extra single point on its own, away from the main interval.' : ' (it already sits inside the main interval).') : 'A strict inequality does **not** allow $0$, so $x = ' + zsq + '$ must be left out.'],
+            solution: [{ text: 'The squared factor is positive everywhere except at $x = ' + zsq + '$, where the product is $0$. So the sign is decided by $' + lin(1, -zlin) + '$.' },
+              { text: closed ? (isolated ? 'The inequality allows $0$, so $x = ' + zsq + '$ is a solution all by itself — do not forget it.' : 'The inequality allows $0$, and $x = ' + zsq + '$ already lies in the interval.') : 'Exclude $x = ' + zsq + '$, because there the product equals $0$.', math: 'S = ' + CH.C.intervalsToLatex(set) }] };
+        } },
+      { id: '1.8-g-rearrange', title: 'Rational inequalities to rearrange', desc: 'Get one fraction against zero first.',
+        make(r) {
+          const c = r.pick([1, 4, 9]), k = Math.sqrt(c);
+          const flip = r.bool();
+          // c/x < x   (or  c/x > x)  ->  (c - x^2)/x  <  0
+          const op = flip ? '>' : '<';
+          let set;
+          if (!flip) set = CH.C.parseIntervalSet('(' + (-k) + ', 0) U (' + k + ', inf)');
+          else set = CH.C.parseIntervalSet('(-inf, ' + (-k) + ') U (0, ' + k + ')');
+          return { prompt: 'Solve $\\dfrac{' + c + '}{x} ' + OPS[op] + ' x$.',
+            answer: { type: 'interval', value: CH.C.intervalsToInput(set) },
+            hints: ['Do **not** multiply both sides by $x$ — its sign is unknown. Move everything to one side instead.', '$\\dfrac{' + c + '}{x} - x ' + OPS[op] + ' 0 \\Rightarrow \\dfrac{' + c + ' - x^2}{x} ' + OPS[op] + ' 0$.', 'The sign can change at $x = -' + k + '$, $x = 0$ (the denominator) and $x = ' + k + '$.'],
+            solution: [{ text: 'Put everything over one denominator.', math: '\\frac{' + c + '}{x} - x ' + OPS[op] + ' 0 \\Rightarrow \\frac{' + c + ' - x^2}{x} ' + OPS[op] + ' 0' },
+              { text: 'Factor the top and test each of the four regions. Remember $x = 0$ can never be included.', math: '\\frac{(' + k + ' - x)(' + k + ' + x)}{x} ' + OPS[op] + ' 0 \\Rightarrow S = ' + CH.C.intervalsToLatex(set) }] };
         } },
       { id: '1.8-g-abs', title: 'Absolute value inequalities', desc: 'Less-than: between. Greater-than: outside.',
         make(r) {

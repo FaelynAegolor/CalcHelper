@@ -35,15 +35,19 @@
       { widget: 'quadratic-explorer' },
       { key: 'Method 1 — factoring (try this first)', md: 'Move everything to one side so the other side is $0$, factor, and use the **zero-product rule**: if $A \\cdot B = 0$ then $A = 0$ or $B = 0$.\n\n$$x^2 + 5x - 24 = 0 \\;\\Rightarrow\\; (x + 8)(x - 3) = 0 \\;\\Rightarrow\\; x = -8 \\text{ or } x = 3$$\n\nThe **solution set** is $\\{-8, 3\\}$.' },
       { warn: 'It must be equal to zero', md: 'The zero-product rule only works with $0$. From $(x + 8)(x - 3) = 6$ you can **not** conclude anything about the factors. Expand, move the $6$ over, and factor again.' },
-      { key: 'Method 2 — completing the square', md: 'Turns any quadratic into the shape $(x + p)^2 = q$, which you can solve by taking a square root of both sides (remembering $\\pm$).\n\n1. Get the $x^2$ and $x$ terms on the left, the number on the right: $x^2 - 8x = -13$.\n2. Take **half** the $x$-coefficient and **square** it: $\\left(\\tfrac{-8}{2}\\right)^2 = 16$. Add it to **both** sides: $x^2 - 8x + 16 = 3$.\n3. The left side is now a perfect square: $(x - 4)^2 = 3$.\n4. Square-root both sides: $x - 4 = \\pm\\sqrt{3}$, so $x = 4 \\pm \\sqrt{3}$.\n\n(If the $x^2$ has a coefficient, divide the whole equation by it first.)' },
+      { warn: 'Check whether it is really quadratic', md: 'Some equations look quadratic but are not. In $(t-4)^2 = (t+4)^2 + 32$, expanding gives $t^2 - 8t + 16 = t^2 + 8t + 48$ — the $t^2$ appears on **both** sides and cancels, leaving the linear equation $-16t = 32$, so $t = -2$. Always expand first and see what survives.' },
+      { key: 'Method 0 — just take the square root', md: 'If the equation is already in the shape $(\\text{something})^2 = \\text{number}$, you do not need any method: square-root both sides and remember **both** signs.\n\n$$(2x - 5)^2 = 81 \\;\\Rightarrow\\; 2x - 5 = \\pm 9 \\;\\Rightarrow\\; 2x = 14 \\text{ or } 2x = -4 \\;\\Rightarrow\\; x = 7 \\text{ or } x = -2$$\n\nForgetting the $\\pm$ loses half the answers.' },
+      { key: 'Method 2 — completing the square', md: 'Turns any quadratic into the shape $(x + p)^2 = q$, which you can solve by taking a square root of both sides (remembering $\\pm$).\n\n1. Get the $x^2$ and $x$ terms on the left, the number on the right: $x^2 - 8x = -13$.\n2. Take **half** the $x$-coefficient and **square** it: $\\left(\\tfrac{-8}{2}\\right)^2 = 16$. Add it to **both** sides: $x^2 - 8x + 16 = 3$.\n3. The left side is now a perfect square: $(x - 4)^2 = 3$.\n4. Square-root both sides: $x - 4 = \\pm\\sqrt{3}$, so $x = 4 \\pm \\sqrt{3}$.\n\n**If the $x^2$ has a coefficient, divide the whole equation by it first.** For $3x^2 - 12x + 5 = 0$, dividing by $3$ gives $x^2 - 4x + \\tfrac53 = 0$; then $x^2 - 4x = -\\tfrac53$, add $4$ to both sides, $(x-2)^2 = \\tfrac73$, so $x = 2 \\pm \\sqrt{\\tfrac73} = 2 \\pm \\tfrac{\\sqrt{21}}{3}$.' },
+      { warn: 'What if the right-hand side comes out negative?', md: 'Completing the square on $x^2 - 6x + 11 = 0$ gives $(x-3)^2 = -2$. A square is never negative, so there is **no real solution** — the same verdict the discriminant gives ($D = 36 - 44 = -8 < 0$).' },
       { html: V.areaModel({ rows: ['x', '-4'], cols: ['x', '-4'], cells: [['x^2', '-4x'], ['-4x', '16']] }), caption: 'Why $16$? $x^2 - 8x$ is the square minus the corner: the two rectangles give $-8x$, and the missing corner is $(-4)^2 = 16$. Adding it "completes the square".' },
       { key: 'Method 3 — the quadratic formula (always works)', md: 'For $ax^2 + bx + c = 0$:\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nIt is exactly what you get by completing the square in general. Write down $a$, $b$, $c$ **with their signs** before substituting.' },
       { def: 'The discriminant', md: 'The part under the root, $D = b^2 - 4ac$, tells you how many solutions there are **before** you solve:\n\n- $D > 0$: **two** real solutions (the parabola crosses the axis twice)\n- $D = 0$: **one** real solution (it just touches the axis)\n- $D < 0$: **no** real solutions (it never reaches the axis)' },
 
       { h: 'Equations of quadratic type' },
-      'Some equations are quadratics in disguise. If you see a power and its **square** — like $x^2$ and $x^4$, or $x^{1/3}$ and $x^{2/3}$ — let $u$ be the smaller power and you get an ordinary quadratic in $u$.',
+      'Some equations are quadratics in disguise. If you see a power and its **square** — like $x^2$ and $x^4$, or $x^{1/3}$ and $x^{2/3}$, or $\\sqrt{x}$ and $x$ — let $u$ be the smaller power and you get an ordinary quadratic in $u$.',
       '$$x^4 - 2x^2 - 8 = 0 \\;\\xrightarrow{u = x^2}\\; u^2 - 2u - 8 = 0 \\;\\Rightarrow\\; (u - 4)(u + 2) = 0 \\;\\Rightarrow\\; x^2 = 4 \\text{ or } x^2 = -2$$',
       '$x^2 = 4$ gives $x = \\pm 2$; $x^2 = -2$ is impossible. Solution set $\\{-2, 2\\}$. Always **translate back** to $x$ at the end — $u$ was only a helper.',
+      { key: 'The $\\sqrt{x}$ version', md: 'Since $x = \\left(\\sqrt{x}\\right)^2$, an equation like $x - 5\\sqrt{x} + 6 = 0$ is a quadratic in $u = \\sqrt{x}$:\n\n$$u^2 - 5u + 6 = 0 \\;\\Rightarrow\\; (u-2)(u-3) = 0 \\;\\Rightarrow\\; \\sqrt{x} = 2 \\text{ or } \\sqrt{x} = 3$$\n\nSquaring gives $x = 4$ or $x = 9$. **A square root can never be negative**, so if a value of $u$ comes out negative, throw it away.' },
 
       { h: 'Equations with fractions' },
       'Multiply **every term** by the LCD of all the denominators. This clears the fractions in one move. Afterwards, check that your answer does not make any original denominator zero.',
@@ -53,6 +57,7 @@
       { key: 'Isolate, square, solve, CHECK', md: '1. Get the root **by itself** on one side.\n2. Square both sides (the root disappears).\n3. Solve the resulting equation.\n4. **Check every answer in the original equation.** Squaring can create fake solutions, called **extraneous** solutions, and the only way to catch them is to substitute back.' },
       { svg: V.graph({ xmin: -3, xmax: 6, ymin: -6, ymax: 6, width: 380, id: 'rad', fns: [{ f: x => Math.sqrt(3 * x + 4), label: 'y = √(3x + 4)', domain: [-4 / 3, 6] }, { f: x => -x, color: 'var(--viz-2)', label: 'y = −x', labelAt: -2.5 }], points: [{ x: -1, y: 1, label: 'x = −1 ✓' }, { x: 4, y: 4, label: '(4, 4)', color: 'var(--viz-5)' }, { x: 4, y: -4, label: 'x = 4 ✗', color: 'var(--viz-5)', open: true, dy: 16 }] }), caption: 'Solving $\\sqrt{3x+4} = -x$. The curves meet only at $x = -1$. Squaring also produces $x = 4$, where $\\sqrt{3x+4} = 4$ but $-x = -4$: same size, opposite sign. Squaring cannot tell $4$ from $-4$, which is exactly why extraneous solutions appear.' },
       { why: 'Why squaring creates extra solutions', md: '$3 = -3$ is false, but square both sides and you get $9 = 9$, which is true. Squaring turns a false equation into a true one whenever the two sides are opposites. So after squaring, some "solutions" may be solving the wrong equation.' },
+      { tip: 'Root equals root', md: 'When **both** sides are square roots, squaring is especially clean — the roots simply vanish:\n\n$$\\sqrt{2x - 1} = \\sqrt{3x - 5} \\;\\Rightarrow\\; 2x - 1 = 3x - 5 \\;\\Rightarrow\\; x = 4$$\n\nStill check: both insides must come out $\\ge 0$. At $x = 4$ they are $7$ and $7$ ✓.' },
 
       { h: 'Absolute value equations' },
       '$|{\\rm something}| = c$ means the something is at distance $c$ from $0$, so it is either $c$ or $-c$:',
@@ -210,7 +215,31 @@
       { id: '1.5-e17', prompt: 'Solve $|2x - 5| = -7$.',
         answer: { type: 'set', value: [] },
         hints: ['Can an absolute value ever be negative?'],
-        solution: ['An absolute value is never negative, so there is no solution: $S = \\varnothing$.'] }
+        solution: ['An absolute value is never negative, so there is no solution: $S = \\varnothing$.'] },
+      { id: '1.5-e18', prompt: 'Solve $(t - 4)^2 = (t + 4)^2 + 32$.',
+        answer: { type: 'set', value: [-2], vars: ['t'], solveFor: 't' },
+        hints: ['Expand both squares before deciding what kind of equation this is.', '$t^2 - 8t + 16 = t^2 + 8t + 16 + 32$ — the $t^2$ terms cancel, so it is only linear.'],
+        solution: [{ text: 'Expand both sides.', math: 't^2 - 8t + 16 = t^2 + 8t + 48' }, { text: 'The $t^2$ cancels from both sides.', math: '-8t + 16 = 8t + 48 \\Rightarrow -16t = 32 \\Rightarrow t = -2' }] },
+      { id: '1.5-e19', prompt: 'Solve $(2x - 5)^2 = 81$.',
+        answer: { type: 'set', value: [-2, 7] },
+        hints: ['It is already a square equal to a number — take the square root of both sides.', 'Remember **both** signs: $2x - 5 = 9$ or $2x - 5 = -9$.'],
+        solution: [{ math: '2x - 5 = \\pm 9', text: 'Square-root both sides, keeping both signs.' }, { math: '2x = 14 \\Rightarrow x = 7 \\qquad 2x = -4 \\Rightarrow x = -2', text: 'Solve each case.' }] },
+      { id: '1.5-e20', prompt: 'Solve $x^2 - 6x + 11 = 0$ by completing the square.',
+        answer: { type: 'set', value: [] },
+        hints: ['Half of $-6$ is $-3$, and $(-3)^2 = 9$.', 'You reach $(x - 3)^2 = -2$. Can a square be negative?'],
+        solution: [{ math: 'x^2 - 6x + 9 = -11 + 9 \\Rightarrow (x-3)^2 = -2', text: 'Complete the square.' }, { text: 'A square is never negative, so there is **no real solution**: $S = \\varnothing$.' }] },
+      { id: '1.5-e21', prompt: 'Solve $3x^2 - 12x + 5 = 0$ by completing the square. Give exact answers. (Hint: divide by $3$ first.)',
+        answer: { type: 'set', value: [2 - Math.sqrt(21) / 3, 2 + Math.sqrt(21) / 3], display: '\\{2 - \\tfrac{\\sqrt{21}}{3},\\ 2 + \\tfrac{\\sqrt{21}}{3}\\}' },
+        hints: ['Divide every term by $3$: $x^2 - 4x + \\tfrac53 = 0$.', 'Then $x^2 - 4x = -\\tfrac53$; half of $-4$ is $-2$, so add $4$ to both sides.', '$(x-2)^2 = 4 - \\tfrac53 = \\tfrac73$.'],
+        solution: [{ text: 'Divide through by $3$ so the $x^2$ has coefficient 1.', math: 'x^2 - 4x + \\tfrac53 = 0 \\Rightarrow x^2 - 4x = -\\tfrac53' }, { text: 'Add $(-2)^2 = 4$ to both sides.', math: '(x - 2)^2 = 4 - \\tfrac53 = \\tfrac73' }, { text: 'Square-root both sides.', math: 'x = 2 \\pm \\sqrt{\\tfrac73} = 2 \\pm \\tfrac{\\sqrt{21}}{3}' }] },
+      { id: '1.5-e22', prompt: 'Solve $\\sqrt{2x - 1} = \\sqrt{3x - 5}$.',
+        answer: { type: 'set', value: [4], extraneousHint: true },
+        hints: ['Both sides are roots — squaring removes both at once.', '$2x - 1 = 3x - 5$.'],
+        solution: [{ math: '2x - 1 = 3x - 5 \\Rightarrow x = 4', text: 'Square both sides.' }, { text: 'Check: both insides are $7 \\ge 0$ and $\\sqrt7 = \\sqrt7$ ✓.' }] },
+      { id: '1.5-e23', prompt: 'Solve $x - 5\\sqrt{x} + 6 = 0$.',
+        answer: { type: 'set', value: [4, 9] },
+        hints: ['Let $u = \\sqrt{x}$, so $x = u^2$: the equation becomes $u^2 - 5u + 6 = 0$.', '$(u-2)(u-3) = 0$, so $\\sqrt x = 2$ or $\\sqrt x = 3$. Now square to get $x$.'],
+        solution: [{ text: 'Substitute $u = \\sqrt{x}$.', math: 'u^2 - 5u + 6 = 0 \\Rightarrow (u - 2)(u - 3) = 0' }, { text: 'Translate back and square (both values are positive, so both are allowed).', math: '\\sqrt x = 2 \\Rightarrow x = 4, \\qquad \\sqrt x = 3 \\Rightarrow x = 9' }] }
     ],
 
     generators: [
@@ -262,6 +291,34 @@
         } },
       { id: '1.5-g-complete', title: 'Completing the square', desc: 'Exact answers with square roots.',
         make(r) {
+          const variant = r.pick(['monic', 'monic', 'monic', 'noreal', 'lead']);
+          if (variant === 'noreal') {
+            // (x - h)^2 = -q, which cannot happen
+            const h = r.nz(-5, 5), q = r.int(1, 9);
+            const b = -2 * h, c = h * h + q;
+            return { prompt: 'Solve $' + M.polyTex([1, b, c]) + ' = 0$ by completing the square.',
+              answer: { type: 'set', value: [] },
+              hints: ['Move the constant across: $x^2 ' + M.signed(b) + 'x = ' + (-c) + '$.', 'Half of $' + b + '$ is $' + (-h) + '$; add $' + (h * h) + '$ to both sides. What do you get on the right?'],
+              solution: [{ text: 'Complete the square.', math: 'x^2 ' + M.signed(b) + 'x + ' + (h * h) + ' = ' + (-c) + ' + ' + (h * h) + ' \\Rightarrow ' + paren(lin(1, -h)) + '^2 = ' + (-q) },
+                { text: 'A square can never be negative, so there is **no real solution**.', math: 'S = \\varnothing' }] };
+          }
+          if (variant === 'lead') {
+            // a x^2 + b x + c = 0 that needs dividing by a first; (x - h)^2 = m/a
+            const a = r.pick([2, 3, 5]), h = r.nz(-4, 4), m = r.pick([1, 2, 3, 5, 6, 7, 10, 11]);
+            if (m % a === 0) return this.make(r);
+            const b = -2 * a * h, c = a * h * h - m;
+            const roots = [h - Math.sqrt(m / a), h + Math.sqrt(m / a)];
+            const s = M.sqrtSimplify(m * a);            // sqrt(m/a) = sqrt(ma)/a
+            const g = M.gcd(s.coef, a);
+            const rootTex = (s.coef / g === 1 ? '' : s.coef / g) + '\\sqrt{' + s.rad + '}' + (a / g === 1 ? '' : '/' + (a / g));
+            const disp = a / g === 1 ? (s.coef / g === 1 ? '\\sqrt{' + s.rad + '}' : (s.coef / g) + '\\sqrt{' + s.rad + '}') : '\\tfrac{' + (s.coef / g === 1 ? '' : s.coef / g) + '\\sqrt{' + s.rad + '}}{' + (a / g) + '}';
+            return { prompt: 'Solve $' + M.polyTex([a, b, c]) + ' = 0$ by completing the square. Give exact answers. (Hint: divide by $' + a + '$ first.)',
+              answer: { type: 'set', value: roots, display: '\\{' + h + ' - ' + disp + ',\\ ' + h + ' + ' + disp + '\\}' },
+              hints: ['Divide every term by $' + a + '$ so the $x^2$ has coefficient $1$.', 'You get $x^2 ' + M.signed(-2 * h) + 'x = ' + M.fracTex(m - a * h * h, a) + '$; now add $' + (h * h) + '$ to both sides.', '$' + paren(lin(1, -h)) + '^2 = ' + M.fracTex(m, a) + '$.'],
+              solution: [{ text: 'Divide through by $' + a + '$.', math: 'x^2 ' + M.signed(-2 * h) + 'x ' + M.signed(0) + ' = ' + M.fracTex(m - a * h * h, a) },
+                { text: 'Add $' + (h * h) + '$ to both sides to complete the square.', math: paren(lin(1, -h)) + '^2 = ' + M.fracTex(m, a) },
+                { text: 'Square-root both sides and simplify.', math: 'x = ' + h + ' \\pm ' + disp }] };
+          }
           const h = r.nz(-5, 5), q = r.pick([2, 3, 5, 6, 7, 8, 10, 12]); // (x - h)^2 = q
           const b = -2 * h, c = h * h - q;
           const roots = [h - Math.sqrt(q), h + Math.sqrt(q)];
@@ -300,7 +357,19 @@
         } },
       { id: '1.5-g-quadtype', title: 'Equations of quadratic type', desc: 'Substitute u for the smaller power.',
         make(r) {
-          const kind = r.pick(['x4', 'x4', 'cube']);
+          const kind = r.pick(['x4', 'x4', 'cube', 'sqrt']);
+          if (kind === 'sqrt') {
+            // x - (p+q)sqrt(x) + pq = 0, with u = sqrt(x); p, q > 0 so both roots survive
+            const p = r.int(1, 5), q = r.int(1, 6);
+            if (p === q) return this.make(r);
+            const b = -(p + q), c = p * q;
+            const roots = [p * p, q * q].sort((a, b2) => a - b2);
+            return { prompt: 'Solve $x ' + M.signed(b) + '\\sqrt{x} ' + M.signed(c) + ' = 0$.',
+              answer: { type: 'set', value: roots },
+              hints: ['Let $u = \\sqrt{x}$. Since $x = u^2$, the equation becomes $' + M.polyTex([1, b, c], 'u') + ' = 0$.', 'It factors as $(u - ' + p + ')(u - ' + q + ') = 0$, so $\\sqrt{x} = ' + p + '$ or $\\sqrt{x} = ' + q + '$. Now square.'],
+              solution: [{ text: 'Substitute $u = \\sqrt{x}$ and factor.', math: M.polyTex([1, b, c], 'u') + ' = (u - ' + p + ')(u - ' + q + ') = 0' },
+                { text: 'Both values are positive, so both are allowed square roots. Square to get $x$.', math: '\\sqrt{x} = ' + p + ' \\Rightarrow x = ' + (p * p) + ', \\qquad \\sqrt{x} = ' + q + ' \\Rightarrow x = ' + (q * q) }] };
+          }
           if (kind === 'x4') {
             const p = r.pick([1, 4, 9, 16]), q = r.pick([1, 2, 3, 5, 6, 7]); // (x^2 - p)(x^2 + q)
             const coeffs = M.polyMul([1, 0, -p], [1, 0, q]);
@@ -326,6 +395,28 @@
           return { prompt: 'Solve $\\dfrac{' + a + '}{' + lin(1, p) + '} = \\dfrac{' + b + '}{' + lin(1, q) + '}$.', answer: { type: 'set', value: [sol], display: '\\{' + M.fracTex(f.n, f.d) + '\\}' },
             hints: ['Multiply both sides by $(' + lin(1, p) + ')(' + lin(1, q) + ')$ — or cross-multiply.', '$' + a + '(' + lin(1, q) + ') = ' + b + '(' + lin(1, p) + ')$'],
             solution: [{ math: a + '(' + lin(1, q) + ') = ' + b + '(' + lin(1, p) + ')', text: 'Clear the fractions.' }, { math: M.polyTex([a, a * q]) + ' = ' + M.polyTex([b, b * p]) + ' \\Rightarrow ' + (a - b) + 'x = ' + (b * p - a * q) + ' \\Rightarrow x = ' + M.fracTex(f.n, f.d), text: 'Expand and solve. Check it does not make a denominator zero: fine.' }] };
+        } },
+      { id: '1.5-g-sqrtboth', title: 'Square-root method and root = root', desc: '(ax+b)^2 = c, and equations with a root on each side.',
+        make(r) {
+          if (r.bool(0.5)) {
+            const a = r.pick([1, 1, 2, 3]), b = r.nz(-9, 9), c = r.pick([1, 4, 9, 16, 25, 36, 49, 81]);
+            const k = Math.sqrt(c);
+            const roots = [(-b - k) / a, (-b + k) / a].sort((x, y) => x - y);
+            return { prompt: 'Solve $' + paren(lin(a, b)) + '^2 = ' + c + '$.',
+              answer: { type: 'set', value: roots, display: setTex(roots.map(x => CH.C.fmtTex(x))) },
+              hints: ['It is already a square equal to a number — square-root both sides.', 'Keep **both** signs: $' + lin(a, b) + ' = ' + k + '$ or $' + lin(a, b) + ' = -' + k + '$.'],
+              solution: [{ text: 'Square-root both sides, keeping both signs.', math: lin(a, b) + ' = \\pm ' + k },
+                { text: 'Solve each case.', math: 'x = ' + CH.C.fmtTex(roots[0]) + ' \\quad\\text{or}\\quad x = ' + CH.C.fmtTex(roots[1]) }] };
+          }
+          // sqrt(ax + b) = sqrt(cx + d), meeting at x = s with both insides >= 0
+          const a = r.pick([2, 3, 4]), c = r.pick([1, 5, 6, 7].filter(x => x !== a)), s = r.int(1, 6);
+          const b = r.int(-3, 3), d = (a - c) * s + b;
+          if (a * s + b < 0) return this.make(r);
+          return { prompt: 'Solve $\\sqrt{' + lin(a, b) + '} = \\sqrt{' + lin(c, d) + '}$.',
+            answer: { type: 'set', value: [s], extraneousHint: true },
+            hints: ['Both sides are square roots — squaring removes both at once.', 'That leaves the linear equation $' + lin(a, b) + ' = ' + lin(c, d) + '$.'],
+            solution: [{ text: 'Square both sides.', math: lin(a, b) + ' = ' + lin(c, d) },
+              { text: 'Solve, then check both insides come out $\\ge 0$.', math: 'x = ' + s + ' \\quad (\\text{both sides give } \\sqrt{' + (a * s + b) + '}\\ \\checkmark)' }] };
         } },
       { id: '1.5-g-radical', title: 'Radical equations', desc: 'Isolate, square, solve, check for extraneous solutions.',
         make(r) {

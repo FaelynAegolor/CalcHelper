@@ -148,7 +148,16 @@
   // plain-text form the answer parser accepts, e.g. "[-2, 0] U [7, inf)"
   function intervalsToInput(set) {
     if (!set.length) return 'empty';
-    const n = v => isFinite(v) ? String(Math.round(v * 1e6) / 1e6) : (v > 0 ? 'inf' : '-inf');
+    // exact fractions, not rounded decimals: a rounded 1.333333 would not match a student's 4/3
+    const n = v => {
+      if (!isFinite(v)) return v > 0 ? 'inf' : '-inf';
+      if (Number.isInteger(v)) return String(v);
+      for (let d = 2; d <= 64; d++) {
+        const num = v * d;
+        if (Math.abs(num - Math.round(num)) < 1e-9) return Math.round(num) + '/' + d;
+      }
+      return String(v);
+    };
     return set.map(I => I.lo === I.hi ? '{' + n(I.lo) + '}' : (I.loC ? '[' : '(') + n(I.lo) + ', ' + n(I.hi) + (I.hiC ? ']' : ')')).join(' U ');
   }
 
