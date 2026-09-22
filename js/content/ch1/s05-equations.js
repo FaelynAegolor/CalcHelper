@@ -12,6 +12,7 @@
     summary: 'Solving for x: linear equations, formulas with several letters, quadratics (factoring, completing the square, the formula), equations with fractions, roots and absolute values.',
 
     theory: [
+      { short: true, md: 'This section is about **finding the value of $x$** that makes an equation true.\n\n- The whole game: do the same thing to both sides until $x$ is alone.\n- If there is an $x^2$, it is a **quadratic**. Try factoring; if that will not work, use the formula.\n- Fractions? Multiply everything by the bottom to get rid of them.\n- Square roots? Square both sides — then **check your answers**, because squaring can invent fake ones.\n- $|{\\rm something}| = 5$ splits into two separate equations.' },
       { h: 'The one big rule' },
       'An equation is a statement that two things are equal. **Whatever you do to one side, do to the other** and the two sides stay equal. Solving means using this rule to peel everything away from $x$ until it stands alone.',
       { example: {
@@ -37,7 +38,8 @@
       { warn: 'It must be equal to zero', md: 'The zero-product rule only works with $0$. From $(x + 8)(x - 3) = 6$ you can **not** conclude anything about the factors. Expand, move the $6$ over, and factor again.' },
       { warn: 'Check whether it is really quadratic', md: 'Some equations look quadratic but are not. In $(t-4)^2 = (t+4)^2 + 32$, expanding gives $t^2 - 8t + 16 = t^2 + 8t + 48$ — the $t^2$ appears on **both** sides and cancels, leaving the linear equation $-16t = 32$, so $t = -2$. Always expand first and see what survives.' },
       { key: 'Method 0 — just take the square root', md: 'If the equation is already in the shape $(\\text{something})^2 = \\text{number}$, you do not need any method: square-root both sides and remember **both** signs.\n\n$$(2x - 5)^2 = 81 \\;\\Rightarrow\\; 2x - 5 = \\pm 9 \\;\\Rightarrow\\; 2x = 14 \\text{ or } 2x = -4 \\;\\Rightarrow\\; x = 7 \\text{ or } x = -2$$\n\nForgetting the $\\pm$ loses half the answers.' },
-      { key: 'Method 2 — completing the square', md: 'Turns any quadratic into the shape $(x + p)^2 = q$, which you can solve by taking a square root of both sides (remembering $\\pm$).\n\n1. Get the $x^2$ and $x$ terms on the left, the number on the right: $x^2 - 8x = -13$.\n2. Take **half** the $x$-coefficient and **square** it: $\\left(\\tfrac{-8}{2}\\right)^2 = 16$. Add it to **both** sides: $x^2 - 8x + 16 = 3$.\n3. The left side is now a perfect square: $(x - 4)^2 = 3$.\n4. Square-root both sides: $x - 4 = \\pm\\sqrt{3}$, so $x = 4 \\pm \\sqrt{3}$.\n\n**If the $x^2$ has a coefficient, divide the whole equation by it first.** For $3x^2 - 12x + 5 = 0$, dividing by $3$ gives $x^2 - 4x + \\tfrac53 = 0$; then $x^2 - 4x = -\\tfrac53$, add $4$ to both sides, $(x-2)^2 = \\tfrac73$, so $x = 2 \\pm \\sqrt{\\tfrac73} = 2 \\pm \\tfrac{\\sqrt{21}}{3}$.' },
+      { key: 'Method 2 — completing the square', md: 'Turns any quadratic into the shape $(x + p)^2 = q$, which you can solve by taking a square root of both sides (remembering $\\pm$).\n\n1. Get the $x^2$ and $x$ terms on the left, the number on the right: $x^2 - 8x = -13$.\n2. Take **half** the $x$-coefficient and **square** it: $\\left(\\tfrac{-8}{2}\\right)^2 = 16$. Add it to **both** sides: $x^2 - 8x + 16 = 3$.\n3. The left side is now a perfect square: $(x - 4)^2 = 3$.\n4. Square-root both sides: $x - 4 = \\pm\\sqrt{3}$, so $x = 4 \\pm \\sqrt{3}$.' },
+      { note: 'What if the $x^2$ has a number in front?', md: 'Divide the **whole equation** by that number first, then carry on exactly as above.\n\nFor $3x^2 - 12x + 5 = 0$, divide everything by $3$:\n\n$$x^2 - 4x + \\tfrac53 = 0 \\;\\Rightarrow\\; x^2 - 4x = -\\tfrac53$$\n\nHalf of $-4$ is $-2$, and $(-2)^2 = 4$, so add $4$ to both sides:\n\n$$(x-2)^2 = \\tfrac73 \\;\\Rightarrow\\; x = 2 \\pm \\sqrt{\\tfrac73} = 2 \\pm \\tfrac{\\sqrt{21}}{3}$$' },
       { warn: 'What if the right-hand side comes out negative?', md: 'Completing the square on $x^2 - 6x + 11 = 0$ gives $(x-3)^2 = -2$. A square is never negative, so there is **no real solution** — the same verdict the discriminant gives ($D = 36 - 44 = -8 < 0$).' },
       { html: V.areaModel({ rows: ['x', '-4'], cols: ['x', '-4'], cells: [['x^2', '-4x'], ['-4x', '16']] }), caption: 'Why $16$? $x^2 - 8x$ is the square minus the corner: the two rectangles give $-8x$, and the missing corner is $(-4)^2 = 16$. Adding it "completes the square".' },
       { key: 'Method 3 — the quadratic formula (always works)', md: 'For $ax^2 + bx + c = 0$:\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nIt is exactly what you get by completing the square in general. Write down $a$, $b$, $c$ **with their signs** before substituting.' },
@@ -62,7 +64,8 @@
       { h: 'Absolute value equations' },
       '$|{\\rm something}| = c$ means the something is at distance $c$ from $0$, so it is either $c$ or $-c$:',
       { key: 'Absolute value equation', md: '$$|A| = c \\;(c \\ge 0) \\quad\\Rightarrow\\quad A = c \\;\\text{ or }\\; A = -c$$\n\nSolve both little equations. If $c < 0$ there is **no solution** — an absolute value is never negative.\n\n$$|2x - 5| = 3 \\;\\Rightarrow\\; 2x - 5 = 3 \\text{ or } 2x - 5 = -3 \\;\\Rightarrow\\; x = 4 \\text{ or } x = 1$$' },
-      { svg: V.numberLine({ min: -1, max: 6, points: [{ x: 1, label: 'x = 1' }, { x: 4, label: 'x = 4' }, { x: 2.5, label: '5/2', color: 'var(--viz-5)', open: true }], intervals: [{ lo: 1, hi: 4, loC: true, hiC: true, color: 'var(--viz-2)' }] }), caption: 'Another view: $|2x - 5| = 3$ is $2|x - \\tfrac52| = 3$, i.e. $x$ is at distance $\\tfrac32$ from $\\tfrac52$. That gives $1$ and $4$ — one on each side.' }
+      { svg: V.numberLine({ min: -1, max: 6, points: [{ x: 1, label: 'x = 1' }, { x: 4, label: 'x = 4' }, { x: 2.5, label: '5/2', color: 'var(--viz-5)', open: true }], intervals: [{ lo: 1, hi: 4, loC: true, hiC: true, color: 'var(--viz-2)' }] }), caption: 'Another view: $|2x - 5| = 3$ is $2|x - \\tfrac52| = 3$, i.e. $x$ is at distance $\\tfrac32$ from $\\tfrac52$. That gives $1$ and $4$ — one on each side.' },
+      { calm: true, md: 'Solving equations is what everything later is built on, so it is worth going slowly here. Slow is fine. Slow is how it becomes automatic.\n\nWhen you are stuck, ask one question: **what is being done to $x$, and what undoes it?** Then do that to both sides.\n\nAnd when you have an answer, put it back into the original equation. If both sides come out equal, you are right — you never have to sit there wondering.' },
     ],
 
     examples: [
@@ -170,11 +173,11 @@
         solution: [{ math: 'x^2 - 8x + 16 = -13 + 16 \\Rightarrow (x - 4)^2 = 3 \\Rightarrow x = 4 \\pm \\sqrt{3}', text: 'Complete the square and square-root both sides.' }] },
       { id: '1.5-e6', prompt: 'Solve $x^2 + 2x - 4 = 0$. Give exact answers.',
         answer: { type: 'set', value: [-1 - Math.sqrt(5), -1 + Math.sqrt(5)], display: '\\{-1 - \\sqrt5,\\ -1 + \\sqrt5\\}' },
-        hints: ['It does not factor nicely — use the formula (or complete the square).', '$D = 4 + 16 = 20$, and $\\sqrt{20} = 2\\sqrt5$.'],
+        hints: ['Start by trying to factor: are there two numbers that multiply to $-4$ and add to $2$? Have a go — you will find there are not.', 'When factoring will not work, the quadratic formula always does. Write down $a = 1$, $b = 2$, $c = -4$ first.', '$D = b^2 - 4ac = 4 + 16 = 20$, and $\\sqrt{20} = 2\\sqrt5$.'],
         solution: [{ math: 'x = \\frac{-2 \\pm \\sqrt{20}}{2} = \\frac{-2 \\pm 2\\sqrt5}{2} = -1 \\pm \\sqrt5', text: 'Quadratic formula, then simplify.' }] },
       { id: '1.5-e7', prompt: 'Solve $4x^2 - 4x + 1 = 0$.',
         answer: { type: 'set', value: [0.5], display: '\\{\\tfrac12\\}' },
-        hints: ['Compute the discriminant first.', '$D = 0$, so there is exactly one solution. Also: $4x^2 - 4x + 1 = (2x - 1)^2$.'],
+        hints: ['Look at the first and last terms: $4x^2$ and $1$. Are they both perfect squares?', 'They are $(2x)^2$ and $1^2$, and the middle term is $-2(2x)(1)$ — so this is a perfect square.', '$4x^2 - 4x + 1 = (2x - 1)^2 = 0$, which has just one solution.'],
         solution: [{ math: '(2x - 1)^2 = 0 \\Rightarrow x = \\tfrac12', text: 'A perfect square trinomial; one (repeated) solution.' }] },
       { id: '1.5-e8', prompt: 'Without solving, how many real solutions does $5x^2 - 2x + 1 = 0$ have?',
         answer: { type: 'choice', value: 'c', options: [{ id: 'a', label: 'Two' }, { id: 'b', label: 'Exactly one' }, { id: 'c', label: 'None' }], wrongMessage: 'Compute $D = b^2 - 4ac$ and look at its sign.' },
@@ -194,7 +197,7 @@
         solution: [{ math: '15x + 5 = 4x - 8 \\Rightarrow 11x = -13 \\Rightarrow x = -\\tfrac{13}{11}', text: 'Clear fractions and solve. $x \\ne 2$, so the answer is valid.' }] },
       { id: '1.5-e12', prompt: 'Solve $\\dfrac{3}{x} - \\dfrac{2}{x + 1} = 1$. Give exact answers.',
         answer: { type: 'set', value: [-Math.sqrt(3), Math.sqrt(3)], display: '\\{-\\sqrt3,\\ \\sqrt3\\}' },
-        hints: ['LCD is $x(x + 1)$. Multiply every term by it.', '$3(x + 1) - 2x = x(x + 1)$'],
+        hints: ['There are fractions in the way. What is the usual first move when an equation has fractions in it?', 'Get rid of them: multiply **every** term by $x(x+1)$, which is what both bottoms divide into.', '$3(x + 1) - 2x = x(x + 1)$'],
         solution: [{ math: '3(x+1) - 2x = x(x+1) \\Rightarrow x + 3 = x^2 + x \\Rightarrow x^2 = 3 \\Rightarrow x = \\pm\\sqrt3', text: 'Clear denominators; neither answer makes a denominator zero.' }] },
       { id: '1.5-e13', prompt: 'Solve $\\sqrt{3x + 4} + x = 0$.',
         answer: { type: 'set', value: [-1], extraneousHint: true },

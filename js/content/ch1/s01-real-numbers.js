@@ -18,6 +18,7 @@
     summary: 'The kinds of numbers, turning repeating decimals into fractions, working with fractions, intervals on the number line, and absolute value.',
 
     theory: [
+      { short: true, md: 'This section is about **the numbers themselves** — no letters yet.\n\n- Numbers come in families: counting numbers, whole numbers, fractions, and a few (like $\\pi$) that cannot be written as a fraction.\n- A decimal that repeats forever is secretly a fraction. There is a trick for finding which one.\n- To add fractions, the bottoms have to match first.\n- An **interval** is a chunk of the number line. Square bracket = end point included, round bracket = not included.\n- $|x|$ just means "how far from zero", so it is never negative.' },
       { h: 'The kinds of numbers' },
       'Every number you will meet in this course lives on the **number line**. Together they are called the **real numbers**, written $\\mathbb{R}$. Inside the real numbers there are smaller families, each one sitting inside the next:',
       { svg: V.numberSets(), caption: 'Each box sits inside the bigger one: every natural number is an integer, every integer is a rational number, and every rational number is real.' },
@@ -75,7 +76,8 @@
       { def: 'Distance between two numbers', md: 'The distance between $a$ and $b$ on the number line is $$d(a, b) = |a - b|.$$ The order does not matter, because $|a - b| = |b - a|$.' },
       { widget: 'abs-distance' },
       { warn: 'A sneaky one', md: '$|3 - \\pi|$: since $\\pi \\approx 3.14$ is bigger than $3$, the inside is negative, so $|3 - \\pi| = -(3 - \\pi) = \\pi - 3$. Always ask "is the inside positive or negative?" before dropping the bars.' },
-      { key: 'Absolute value with letters', md: 'The same question — *is the inside positive or negative?* — answers questions with letters in them, as long as you are told which is bigger.\n\nIf $a < b$, then $a - b$ is **negative**, so the bars flip its sign:\n\n$$|a - b| = -(a - b) = b - a$$\n\nOnce you know that, things tidy up nicely: $a + b + |a - b| = a + b + (b - a) = 2b$ — the larger of the two, doubled.' }
+      { key: 'Absolute value with letters', md: 'The same question — *is the inside positive or negative?* — answers questions with letters in them, as long as you are told which is bigger.\n\nIf $a < b$, then $a - b$ is **negative**, so the bars flip its sign:\n\n$$|a - b| = -(a - b) = b - a$$\n\nOnce you know that, things tidy up nicely: $a + b + |a - b| = a + b + (b - a) = 2b$ — the larger of the two, doubled.' },
+      { calm: true, md: 'If this section felt like a lot, here is the honest version: most of it is **one skill** — making the bottoms of two fractions match — plus some new names for things you already knew.\n\nYou do not have to memorise the number families. What matters is that you can add two fractions and read an interval off a number line.\n\nIf you practise one thing here, practise adding fractions.' },
     ],
 
     examples: [
@@ -141,7 +143,7 @@
         solution: [{ text: 'Let $x = 0.2777\\ldots$. Get past the non-repeating digit.', math: '10x = 2.777\\ldots' }, { text: 'Shift once more so the tails line up.', math: '100x = 27.777\\ldots' }, { text: 'Subtract the two shifted versions.', math: '100x - 10x = 27.777\\ldots - 2.777\\ldots \\Rightarrow 90x = 25' }, { text: 'Simplify.', math: 'x = \\frac{25}{90} = \\frac{5}{18}' }] },
       { id: '1.1-e4', prompt: 'Compute $\\dfrac{7}{20} + \\dfrac{1}{15}$. Give your answer in lowest terms.',
         answer: { type: 'number', value: 5 / 12, display: '\\tfrac{5}{12}' },
-        hints: ['Find the LCD of $20$ and $15$. List multiples of each.', 'LCD $= 60$. $\\tfrac{7}{20} = \\tfrac{21}{60}$ and $\\tfrac{1}{15} = \\tfrac{4}{60}$.'],
+        hints: ['The bottoms are different ($20$ and $15$). Before you can add two fractions, what has to be true about the bottoms?', 'Find the smallest number that both $20$ and $15$ divide into. Try counting up in $20$s and see which one $15$ also divides.', 'LCD $= 60$. $\\tfrac{7}{20} = \\tfrac{21}{60}$ and $\\tfrac{1}{15} = \\tfrac{4}{60}$.'],
         solution: [{ text: 'LCD of $20$ and $15$ is $60$.', math: '\\frac{7}{20} + \\frac{1}{15} = \\frac{7 \\cdot 3}{60} + \\frac{1 \\cdot 4}{60} = \\frac{21}{60} + \\frac{4}{60}' }, { text: 'Add the numerators and simplify.', math: '= \\frac{25}{60} = \\frac{5}{12}' }] },
       { id: '1.1-e5', prompt: 'Simplify the compound fraction $\\dfrac{\\;\\dfrac{1}{2} + \\dfrac{1}{3}\\;}{\\;\\dfrac{1}{4} - \\dfrac{1}{6}\\;}$.',
         answer: { type: 'number', value: 10 },

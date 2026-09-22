@@ -9,6 +9,7 @@
     summary: 'Powers and the rules for combining them, negative and fractional exponents, simplifying square roots, and getting roots out of denominators.',
 
     theory: [
+      { short: true, md: 'This section is about **powers** (like $x^3$) and **roots** (like $\\sqrt{x}$). They are opposites of each other.\n\n- A power tells you how many copies to multiply together.\n- Multiplying powers of the same letter? **Add** the powers. Dividing? **Subtract** them.\n- A **negative** power does not make anything negative. It means "one over": $2^{-1} = \\tfrac12$.\n- A root undoes a power. $\\sqrt{9}$ asks "what number squared gives 9?"\n- A **fraction** power does both: the bottom is the root, the top is the power.' },
       { h: 'What an exponent means' },
       'An exponent is a shorthand for **repeated multiplication**. In $a^n$, the number $a$ is the **base** and $n$ is the **exponent** (or power): it tells you how many copies of $a$ to multiply.',
       '$$3^4 = \\underbrace{3 \\cdot 3 \\cdot 3 \\cdot 3}_{4 \\text{ copies}} = 81 \\qquad\\qquad (-2)^3 = (-2)(-2)(-2) = -8$$',
@@ -67,7 +68,8 @@
       'By convention an answer should not have a root in the denominator. To get rid of one, multiply top and bottom by something that turns the bottom into a whole number — this is allowed because you are multiplying by $1$.',
       '- A single root: multiply by that root. $\\quad\\dfrac{1}{\\sqrt{3}} = \\dfrac{1}{\\sqrt{3}}\\cdot\\dfrac{\\sqrt{3}}{\\sqrt{3}} = \\dfrac{\\sqrt{3}}{3}$\n- A root plus or minus a number: multiply by the **conjugate** (same two terms, opposite sign in the middle). The difference-of-squares pattern $(a-b)(a+b) = a^2 - b^2$ then kills the root.',
       { html: V.areaModel({ rows: ['\\sqrt{7}', '+2'], cols: ['\\sqrt{7}', '-2'], cells: [['7', '-2\\sqrt{7}'], ['+2\\sqrt{7}', '-4']] }), caption: '$(\\sqrt{7} - 2)(\\sqrt{7} + 2)$: the two middle terms cancel, leaving $7 - 4 = 3$ — no root left.' },
-      '$$\\frac{2}{\\sqrt{7} - 2} = \\frac{2}{\\sqrt{7} - 2}\\cdot\\frac{\\sqrt{7} + 2}{\\sqrt{7} + 2} = \\frac{2(\\sqrt{7} + 2)}{7 - 4} = \\frac{2\\sqrt{7} + 4}{3}$$'
+      '$$\\frac{2}{\\sqrt{7} - 2} = \\frac{2}{\\sqrt{7} - 2}\\cdot\\frac{\\sqrt{7} + 2}{\\sqrt{7} + 2} = \\frac{2(\\sqrt{7} + 2)}{7 - 4} = \\frac{2\\sqrt{7} + 4}{3}$$',
+      { calm: true, md: 'There are a lot of laws on this page. You are not meant to memorise them as a list, and you do not need to.\n\nEvery one of them comes from the same idea: **a power counts how many copies you are multiplying**. If you forget a law, write it out in full — $a^3 \\cdot a^2 = a \\cdot a \\cdot a \\cdot a \\cdot a = a^5$ — and read the answer off. That works every time, and it is not cheating.\n\nIf you practise one thing here, practise adding the powers when you multiply and subtracting them when you divide.' },
     ],
 
     examples: [
@@ -166,7 +168,7 @@
         solution: [{ math: '\\frac{5}{\\sqrt{3}} \\cdot \\frac{\\sqrt{3}}{\\sqrt{3}} = \\frac{5\\sqrt{3}}{3}', text: 'Multiply by $\\sqrt3/\\sqrt3$ (which is $1$).' }] },
       { id: '1.2-e11', prompt: 'Rationalise the denominator: $\\dfrac{3}{\\sqrt{5} + 2}$.',
         answer: { type: 'expression', value: '3(sqrt(5) - 2)', form: 'no-radical-denominator' },
-        hints: ['Multiply by the conjugate $\\sqrt{5} - 2$ over itself.', 'The bottom becomes $(\\sqrt5)^2 - 2^2 = 5 - 4 = 1$.'],
+        hints: ['The problem is the root on the bottom. You want to multiply the bottom by something that makes the root disappear.', 'Remember $(A + B)(A - B) = A^2 - B^2$ — squaring kills a square root. So multiply top and bottom by $\\sqrt{5} - 2$.', 'The bottom becomes $(\\sqrt5)^2 - 2^2 = 5 - 4 = 1$.'],
         solution: [{ math: '\\frac{3}{\\sqrt{5} + 2} \\cdot \\frac{\\sqrt{5} - 2}{\\sqrt{5} - 2} = \\frac{3(\\sqrt{5} - 2)}{5 - 4} = 3\\sqrt{5} - 6', text: 'Conjugate on top and bottom; the denominator becomes $1$.' }] },
       { id: '1.2-e12', prompt: 'Which is equal to $-3^2$?',
         answer: { type: 'choice', value: 'b', options: [{ id: 'a', label: '$9$' }, { id: 'b', label: '$-9$' }, { id: 'c', label: '$-6$' }, { id: 'd', label: '$\\dfrac19$' }], wrongMessage: 'Without a bracket, the power applies to the 3 only: $-3^2 = -(3^2)$.' },

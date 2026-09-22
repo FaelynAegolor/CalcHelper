@@ -11,13 +11,14 @@
     summary: 'Fractions with variables in them: where they are defined, and how to simplify, multiply, divide, add and subtract them.',
 
     theory: [
+      { short: true, md: 'This section is about **fractions that have letters in them**. They behave exactly like ordinary fractions.\n\n- Factor the top and bottom first — that is what lets you see what cancels.\n- You can only cancel things that are **multiplied**, never things that are added.\n- To add or subtract, the bottoms have to match, same as with numbers.\n- Any value that would make a bottom zero is banned. That is all "domain" means.' },
       { h: 'What is a rational expression?' },
       'A **rational expression** is a fraction whose top and bottom are polynomials, such as $\\dfrac{x + 3}{x^2 - 9}$. Everything you know about ordinary fractions still works — the only new skill is **factoring** so you can see what cancels.',
 
       { h: 'Domain: where the expression makes sense' },
       { def: 'Domain', md: 'The **domain** of an expression is the set of values of the variable that you are allowed to plug in. Two things are forbidden:\n\n- **dividing by zero** — any value that makes a denominator $0$ is out;\n- **even roots of negatives** — anything under a square root must be $\\ge 0$.' },
       '| Expression | Domain | Why |\n|---|---|---|\n| $x^2 + 3x$ | all real numbers, $(-\\infty, \\infty)$ | nothing can go wrong |\n| $\\dfrac{1}{x - 5}$ | $x \\ne 5$, i.e. $(-\\infty, 5) \\cup (5, \\infty)$ | $x = 5$ makes the bottom $0$ |\n| $\\sqrt{x - 5}$ | $x \\ge 5$, i.e. $[5, \\infty)$ | need $x - 5 \\ge 0$ |\n| $\\dfrac{1}{\\sqrt{x - 5}}$ | $x > 5$, i.e. $(5, \\infty)$ | need $x - 5 \\ge 0$ **and** $\\ne 0$ |',
-      { svg: V.graph({ xmin: -2, xmax: 8, ymin: -5, ymax: 5, width: 380, id: 'dom', fns: [{ f: x => 1 / (x - 5), label: 'y = 1/(x − 5)' }, { f: x => Math.sqrt(x - 5), color: 'var(--viz-2)', label: 'y = √(x − 5)', domain: [5, 8] }], segments: [{ x1: 5, y1: -5, x2: 5, y2: 5, dashed: true, color: 'var(--muted)' }] }), caption: '$\\tfrac{1}{x-5}$ (blue) exists on both sides of $5$ but blows up **at** $5$. $\\sqrt{x-5}$ (pink) simply does not exist to the left of $5$.' },
+      { svg: V.graph({ xmin: -2, xmax: 8, ymin: -5, ymax: 5, width: 380, id: 'dom', fns: [{ f: x => 1 / (x - 5), label: 'y = 1/(x − 5)' }, { f: x => Math.sqrt(x - 5), color: 'var(--viz-2)', label: 'y = √(x − 5)', domain: [5, 8] }], segments: [{ x1: 5, y1: -5, x2: 5, y2: 5, dashed: true, color: 'var(--muted)' }] }), caption: '$\\tfrac{1}{x-5}$ (blue) exists on both sides of $5$ but blows up **at** $5$. $\\sqrt{x-5}$ (pink) does not exist **at all** to the left of $5$.' },
       { key: 'Finding a domain', md: '1. Set each **denominator** equal to $0$, solve, and throw those values out.\n2. Set each thing under a **square root** $\\ge 0$ and solve.\n3. Combine the conditions, and write the answer in interval notation.\n\nExample: $\\dfrac{1}{x^2 - 5x + 6}$. Factor: $x^2 - 5x + 6 = (x - 2)(x - 3)$, which is zero at $x = 2$ and $x = 3$. Domain: all reals except $2$ and $3$, written $(-\\infty, 2) \\cup (2, 3) \\cup (3, \\infty)$.' },
 
       { h: 'Simplifying: factor, then cancel' },
@@ -61,7 +62,8 @@
 
       { h: 'Rationalising with variables' },
       'The conjugate trick from §1.2 works with variables too. It is often used on the **numerator** in calculus:',
-      '$$\\frac{\\sqrt{a + h} - \\sqrt{a}}{h} \\cdot \\frac{\\sqrt{a + h} + \\sqrt{a}}{\\sqrt{a + h} + \\sqrt{a}} = \\frac{(a + h) - a}{h\\left(\\sqrt{a + h} + \\sqrt{a}\\right)} = \\frac{1}{\\sqrt{a + h} + \\sqrt{a}}$$'
+      '$$\\frac{\\sqrt{a + h} - \\sqrt{a}}{h} \\cdot \\frac{\\sqrt{a + h} + \\sqrt{a}}{\\sqrt{a + h} + \\sqrt{a}} = \\frac{(a + h) - a}{h\\left(\\sqrt{a + h} + \\sqrt{a}\\right)} = \\frac{1}{\\sqrt{a + h} + \\sqrt{a}}$$',
+      { calm: true, md: 'Nothing on this page is new. It is the fraction rules from 1.1, with letters where the numbers used to be.\n\nIf a question looks frightening, do the same question with plain numbers first — $\\tfrac12 + \\tfrac13$ instead of $\\tfrac1x + \\tfrac1y$ — and then copy your own steps.\n\nAnd keep hold of the one slip that costs the most marks: **you can only cancel things that are multiplied.**' },
     ],
 
     examples: [
@@ -117,7 +119,7 @@
         solution: ['Need $x - 5 \\ge 0$, so $x \\ge 5$: the domain is $[5, \\infty)$.'] },
       { id: '1.4-e3', prompt: 'Find the domain of $\\dfrac{1}{x^2 - 5x + 6}$.',
         answer: { type: 'interval', value: '(-inf, 2) U (2, 3) U (3, inf)' },
-        hints: ['Factor the denominator.', '$(x - 2)(x - 3) = 0$ at $x = 2$ and $x = 3$.'],
+        hints: ['The domain is about what you are **not** allowed to put in. For a fraction, what is the one thing that must never happen on the bottom?', 'It must never be zero. So find the values of $x$ that make $x^2 - 5x + 6$ equal $0$ — factoring it will show you.', '$(x - 2)(x - 3) = 0$ at $x = 2$ and $x = 3$.'],
         solution: ['$x^2 - 5x + 6 = (x-2)(x-3)$ is zero at $2$ and $3$. Domain: $(-\\infty, 2) \\cup (2, 3) \\cup (3, \\infty)$.'] },
       { id: '1.4-e4', prompt: 'Find the domain of $\\dfrac{\\sqrt{x}}{x - 2}$.',
         answer: { type: 'interval', value: '[0, 2) U (2, inf)' },
@@ -137,11 +139,11 @@
         solution: [{ math: '\\frac{x - 4}{(x-2)(x+2)} \\cdot \\frac{(x+2)(x+3)}{(x-4)(x+1)} = \\frac{x+3}{(x-2)(x+1)}', text: 'Flip, factor, cancel.' }] },
       { id: '1.4-e8', prompt: 'Simplify $\\dfrac{1}{x - 3} - \\dfrac{6}{x^2 - 9}$.',
         answer: { type: 'expression', value: '1/(x+3)', form: 'single-fraction' },
-        hints: ['$x^2 - 9 = (x-3)(x+3)$, so the LCD is $(x-3)(x+3)$.', 'Multiply the first fraction top and bottom by $(x+3)$, combine, then factor the numerator.'],
+        hints: ['The two bottoms look different, so you cannot combine them yet. Can the second one be factored?', '$x^2 - 9 = (x-3)(x+3)$ — so the first bottom is already part of the second. The common bottom is $(x-3)(x+3)$.', 'Multiply the first fraction top and bottom by $(x+3)$, combine, then factor the top.'],
         solution: [{ math: '\\frac{x + 3}{(x-3)(x+3)} - \\frac{6}{(x-3)(x+3)} = \\frac{x - 3}{(x-3)(x+3)} = \\frac{1}{x+3}', text: 'Common denominator, combine, cancel.' }] },
       { id: '1.4-e9', prompt: 'Simplify $\\dfrac{5}{2x - 3} + \\dfrac{3}{(2x - 3)^2}$.',
         answer: { type: 'expression', value: '(10x-12)/(2x-3)^2', form: 'single-fraction' },
-        hints: ['The LCD is $(2x-3)^2$. The first fraction needs one more factor of $(2x - 3)$.'],
+        hints: ['Both bottoms are built out of the same thing, $(2x-3)$ — one has it once, the other twice.', 'So the common bottom is the bigger one, $(2x-3)^2$. The first fraction needs one more $(2x-3)$ on top and bottom.'],
         solution: [{ math: '\\frac{5(2x-3) + 3}{(2x-3)^2} = \\frac{10x - 12}{(2x-3)^2}', text: 'Rewrite over the LCD and combine.' }] },
       { id: '1.4-e10', prompt: 'Simplify $\\dfrac{\\;\\dfrac{1}{x} + 1\\;}{\\;1 - \\dfrac{1}{x^2}\\;}$.',
         answer: { type: 'expression', value: 'x/(x-1)', form: 'single-fraction' },
@@ -177,7 +179,7 @@
         solution: [{ text: 'Combine the inner sum.', math: '\\frac{x}{y} + \\frac{y}{x} = \\frac{x^2 + y^2}{xy}' }, { text: 'Divide by it (flip and multiply).', math: '\\frac{y}{\\frac{x^2+y^2}{xy}} = \\frac{xy^2}{x^2+y^2}' }, { text: 'Now subtract from $x$.', math: 'x - \\frac{xy^2}{x^2+y^2} = \\frac{x(x^2+y^2) - xy^2}{x^2+y^2} = \\frac{x^3}{x^2+y^2}' }] },
       { id: '1.4-e18', prompt: 'Rationalise the denominator of $\\dfrac{y}{\\sqrt{3} + \\sqrt{y}}$ (assume $y > 0$, $y \\ne 3$).',
         answer: { type: 'expression', value: 'y(sqrt(3) - sqrt(y))/(3 - y)', vars: ['y'], assume: 'y > 0', display: '\\frac{y(\\sqrt3 - \\sqrt y)}{3 - y}' },
-        hints: ['The conjugate of $\\sqrt3 + \\sqrt y$ is $\\sqrt3 - \\sqrt y$.', 'The bottom becomes $(\\sqrt3)^2 - (\\sqrt y)^2 = 3 - y$.'],
+        hints: ['You want the roots gone from the bottom. What could you multiply $\\sqrt3 + \\sqrt y$ by so that both roots get squared away?', 'Use $(A+B)(A-B) = A^2 - B^2$: multiply top and bottom by $\\sqrt3 - \\sqrt y$.', 'The bottom becomes $(\\sqrt3)^2 - (\\sqrt y)^2 = 3 - y$.'],
         solution: [{ math: '\\frac{y}{\\sqrt3 + \\sqrt y}\\cdot\\frac{\\sqrt3 - \\sqrt y}{\\sqrt3 - \\sqrt y} = \\frac{y(\\sqrt3 - \\sqrt y)}{3 - y}', text: 'Multiply by the conjugate over itself; the bottom is a difference of squares.' }] }
     ],
 
@@ -193,7 +195,7 @@
             const [lo, hi] = a < b ? [a, b] : [b, a];
             const den = M.polyTex(M.polyMul([1, -a], [1, -b]));
             return { prompt: 'Find the domain of $\\dfrac{' + r.pick(['1', 'x', 'x-1']) + '}{' + den + '}$.', answer: { type: 'interval', value: '(-inf, ' + lo + ') U (' + lo + ', ' + hi + ') U (' + hi + ', inf)' },
-              hints: ['Factor the denominator and set it equal to zero.', '$' + den + ' = ' + paren(fx(a)) + paren(fx(b)) + '$.'], solution: ['$' + den + ' = ' + paren(fx(lo)) + paren(fx(hi)) + '$ is zero at $x = ' + lo + '$ and $x = ' + hi + '$. Remove both: $(-\\infty, ' + lo + ') \\cup (' + lo + ', ' + hi + ') \\cup (' + hi + ', \\infty)$.'] };
+              hints: ['A fraction is banned from having zero on the bottom. Which values of $x$ would make the bottom zero?', '$' + den + ' = ' + paren(fx(a)) + paren(fx(b)) + '$.'], solution: ['$' + den + ' = ' + paren(fx(lo)) + paren(fx(hi)) + '$ is zero at $x = ' + lo + '$ and $x = ' + hi + '$. Remove both: $(-\\infty, ' + lo + ') \\cup (' + lo + ', ' + hi + ') \\cup (' + hi + ', \\infty)$.'] };
           }
           if (kind === 'root') return { prompt: 'Find the domain of $\\sqrt{' + fx(a) + '}$.', answer: { type: 'interval', value: '[' + a + ', inf)' }, hints: ['What is under the root must be $\\ge 0$.'], solution: ['Need $' + fx(a) + ' \\ge 0$, i.e. $x \\ge ' + a + '$: domain $[' + a + ', \\infty)$.'] };
           if (kind === 'invroot') return { prompt: 'Find the domain of $\\dfrac{1}{\\sqrt{' + fx(a) + '}}$.', answer: { type: 'interval', value: '(' + a + ', inf)' }, hints: ['Under the root must be $\\ge 0$, **and** the denominator cannot be $0$ — so strictly greater.'], solution: ['Need $' + fx(a) + ' > 0$ (not just $\\ge$, because it is in a denominator): domain $(' + a + ', \\infty)$.'] };

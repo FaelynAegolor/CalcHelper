@@ -117,6 +117,10 @@ main { flex: 1; min-width: 0; }
 .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0 8px; }
 .how-step { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; font-size: 0.95rem; }
 .how-n { width: 32px; height: 32px; flex: none; border-radius: 50%; background: var(--accent-soft); color: var(--accent-text); display: grid; place-items: center; font-weight: 900; }
+/* the reassurance panel under the three steps — read before the first section */
+.hero-note { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius-sm); padding: 16px 20px; margin: 14px 0 8px; font-size: 0.97rem; color: var(--muted); }
+.hero-note p { margin: 0 0 0.7em; } .hero-note p:last-child { margin-bottom: 0; }
+.hero-note strong { color: var(--text); }
 .chapter h2 { display: flex; align-items: center; gap: 10px; }
 .ch-num { font-size: 0.8rem; background: var(--accent-soft); color: var(--accent-text); padding: 3px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.06em; }
 .section-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
@@ -167,6 +171,12 @@ blockquote { margin: 0.8em 0; padding: 10px 16px; border-left: 4px solid var(--a
 .callout-warn { border-left-color: var(--viz-5); background: color-mix(in srgb, var(--viz-5) 12%, var(--surface)); } .callout-warn .callout-title { color: var(--warn); }
 .callout-note { border-left-color: var(--muted); background: var(--surface-2); } .callout-note .callout-title { color: var(--muted); }
 .callout-why { border-left-color: var(--pink-strong); background: color-mix(in srgb, var(--pink-soft) 60%, var(--surface)); } .callout-why .callout-title { color: var(--pink-text); }
+/* the "read this even if you read nothing else" panel that opens every section */
+.callout-short { border-left-width: 0; border: 2px solid var(--accent); background: color-mix(in srgb, var(--accent-soft) 70%, var(--surface)); border-radius: var(--radius); padding: 16px 20px 14px; margin: 0 0 1.6em; box-shadow: var(--shadow); }
+.callout-short .callout-title { color: var(--accent-text); font-size: 0.95rem; letter-spacing: 0.04em; }
+.callout-short ul { margin: 0.4em 0 0; padding-left: 1.2em; }
+.callout-short li { margin: 0.35em 0; }
+.callout-calm { border-left-color: var(--viz-3); background: color-mix(in srgb, var(--viz-3) 9%, var(--surface)); } .callout-calm .callout-title { color: var(--viz-3); }
 .fig { margin: 1.2em 0; text-align: center; }
 .fig svg, .fig-html { max-width: 100%; }
 .viz { width: 100%; height: auto; display: block; margin: 0 auto; color: var(--text); }

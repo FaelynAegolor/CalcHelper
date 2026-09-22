@@ -12,6 +12,7 @@
     summary: 'Polynomials, multiplying out brackets, the special product patterns, and — going the other way — factoring.',
 
     theory: [
+      { short: true, md: 'This section is about **multiplying brackets out**, and then doing that backwards.\n\n- **Expanding** means multiplying out. Every term in the first bracket multiplies every term in the second.\n- **Factoring** is the reverse: writing something as things multiplied together.\n- When factoring, always look first for something that divides *every* term and pull it out.\n- A handful of patterns keep coming back. Learning those shapes does most of the work.' },
       { h: 'Polynomials' },
       'A **polynomial** is an expression built from a variable using only **adding, subtracting, and multiplying by numbers**, with whole-number powers. Each piece is a **term**.',
       '$$2x^3 - 7x^2 - 7x + 12 \\qquad \\text{(a polynomial of degree 3: the highest power is } x^3\\text{)}$$',
@@ -68,7 +69,7 @@
       { warn: 'A sum of squares does not factor', md: '$x^2 + 4$ cannot be factored using real numbers. Only a **difference** of squares splits.' },
 
       { h: 'When the "letter" is a whole bracket' },
-      'In every rule so far, $A$ and $B$ can stand for *anything* — including a bracket. Spotting that turns hard-looking questions into easy ones.',
+      'In every rule so far, $A$ and $B$ can stand for *anything* — including a whole bracket. Once you spot that, a question that looked unfamiliar turns into one you have already done.',
       { key: 'Common factor that is a bracket', md: 'In $(z+2)^2 - 5(z+2)$ both terms contain $(z + 2)$, so pull it out exactly as you would pull out an $x$:\n\n$$(z+2)^2 - 5(z+2) = (z+2)\\big[(z+2) - 5\\big] = (z+2)(z-3)$$' },
       { key: 'Difference of squares where $A$ is a bracket', md: '$$(x+3)^2 - 4 = (x+3)^2 - 2^2 = \\big[(x+3) - 2\\big]\\big[(x+3) + 2\\big] = (x+1)(x+5)$$\n\nAnd with two brackets: $(a+b)^2 - (a-b)^2 = \\big[(a+b)-(a-b)\\big]\\big[(a+b)+(a-b)\\big] = (2b)(2a) = 4ab$.' },
       { key: 'Factoring by substitution — let $u = \\ldots$', md: 'If the same bracket appears squared and plain, give it a name. To factor $2(a+b)^2 + 5(a+b) - 3$, let $u = a + b$:\n\n$$2u^2 + 5u - 3 = (2u - 1)(u + 3)$$\n\nNow put $a + b$ back: $\\big(2(a+b) - 1\\big)(a + b + 3)$. **Always substitute back at the end.**' },
@@ -78,7 +79,8 @@
       { h: 'Factoring by grouping (four terms)' },
       'Group the terms in pairs, factor each pair, and hope the same bracket appears in both. If it does, pull it out.',
       '$$x^3 - 3x^2 + 4x - 12 = x^2(x - 3) + 4(x - 3) = (x - 3)(x^2 + 4)$$',
-      'Sometimes the bracket that comes out factors again: $t^3 + 3t^2 - 4t - 12 = t^2(t + 3) - 4(t + 3) = (t + 3)(t^2 - 4) = (t + 3)(t - 2)(t + 2)$.'
+      'Sometimes the bracket that comes out factors again: $t^3 + 3t^2 - 4t - 12 = t^2(t + 3) - 4(t + 3) = (t + 3)(t^2 - 4) = (t + 3)(t - 2)(t + 2)$.',
+      { calm: true, md: 'Factoring is the part most people find hardest, and it is normal to look at one for a while before anything happens. That is not a sign you cannot do it — that is what factoring looks like for everybody.\n\nThe order never changes: **common factor first, then look for a pattern, then trial and error.** When you get stuck, go back to step one and check you really pulled out everything that was common.\n\nAnd you can always mark your own work here: multiply your answer back out. If you get the original expression, you are right.' },
     ],
 
     examples: [

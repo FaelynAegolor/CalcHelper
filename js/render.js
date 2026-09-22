@@ -104,9 +104,9 @@
   function block(b) {
     if (typeof b === 'string') return md(b);
     if (b.h) return '<h3 class="theory-h">' + inline(b.h) + '</h3>';
-    for (const kind of ['def', 'key', 'tip', 'warn', 'note', 'why']) {
+    for (const kind of ['short', 'def', 'key', 'tip', 'warn', 'note', 'why', 'calm']) {
       if (b[kind] !== undefined) {
-        const titles = { def: 'Definition', key: 'Key idea', tip: 'Tip', warn: 'Watch out', note: 'Note', why: 'Why it works' };
+        const titles = { short: 'The short version', def: 'What it means', key: 'The main idea', tip: 'Tip', warn: 'Watch out', note: 'Note', why: 'Why it works', calm: 'Feeling stuck?' };
         const title = b[kind] === true || b[kind] === '' ? titles[kind] : b[kind];
         return '<div class="callout callout-' + kind + '"><div class="callout-title">' + inline(title) + '</div>' + md(b.md) + '</div>';
       }

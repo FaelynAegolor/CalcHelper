@@ -12,6 +12,7 @@
     summary: 'Solving inequalities: the sign-flip rule, sign charts for products and quotients, and absolute-value inequalities — with answers as intervals.',
 
     theory: [
+      { short: true, md: 'This section is like solving equations, but with $<$ or $>$ instead of $=$.\n\n- Solve it the same way, with **one extra rule**: multiplying or dividing by a negative number **flips** the sign round.\n- The answer is not one number, it is a whole **range**, written as an interval.\n- If there is an $x^2$ or a fraction, do not try to solve it directly. Find the values where it could change sign, then test each region.\n- $|x| < 5$ means "**between**". $|x| > 5$ means "**outside**".' },
       { h: 'Inequalities have whole ranges of solutions' },
       'An equation like $2x = 6$ has one answer. An inequality like $2x < 6$ is satisfied by **every** $x$ less than $3$ — a whole interval, $(-\\infty, 3)$. So the answer to an inequality is a **set**, and we write it in interval notation (see §1.1) or draw it on a number line.',
       { svg: nl({ min: -3, max: 6, intervals: [{ lo: -Infinity, hi: 3 }] }), caption: '$2x < 6 \\iff x < 3$: the solution set $(-\\infty, 3)$. Open dot at $3$ because $3$ itself is not included.' },
@@ -42,7 +43,9 @@
       { widget: 'sign-explorer' },
       { tip: 'Reading signs without a calculator', md: 'A factor $x - a$ is **negative to the left** of $a$ and **positive to the right**. So each row of the chart is just "$-$ until its zero, then $+$". Then count the minuses in each column: an odd number of minuses makes the product negative.' },
       { key: 'Get zero on one side first', md: 'The sign chart only works against **zero**. If the inequality has terms on both sides, move everything over before you factor:\n\n$$5x^2 + 3x \\ge 3x^2 + 2 \\;\\Rightarrow\\; 2x^2 + 3x - 2 \\ge 0 \\;\\Rightarrow\\; (2x - 1)(x + 2) \\ge 0$$\n\nNow the zeros are $\\tfrac12$ and $-2$, and the answer is $(-\\infty, -2] \\cup [\\tfrac12, \\infty)$.' },
-      { warn: 'A squared factor does NOT change the sign', md: 'A factor like $(x+2)^2$ is a square, so it is **never negative** — it is positive everywhere except at $x = -2$, where it is $0$. Passing through $-2$ does **not** flip the sign of the product.\n\nFor $(x - 4)(x + 2)^2 < 0$ the sign is decided entirely by $(x - 4)$, so the answer is everything left of $4$ — **except** $x = -2$ itself, where the whole product is $0$ and the strict $<$ is not satisfied:\n\n$$S = (-\\infty, -2) \\cup (-2, 4)$$\n\nThat single missing point is easy to lose. A factor raised to an **even** power behaves this way; an **odd** power flips the sign as usual.' },
+      { warn: 'A squared factor does NOT change the sign', md: 'A factor like $(x+2)^2$ is a square, so it is **never negative**. It is positive everywhere except at $x = -2$, where it is $0$.\n\nSo crossing $-2$ does **not** flip the sign of the product.' },
+      'Take $(x - 4)(x + 2)^2 < 0$. The sign is decided entirely by $(x - 4)$, so the answer is everything to the left of $4$ — **except** $x = -2$ itself, where the whole product is $0$ and a strict $<$ is not satisfied:',
+      { note: 'The rule in one line', md: '$$S = (-\\infty, -2) \\cup (-2, 4)$$\n\nThat one missing point is the thing almost everybody forgets, so it is worth a deliberate check every time. A factor raised to an **even** power never flips the sign; an **odd** power flips it as usual.' },
 
       { h: 'Quotients (fractions)' },
       'The same method works when there is a denominator — with two extra cares: the **denominator\'s zero** is also a place where the sign can change, and it can **never** be included (division by zero), even with $\\le$ or $\\ge$.',
@@ -73,7 +76,8 @@
           { text: 'The solution set is the **union** of the two pieces.', math: 'S = (-\\infty, -1] \\cup [4, \\infty)' }
         ], answer: '$(-\\infty, -1] \\cup [4, \\infty)$' } },
       { svg: nl({ min: -4, max: 7, intervals: [{ lo: -Infinity, hi: -1, hiC: true }, { lo: 4, hi: Infinity, loC: true, color: 'var(--viz-1)' }], points: [{ x: 1.5, label: '3/2', color: 'var(--viz-5)', open: true }] }), caption: '$|2x - 3| \\ge 5$ means $|x - \\tfrac32| \\ge \\tfrac52$: at least $\\tfrac52$ away from $\\tfrac32$, on either side.' },
-      { key: 'Special cases — think before you compute', md: 'An absolute value is always $\\ge 0$. So:\n\n- $|A| < c$ with $c \\le 0$ (e.g. $|2x + 7| \\le -5$): **no solution**, $\\varnothing$.\n- $|A| > c$ with $c < 0$ (e.g. $|3x - 4| \\ge -7$): **always true**, $S = \\mathbb{R} = (-\\infty, \\infty)$.\n- $|A| \\le 0$: only when $A = 0$ — a single number.' }
+      { key: 'Special cases — think before you compute', md: 'An absolute value is always $\\ge 0$. So:\n\n- $|A| < c$ with $c \\le 0$ (e.g. $|2x + 7| \\le -5$): **no solution**, $\\varnothing$.\n- $|A| > c$ with $c < 0$ (e.g. $|3x - 4| \\ge -7$): **always true**, $S = \\mathbb{R} = (-\\infty, \\infty)$.\n- $|A| \\le 0$: only when $A = 0$ — a single number.' },
+      { calm: true, md: 'If sign charts feel fiddly, that is a fair reaction — there are a lot of small steps. But they are **mechanical**, and that is the good news: you follow the same five steps every time, and none of them ask you to be clever.\n\nWhen it goes wrong it is nearly always one of two things: forgetting to **flip the sign** after dividing by a negative, or including a value that makes the **bottom** of a fraction zero.\n\nIf you practise one thing here, practise marking the zeros on a number line and testing one point in each region.' },
     ],
 
     examples: [

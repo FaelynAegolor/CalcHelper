@@ -19,6 +19,7 @@
     summary: 'Slope as steepness, the different forms of the equation of a line, horizontal and vertical lines, and parallel and perpendicular lines.',
 
     theory: [
+      { short: true, md: 'This section is about **straight lines** and their equations.\n\n- **Slope** ($m$) means: how far up does it go for each step to the right?\n- Know a point and the slope? You can write the line straight away: $y - y_1 = m(x - x_1)$.\n- **Parallel** lines have the **same** slope. **Perpendicular** lines: flip the slope over and change its sign.\n- Flat lines look like $y = 4$. Upright lines look like $x = 3$.' },
       { h: 'Slope: how steep is it?' },
       'The **slope** of a line measures how much it rises for each step to the right. Pick any two points on the line and divide the change in $y$ by the change in $x$:',
       { def: 'Slope', md: '$$m = \\frac{\\text{rise}}{\\text{run}} = \\frac{y_2 - y_1}{x_2 - x_1}$$\n\nIt does not matter which point you call "point 1" — just subtract in the same order on top and bottom.' },
@@ -62,7 +63,8 @@
           { text: 'Perpendicular slope: flip and change sign.', math: 'm_2 = -\\frac{1}{-2} = \\frac12' },
           { text: 'Point–slope form through $(-1, 3)$.', math: 'y - 3 = \\tfrac12(x + 1)' },
           { text: 'Tidy (multiply by $2$).', math: '2y - 6 = x + 1 \\;\\Rightarrow\\; x - 2y = -7' }
-        ], answer: '$x - 2y = -7$ (or $y = \\tfrac12 x + \\tfrac72$)' } }
+        ], answer: '$x - 2y = -7$ (or $y = \\tfrac12 x + \\tfrac72$)' } },
+      { calm: true, md: 'There are several line formulas here and you do not need all of them. **Point-slope is enough on its own**: if you know one point and the slope, write $y - y_1 = m(x - x_1)$ and tidy it up afterwards.\n\nSo whatever a question asks for, you are only ever hunting two things — a point, and the slope. Find those and the rest is rearranging.\n\nAnd if you are not sure your line is right, put one of the given points back in and check both sides match.' },
     ],
 
     examples: [

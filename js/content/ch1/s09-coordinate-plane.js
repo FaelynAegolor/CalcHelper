@@ -12,6 +12,7 @@
     summary: 'Points as pairs of numbers, the distance and midpoint formulas, intercepts, the equation of a circle, and testing a graph for symmetry.',
 
     theory: [
+      { short: true, md: 'This section is about **plotting points and drawing graphs**.\n\n- A point $(x, y)$ means: go $x$ across, then $y$ up.\n- Distance between two points is just Pythagoras on a right triangle.\n- The midpoint is the **average** of the two $x$s and the average of the two $y$s.\n- A circle equation is a way of saying "every point exactly $r$ away from the centre".\n- To find where a graph crosses an axis, set the *other* letter to zero.' },
       { h: 'Points in the plane' },
       'Two number lines at right angles — the **$x$-axis** (horizontal) and the **$y$-axis** (vertical) — meet at the **origin** $O(0, 0)$. Every point has an address $(x, y)$: go $x$ across, then $y$ up. The axes split the plane into four **quadrants**, numbered anticlockwise from the top right.',
       { svg: V.graph({ xmin: -6, xmax: 6, ymin: -6, ymax: 6, width: 360, id: 'quad', points: [{ x: 3, y: 2, label: '(3, 2)' }, { x: -4, y: 3, label: '(−4, 3)' }, { x: -2, y: -4, label: '(−2, −4)' }, { x: 4, y: -3, label: '(4, −3)' }], texts: [{ x: 4.3, y: 5.2, text: 'I' }, { x: -5.5, y: 5.2, text: 'II' }, { x: -5.5, y: -5.2, text: 'III' }, { x: 4.3, y: -5.2, text: 'IV' }] }), caption: 'In quadrant I both coordinates are positive; in II $x$ is negative; in III both are negative; in IV $y$ is negative.' },
@@ -59,7 +60,8 @@
           { text: 'That is a **different** equation ($y^2 + y$ instead of $y^2 - y$), so the graph is **not** symmetric about the $x$-axis. (Compare $x = y^2$, which stays the same and **is** symmetric.)' },
           { text: '$3x^2 + y^2 = 5x$: replace $x$ with $-x$.', math: '3(-x)^2 + y^2 = 5(-x) \\;\\Rightarrow\\; 3x^2 + y^2 = -5x' },
           { text: 'The right side changed sign, so it is not the same equation: **not** symmetric about the $y$-axis.' }
-        ], answer: 'Neither symmetry holds.' } }
+        ], answer: 'Neither symmetry holds.' } },
+      { calm: true, md: 'Every formula in this section is something you can see. If you forget one, **draw the picture** — the two points, and the right triangle between them — and it comes back.\n\nDistance is Pythagoras. Midpoint is an average. A circle is "every point a fixed distance from the centre". That is the whole section.\n\nSketching first is not the slow way of doing these. It is how most people get them right.' },
     ],
 
     examples: [
@@ -124,7 +126,7 @@
         solution: [{ math: 'M = \\left(\\frac{2 + 4}{2}, \\frac{1 - 3}{2}\\right) = (3, -1)' }] },
       { id: '1.9-e4', prompt: '$M(5, 1)$ is the midpoint of $AB$ and $A = (2, -3)$. Find $B$.',
         answer: { type: 'point', value: [8, 5] },
-        hints: ['Let $B = (x, y)$ and write the midpoint formula: $\\frac{2 + x}{2} = 5$ and $\\frac{-3 + y}{2} = 1$.'],
+        hints: ['Sketch it: $A$, then $M$ in the middle, then $B$ somewhere past it. Going from $A$ to $M$, how far across and how far up did you move?', 'Whatever that step is, you do it **again** to get from $M$ to $B$. (Or call $B = (x, y)$ and solve $\\frac{2 + x}{2} = 5$ and $\\frac{-3 + y}{2} = 1$.)'],
         solution: [{ math: '2 + x = 10 \\Rightarrow x = 8, \\qquad -3 + y = 2 \\Rightarrow y = 5', text: 'So $B = (8, 5)$.' }] },
       { id: '1.9-e5', prompt: 'Find the $x$-intercept and the $y$-intercept of $2x + 3y = 6$.',
         answer: { type: 'multi', parts: [{ label: '$x$-intercept', type: 'number', value: 3 }, { label: '$y$-intercept', type: 'number', value: 2 }] },
@@ -144,7 +146,7 @@
         solution: [{ math: 'r^2 = (4 + 2)^2 + (3 - 1)^2 = 40 \\;\\Rightarrow\\; (x + 2)^2 + (y - 1)^2 = 40' }] },
       { id: '1.9-e9', prompt: 'Find the centre and radius of the circle $x^2 + y^2 - 4x + 6y + 9 = 0$.',
         answer: { type: 'multi', parts: [{ label: 'Centre', type: 'point', value: [2, -3] }, { label: 'Radius', type: 'number', value: 2 }] },
-        hints: ['Complete the square in $x$ (add $4$) and in $y$ (add $9$) — on both sides.', '$(x - 2)^2 + (y + 3)^2 = 4$'],
+        hints: ['This is a circle that has been multiplied out. To read off the centre you need it back in the shape $(x - h)^2 + (y - k)^2 = r^2$.', 'Group the $x$ terms and the $y$ terms, move the number to the other side, then complete the square on each group: add $4$ for the $x$s and $9$ for the $y$s — to **both** sides.', '$(x - 2)^2 + (y + 3)^2 = 4$'],
         solution: [{ math: '(x^2 - 4x + 4) + (y^2 + 6y + 9) = -9 + 4 + 9 \\Rightarrow (x - 2)^2 + (y + 3)^2 = 4', text: 'Centre $(2, -3)$, radius $2$.' }] },
       { id: '1.9-e10', prompt: 'Find the centre and radius of the circle $x^2 + y^2 - 6x + 4 = 0$.',
         answer: { type: 'multi', parts: [{ label: 'Centre', type: 'point', value: [3, 0] }, { label: 'Radius', type: 'number', value: Math.sqrt(5), display: '\\sqrt5' }] },
@@ -217,7 +219,7 @@
           const mx = r.int(-5, 5), my = r.int(-5, 5);
           const bx = 2 * mx - x1, by = 2 * my - y1;
           return { prompt: '$M' + pt(mx, my) + '$ is the midpoint of $AB$, and $A = ' + pt(x1, y1) + '$. Find $B$.', answer: { type: 'point', value: [bx, by] },
-            hints: ['Let $B = (x, y)$: then $\\frac{' + x1 + ' + x}{2} = ' + mx + '$ and $\\frac{' + y1 + ' + y}{2} = ' + my + '$.'], solution: [{ math: x1 + ' + x = ' + (2 * mx) + ' \\Rightarrow x = ' + bx + ', \\qquad ' + y1 + ' + y = ' + (2 * my) + ' \\Rightarrow y = ' + by, text: 'So $B = ' + pt(bx, by) + '$.' }] };
+            hints: ['Sketch it: $A$, then $M$ in the middle, then $B$. The step from $A$ to $M$ happens again from $M$ to $B$.', 'Or call $B = (x, y)$ and solve $\\frac{' + x1 + ' + x}{2} = ' + mx + '$ and $\\frac{' + y1 + ' + y}{2} = ' + my + '$.'], solution: [{ math: x1 + ' + x = ' + (2 * mx) + ' \\Rightarrow x = ' + bx + ', \\qquad ' + y1 + ' + y = ' + (2 * my) + ' \\Rightarrow y = ' + by, text: 'So $B = ' + pt(bx, by) + '$.' }] };
         } },
       { id: '1.9-g-intercepts', title: 'Intercepts', desc: 'Set y = 0, then set x = 0.',
         make(r) {
