@@ -24,6 +24,7 @@
       'A fraction is simplified by cancelling a factor that appears in **both** the top and the bottom. With rational expressions you usually have to **factor first** to see the common factor.',
       '$$\\frac{x^2 - 1}{x^2 + x - 2} = \\frac{(x - 1)(x + 1)}{(x - 1)(x + 2)} = \\frac{x + 1}{x + 2}$$',
       { warn: 'Cancel factors, never terms', md: 'In $\\dfrac{x + 3}{x + 5}$ **nothing cancels** — the $x$\'s are added to things, not multiplied. You can only cancel a whole factor that multiplies the entire top and the entire bottom. Test it: at $x = 1$, $\\dfrac{1+3}{1+5} = \\dfrac{4}{6}$, which is not $\\dfrac{3}{5}$.' },
+      { key: 'Back-to-front factors hide a minus sign', md: '$(1 - x)$ and $(x - 1)$ are not the same, but they are only a sign apart:\n\n$$1 - x = -(x - 1) \\qquad\\text{so}\\qquad \\frac{1 - x}{x - 1} = -1$$\n\nSo when a factor appears reversed, pull out $-1$ to turn it round, then cancel:\n\n$$\\frac{1 - x^2}{x^3 - 1} = \\frac{(1-x)(1+x)}{(x-1)(x^2+x+1)} = \\frac{-(x-1)(1+x)}{(x-1)(x^2+x+1)} = \\frac{-(x + 1)}{x^2 + x + 1}$$' },
 
       { h: 'Multiplying and dividing' },
       { key: 'Multiply', md: 'Factor everything, multiply tops together and bottoms together, cancel common factors. (Cancel **before** multiplying out — it is far less work.)\n\n$$\\frac{x^2 + 2x - 3}{x^2 + 8x + 16} \\cdot \\frac{3x + 12}{x - 1} = \\frac{(x+3)(x-1)}{(x+4)(x+4)} \\cdot \\frac{3(x+4)}{x-1} = \\frac{3(x+3)}{x+4}$$' },
@@ -54,6 +55,8 @@
           { text: 'Factor and cancel.', math: '= \\frac{x(1 + x)}{(x - 1)(x + 1)} = \\frac{x}{x - 1}' },
           { text: '**Method 1** for comparison: top $= \\frac{1 + x}{x}$, bottom $= \\frac{x^2 - 1}{x^2}$, then $\\frac{1+x}{x} \\cdot \\frac{x^2}{(x-1)(x+1)} = \\frac{x}{x-1}$. Same answer.' }
         ], answer: '$\\dfrac{x}{x - 1}$' } },
+      { key: 'Negative exponents are fractions in disguise', md: 'When you meet $x^{-1}$ or $x^{-2}$ in a stacked fraction, rewrite them first — then it is an ordinary compound fraction.\n\n$$\\frac{x^{-2} - y^{-2}}{x^{-1} + y^{-1}} = \\frac{\\frac{1}{x^2} - \\frac{1}{y^2}}{\\frac{1}{x} + \\frac{1}{y}}$$\n\nNow multiply top and bottom by the LCD $x^2y^2$: $\\dfrac{y^2 - x^2}{xy^2 + x^2y} = \\dfrac{(y-x)(y+x)}{xy(y + x)} = \\dfrac{y - x}{xy}$.' },
+      { tip: 'Work from the inside out', md: 'For something stacked several levels deep, such as $1 - \\dfrac{1}{1 - \\frac{1}{x}}$, tidy the **innermost** fraction first and work outwards:\n\n$1 - \\tfrac1x = \\tfrac{x-1}{x}$, so $\\dfrac{1}{1 - \\frac1x} = \\dfrac{x}{x-1}$, and the whole thing is $1 - \\dfrac{x}{x-1} = \\dfrac{-1}{x-1}$.' },
       'A shape that appears again in calculus: $\\dfrac{\\frac{1}{a + h} - \\frac{1}{a}}{h}$. Combine the top first: $\\dfrac{1}{a+h} - \\dfrac{1}{a} = \\dfrac{a - (a + h)}{a(a+h)} = \\dfrac{-h}{a(a+h)}$. Then divide by $h$: the $h$ cancels, leaving $\\dfrac{-1}{a(a + h)}$.',
 
       { h: 'Rationalising with variables' },
@@ -151,7 +154,31 @@
       { id: '1.4-e12', prompt: 'Rationalise the **numerator** of $\\dfrac{\\sqrt{x + 2} - \\sqrt{x}}{2}$.',
         answer: { type: 'expression', value: '1/(sqrt(x+2) + sqrt(x))' },
         hints: ['Multiply top and bottom by $\\sqrt{x+2} + \\sqrt{x}$.', 'The top becomes $(x + 2) - x = 2$.'],
-        solution: [{ math: '\\frac{(x+2) - x}{2(\\sqrt{x+2} + \\sqrt{x})} = \\frac{1}{\\sqrt{x+2} + \\sqrt{x}}', text: 'Conjugate on top and bottom; the top collapses to $2$.' }] }
+        solution: [{ math: '\\frac{(x+2) - x}{2(\\sqrt{x+2} + \\sqrt{x})} = \\frac{1}{\\sqrt{x+2} + \\sqrt{x}}', text: 'Conjugate on top and bottom; the top collapses to $2$.' }] },
+      { id: '1.4-e13', prompt: 'Simplify $\\dfrac{1 - x^2}{x^3 - 1}$.',
+        answer: { type: 'expression', value: '-(x+1)/(x^2 + x + 1)', form: 'single-fraction', vars: ['x'], display: '\\frac{-(x+1)}{x^2+x+1}' },
+        hints: ['Top: difference of squares. Bottom: difference of cubes, $x^3 - 1 = (x-1)(x^2+x+1)$.', 'The top has $(1 - x)$ but the bottom has $(x - 1)$. Use $1 - x = -(x - 1)$ so they cancel.'],
+        solution: [{ text: 'Factor both.', math: '\\frac{(1-x)(1+x)}{(x-1)(x^2+x+1)}' }, { text: 'Turn $(1-x)$ round by pulling out $-1$, then cancel $(x-1)$.', math: '= \\frac{-(x-1)(1+x)}{(x-1)(x^2+x+1)} = \\frac{-(x+1)}{x^2+x+1}' }] },
+      { id: '1.4-e14', prompt: 'Simplify $\\dfrac{x}{x^2 + x - 2} - \\dfrac{2}{x^2 - 5x + 4}$.',
+        answer: { type: 'expression', value: '(x^2 - 6x - 4)/((x+2)(x-1)(x-4))', form: 'single-fraction', vars: ['x'], display: '\\frac{x^2-6x-4}{(x+2)(x-1)(x-4)}' },
+        hints: ['Factor both denominators: $(x+2)(x-1)$ and $(x-1)(x-4)$.', 'They share $(x-1)$, so the LCD is $(x+2)(x-1)(x-4)$ — three factors, not four.', 'The first fraction is missing $(x-4)$; the second is missing $(x+2)$. Careful with the minus.'],
+        solution: [{ text: 'Factor and build the LCD.', math: '\\frac{x}{(x+2)(x-1)} - \\frac{2}{(x-1)(x-4)}, \\quad \\text{LCD} = (x+2)(x-1)(x-4)' }, { text: 'Rewrite each fraction over the LCD.', math: '= \\frac{x(x-4) - 2(x+2)}{(x+2)(x-1)(x-4)}' }, { text: 'Expand the top — the minus applies to all of $2(x+2)$.', math: '= \\frac{x^2 - 4x - 2x - 4}{(x+2)(x-1)(x-4)} = \\frac{x^2 - 6x - 4}{(x+2)(x-1)(x-4)}' }] },
+      { id: '1.4-e15', prompt: 'Simplify $\\dfrac{x^{-2} - y^{-2}}{x^{-1} + y^{-1}}$.',
+        answer: { type: 'expression', value: '(y - x)/(x*y)', form: 'single-fraction', vars: ['x', 'y'], display: '\\frac{y-x}{xy}' },
+        hints: ['Rewrite the negative powers as fractions: $\\dfrac{\\frac{1}{x^2} - \\frac{1}{y^2}}{\\frac1x + \\frac1y}$.', 'Multiply top and bottom by the LCD $x^2y^2$.', 'You get $\\dfrac{y^2 - x^2}{xy^2 + x^2y}$ — factor both and cancel $(y + x)$.'],
+        solution: [{ text: 'Clear the small fractions with $x^2y^2$.', math: '\\frac{y^2 - x^2}{xy^2 + x^2y}' }, { text: 'Factor top and bottom.', math: '= \\frac{(y-x)(y+x)}{xy(y+x)}' }, { text: 'Cancel $(y+x)$.', math: '= \\frac{y-x}{xy}' }] },
+      { id: '1.4-e16', prompt: 'Simplify $1 - \\dfrac{1}{1 - \\dfrac{1}{x}}$.',
+        answer: { type: 'expression', value: '-1/(x-1)', form: 'single-fraction', vars: ['x'], display: '\\frac{-1}{x-1}' },
+        hints: ['Start with the innermost fraction: $1 - \\dfrac1x = \\dfrac{x-1}{x}$.', 'So $\\dfrac{1}{1 - \\frac1x} = \\dfrac{x}{x-1}$. Now do $1 - \\dfrac{x}{x-1}$.'],
+        solution: [{ text: 'Innermost first.', math: '1 - \\frac1x = \\frac{x-1}{x} \\;\\Rightarrow\\; \\frac{1}{1 - \\frac1x} = \\frac{x}{x-1}' }, { text: 'Now subtract from 1.', math: '1 - \\frac{x}{x-1} = \\frac{(x-1) - x}{x-1} = \\frac{-1}{x-1}' }] },
+      { id: '1.4-e17', prompt: 'Simplify $x - \\dfrac{y}{\\dfrac{x}{y} + \\dfrac{y}{x}}$.',
+        answer: { type: 'expression', value: 'x^3/(x^2 + y^2)', form: 'single-fraction', vars: ['x', 'y'], display: '\\frac{x^3}{x^2+y^2}' },
+        hints: ['Tidy the little denominator first: $\\dfrac{x}{y} + \\dfrac{y}{x} = \\dfrac{x^2+y^2}{xy}$.', 'Dividing by that means multiplying by its flip: $y \\cdot \\dfrac{xy}{x^2+y^2} = \\dfrac{xy^2}{x^2+y^2}$.'],
+        solution: [{ text: 'Combine the inner sum.', math: '\\frac{x}{y} + \\frac{y}{x} = \\frac{x^2 + y^2}{xy}' }, { text: 'Divide by it (flip and multiply).', math: '\\frac{y}{\\frac{x^2+y^2}{xy}} = \\frac{xy^2}{x^2+y^2}' }, { text: 'Now subtract from $x$.', math: 'x - \\frac{xy^2}{x^2+y^2} = \\frac{x(x^2+y^2) - xy^2}{x^2+y^2} = \\frac{x^3}{x^2+y^2}' }] },
+      { id: '1.4-e18', prompt: 'Rationalise the denominator of $\\dfrac{y}{\\sqrt{3} + \\sqrt{y}}$ (assume $y > 0$, $y \\ne 3$).',
+        answer: { type: 'expression', value: 'y(sqrt(3) - sqrt(y))/(3 - y)', vars: ['y'], assume: 'y > 0', display: '\\frac{y(\\sqrt3 - \\sqrt y)}{3 - y}' },
+        hints: ['The conjugate of $\\sqrt3 + \\sqrt y$ is $\\sqrt3 - \\sqrt y$.', 'The bottom becomes $(\\sqrt3)^2 - (\\sqrt y)^2 = 3 - y$.'],
+        solution: [{ math: '\\frac{y}{\\sqrt3 + \\sqrt y}\\cdot\\frac{\\sqrt3 - \\sqrt y}{\\sqrt3 - \\sqrt y} = \\frac{y(\\sqrt3 - \\sqrt y)}{3 - y}', text: 'Multiply by the conjugate over itself; the bottom is a difference of squares.' }] }
     ],
 
     generators: [
@@ -228,7 +255,27 @@
         } },
       { id: '1.4-g-compound', title: 'Compound fractions', desc: 'Clear the little denominators with the LCD.',
         make(r) {
-          const kind = r.pick(['xy', 'ah', 'x2']);
+          const kind = r.pick(['xy', 'ah', 'x2', 'negexp', 'nested']);
+          if (kind === 'negexp') {
+            const [u, w] = r.pick([['x', 'y'], ['a', 'b']]);
+            return { prompt: 'Simplify $\\dfrac{' + u + '^{-2} - ' + w + '^{-2}}{' + u + '^{-1} + ' + w + '^{-1}}$.',
+              answer: { type: 'expression', value: '(' + w + ' - ' + u + ')/(' + u + '*' + w + ')', form: 'single-fraction', vars: [u, w], display: frac(w + ' - ' + u, u + w) },
+              hints: ['Rewrite the negative powers as fractions first: $\\dfrac{\\frac{1}{' + u + '^2} - \\frac{1}{' + w + '^2}}{\\frac{1}{' + u + '} + \\frac{1}{' + w + '}}$.', 'Multiply top and bottom by the LCD $' + u + '^2' + w + '^2$, then factor and cancel.'],
+              solution: [{ text: 'Clear the small fractions with $' + u + '^2' + w + '^2$.', math: frac(w + '^2 - ' + u + '^2', u + w + '^2 + ' + u + '^2' + w) },
+                { text: 'Factor top and bottom.', math: '= ' + frac('(' + w + ' - ' + u + ')(' + w + ' + ' + u + ')', u + w + '(' + w + ' + ' + u + ')') },
+                { text: 'Cancel the common bracket.', math: '= ' + frac(w + ' - ' + u, u + w) }] };
+          }
+          if (kind === 'nested') {
+            const c = r.int(1, 4);
+            const top = c === 1 ? '1' : String(c);
+            // 1 - c/(1 - 1/x) = (x - 1 - cx)/(x - 1)
+            const num = M.polyStr([1 - c, -1]), numTex = M.polyTex([1 - c, -1]);
+            return { prompt: 'Simplify $1 - \\dfrac{' + top + '}{1 - \\dfrac{1}{x}}$.',
+              answer: { type: 'expression', value: '(' + num + ')/(x - 1)', form: 'single-fraction', vars: ['x'], display: frac(numTex, 'x - 1') },
+              hints: ['Work from the inside out: $1 - \\dfrac1x = \\dfrac{x-1}{x}$.', 'So $\\dfrac{' + top + '}{1 - \\frac1x} = \\dfrac{' + top + 'x}{x-1}$. Now subtract that from $1$.'],
+              solution: [{ text: 'Innermost fraction first.', math: '1 - \\frac1x = \\frac{x-1}{x} \\;\\Rightarrow\\; \\frac{' + top + '}{1 - \\frac1x} = \\frac{' + (c === 1 ? '' : c) + 'x}{x-1}' },
+                { text: 'Subtract from $1$ over the common denominator.', math: '1 - \\frac{' + (c === 1 ? '' : c) + 'x}{x-1} = \\frac{(x-1) - ' + (c === 1 ? '' : c) + 'x}{x-1} = ' + frac(numTex, 'x - 1') }] };
+          }
           if (kind === 'xy') {
             const s1 = r.pick(['+', '-']), s2 = s1 === '+' ? '-' : '+';
             const topS = 'y ' + s1 + ' x', botS = 'y ' + s2 + ' x';

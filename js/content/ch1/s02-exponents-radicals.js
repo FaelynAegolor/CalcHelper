@@ -35,7 +35,28 @@
       '| Rule | Example |\n|---|---|\n| $\\sqrt[n]{ab} = \\sqrt[n]{a}\\,\\sqrt[n]{b}$ | $\\sqrt{72} = \\sqrt{36 \\cdot 2} = 6\\sqrt{2}$ |\n| $\\sqrt[n]{\\dfrac{a}{b}} = \\dfrac{\\sqrt[n]{a}}{\\sqrt[n]{b}}$ | $\\sqrt{\\dfrac{9}{4}} = \\dfrac{3}{2}$ |\n| $\\sqrt[n]{a^n} = a$ if $n$ is odd | $\\sqrt[3]{(-2)^3} = -2$ |\n| $\\sqrt[n]{a^n} = \\lvert a \\rvert$ if $n$ is even | $\\sqrt{(-2)^2} = 2$ |',
       { warn: 'Roots do not split over + or −', md: '$\\sqrt{9 + 16} = \\sqrt{25} = 5$, but $\\sqrt{9} + \\sqrt{16} = 3 + 4 = 7$. Roots only split over **multiplication and division**.' },
       { key: 'Simplifying a square root', md: 'Hunt for the **biggest perfect square** that divides the number, pull it out, and leave the rest inside. Perfect squares to know: $4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144$.\n\n$$\\sqrt{72} = \\sqrt{36 \\cdot 2} = \\sqrt{36}\\,\\sqrt{2} = 6\\sqrt{2}$$\n\nIf you only spot a smaller square, that is fine — just keep going: $\\sqrt{72} = \\sqrt{4 \\cdot 18} = 2\\sqrt{18} = 2\\sqrt{9 \\cdot 2} = 2 \\cdot 3\\sqrt{2} = 6\\sqrt{2}$.' },
-      'Roots with the same radicand (the number inside) can be added like terms: $3\\sqrt{2} + 4\\sqrt{2} = 7\\sqrt{2}$, in the same way that $3x + 4x = 7x$. If the radicands look different, simplify first — they may turn out to be the same.',
+      'Roots with the same radicand (the number inside) can be added like terms: $3\\sqrt{2} + 4\\sqrt{2} = 7\\sqrt{2}$, in the same way that $3x + 4x = 7x$. If the radicands look different, simplify first — they may turn out to be the same. The same works for cube roots: $\\sqrt[3]{54} - \\sqrt[3]{16} = 3\\sqrt[3]{2} - 2\\sqrt[3]{2} = \\sqrt[3]{2}$.',
+
+      { h: 'When the answer needs absolute value bars' },
+      'Look carefully at $\\sqrt{x^2}$. If $x = 3$ it is $\\sqrt{9} = 3$ ✓. But if $x = -3$ it is $\\sqrt{9} = 3$ — **not** $-3$. So $\\sqrt{x^2}$ is not $x$; it is $|x|$.',
+      { key: 'The rule', md: '$$\\sqrt[n]{a^n} = \\begin{cases} a & \\text{if } n \\text{ is } \\textbf{odd} \\\\ |a| & \\text{if } n \\text{ is } \\textbf{even}\\end{cases}$$\n\nAn **even** root always hands back something non-negative, so if the variable might be negative it needs bars. An **odd** root keeps the sign, so it never needs them: $\\sqrt[3]{(-2)^3} = -2$.' },
+      { example: {
+        title: 'Simplify $\\sqrt[4]{16x^4y^9}$',
+        problem: 'Simplify $\\sqrt[4]{16x^4y^9}$.',
+        steps: [
+          { text: 'Split the inside into perfect fourth powers times what is left over.', math: '16x^4y^9 = (2xy^2)^4 \\cdot y' },
+          { text: 'Split the root over the product.', math: '\\sqrt[4]{16x^4y^9} = \\sqrt[4]{(2xy^2)^4}\\ \\sqrt[4]{y}' },
+          { text: 'The index $4$ is **even**, so that first piece is $|2xy^2|$. Now $2$ is positive and $y^2$ is never negative, so only the $x$ needs bars.', math: '\\sqrt[4]{(2xy^2)^4} = |2xy^2| = 2|x|y^2' },
+          { text: 'Put it together.', math: '\\sqrt[4]{16x^4y^9} = 2|x|y^2\\sqrt[4]{y}' }
+        ], answer: '$2|x|y^2\\sqrt[4]{y}$' } },
+      { tip: 'When you can drop the bars', md: 'Many questions say "assume all variables are positive". If so, $\\sqrt{x^2} = x$ and no bars are needed. If nothing is said and the index is **even**, play safe and keep them.' },
+
+      { h: 'Roots inside roots, and mixed indices' },
+      { key: 'A root of a root: multiply the indices', md: '$$\\sqrt[m]{\\sqrt[n]{a}} = \\sqrt[mn]{a}$$\n\nSo $\\sqrt[3]{\\sqrt{64}} = \\sqrt[6]{64} = \\sqrt[6]{2^6} = 2$. Combining the two indices first is usually quicker than working the inner root out.' },
+      'When two roots have **different indices**, turn them into fractional powers, add the exponents, and turn back:',
+      '$$\\sqrt[3]{y}\\cdot\\sqrt{y} = y^{1/3}\\,y^{1/2} = y^{1/3 + 1/2} = y^{5/6} = \\sqrt[6]{y^5}$$',
+      { tip: 'Same index? Just multiply inside', md: 'If the indices already match, combine under one root and simplify: $\\sqrt[3]{2}\\cdot\\sqrt[3]{32} = \\sqrt[3]{64} = 4$.' },
+
 
       { h: 'Rational (fractional) exponents' },
       'What could $a^{1/2}$ mean? If the laws still work, then $a^{1/2} \\cdot a^{1/2} = a^{1/2 + 1/2} = a^1 = a$. So $a^{1/2}$ is the number that squares to $a$: it is $\\sqrt{a}$.',
@@ -150,7 +171,39 @@
       { id: '1.2-e12', prompt: 'Which is equal to $-3^2$?',
         answer: { type: 'choice', value: 'b', options: [{ id: 'a', label: '$9$' }, { id: 'b', label: '$-9$' }, { id: 'c', label: '$-6$' }, { id: 'd', label: '$\\dfrac19$' }], wrongMessage: 'Without a bracket, the power applies to the 3 only: $-3^2 = -(3^2)$.' },
         hints: ['There is no bracket around $-3$.'],
-        solution: ['$-3^2 = -(3 \\cdot 3) = -9$. Compare $(-3)^2 = 9$.'] }
+        solution: ['$-3^2 = -(3 \\cdot 3) = -9$. Compare $(-3)^2 = 9$.'] },
+      { id: '1.2-e13', prompt: 'Simplify $\\sqrt[4]{x^4y^2z^2}$. (Do **not** assume the variables are positive — use absolute value bars where they are needed.)',
+        answer: { type: 'expression', value: 'abs(x)*sqrt(y*z)', vars: ['x', 'y', 'z'], assume: 'y*z > 0', display: '|x|\\sqrt{yz}' },
+        hints: ['$x^4 = (x)^4$ and $y^2z^2 = (yz)^2$.', 'The index $4$ is even, so $\\sqrt[4]{x^4} = |x|$. And $\\sqrt[4]{(yz)^2} = \\sqrt{|yz|}$.'],
+        solution: [{ text: 'Split the inside into fourth powers and squares.', math: '\\sqrt[4]{x^4 y^2 z^2} = \\sqrt[4]{x^4}\\ \\sqrt[4]{(yz)^2}' }, { text: 'The index is even, so the $x$ needs bars; the square under a fourth root becomes a square root.', math: '= |x|\\sqrt{yz}' }] },
+      { id: '1.2-e14', prompt: 'Simplify $\\dfrac{\\sqrt[4]{x^7}}{\\sqrt[4]{x^3}}$, without assuming $x$ is positive.',
+        answer: { type: 'expression', value: 'abs(x)', vars: ['x'], display: '|x|' },
+        hints: ['Same index, so combine under one root: $\\sqrt[4]{x^7/x^3}$.', '$\\sqrt[4]{x^4}$ — is the index odd or even?'],
+        solution: [{ math: '\\frac{\\sqrt[4]{x^7}}{\\sqrt[4]{x^3}} = \\sqrt[4]{\\frac{x^7}{x^3}} = \\sqrt[4]{x^4} = |x|', text: 'Combine, subtract exponents, and remember the even index needs bars.' }] },
+      { id: '1.2-e15', prompt: 'Simplify $\\sqrt[3]{\\sqrt{64x^6}}$ (assume $x > 0$).',
+        answer: { type: 'expression', value: '2x', vars: ['x'], assume: 'x > 0' },
+        hints: ['A root of a root: multiply the indices. $3 \\times 2 = 6$.', '$\\sqrt[6]{64x^6} = \\sqrt[6]{2^6x^6}$.'],
+        solution: [{ math: '\\sqrt[3]{\\sqrt{64x^6}} = \\sqrt[6]{64x^6} = \\sqrt[6]{(2x)^6} = 2x', text: 'Combine the indices, then take the sixth root.' }] },
+      { id: '1.2-e16', prompt: 'Simplify $\\sqrt[3]{y}\\cdot\\sqrt{y}$, writing the answer as a single root (assume $y > 0$).',
+        answer: { type: 'expression', value: 'root(y^5,6)', vars: ['y'], assume: 'y > 0', display: '\\sqrt[6]{y^5}' },
+        hints: ['Different indices — write each as a fractional power.', '$y^{1/3}\\cdot y^{1/2} = y^{1/3 + 1/2}$. The LCD of $3$ and $2$ is $6$.'],
+        solution: [{ math: 'y^{1/3}\\,y^{1/2} = y^{2/6 + 3/6} = y^{5/6} = \\sqrt[6]{y^5}', text: 'Convert to exponents, add, convert back.' }] },
+      { id: '1.2-e17', prompt: 'Simplify $\\sqrt[3]{54} - \\sqrt[3]{16}$.',
+        answer: { type: 'expression', value: 'root(2,3)', form: 'simplified-radical', display: '\\sqrt[3]{2}' },
+        hints: ['Look for perfect **cubes**: $54 = 27 \\cdot 2$ and $16 = 8 \\cdot 2$.', '$3\\sqrt[3]{2} - 2\\sqrt[3]{2}$ — like terms.'],
+        solution: [{ math: '\\sqrt[3]{54} - \\sqrt[3]{16} = 3\\sqrt[3]{2} - 2\\sqrt[3]{2} = \\sqrt[3]{2}', text: 'Simplify each cube root, then subtract the like terms.' }] },
+      { id: '1.2-e18', prompt: 'Simplify $\\sqrt[6]{64a^6b^7}$ (assume $a > 0$ and $b > 0$).',
+        answer: { type: 'expression', value: '2ab*root(b,6)', vars: ['a', 'b'], assume: 'a > 0', display: '2ab\\sqrt[6]{b}' },
+        hints: ['Look for perfect **sixth** powers: $64 = 2^6$, and $a^6$ is already one.', '$b^7 = b^6 \\cdot b$.'],
+        solution: [{ math: '\\sqrt[6]{64a^6b^7} = \\sqrt[6]{2^6a^6b^6 \\cdot b} = 2ab\\sqrt[6]{b}', text: 'Pull out every sixth power; the leftover $b$ stays inside.' }] },
+      { id: '1.2-e19', prompt: 'Simplify $\\sqrt[3]{a^2b}\\cdot\\sqrt[3]{64a^4b}$ (assume $a > 0$, $b > 0$).',
+        answer: { type: 'expression', value: '4a^2*root(b^2,3)', vars: ['a', 'b'], assume: 'a > 0', display: '4a^2\\sqrt[3]{b^2}' },
+        hints: ['Same index, so combine under one cube root and multiply the insides.', '$\\sqrt[3]{64a^6b^2}$ — what are the perfect cubes?'],
+        solution: [{ math: '\\sqrt[3]{a^2b}\\cdot\\sqrt[3]{64a^4b} = \\sqrt[3]{64a^6b^2} = 4a^2\\sqrt[3]{b^2}', text: 'Combine, then take out the cubes $64 = 4^3$ and $a^6 = (a^2)^3$.' }] },
+      { id: '1.2-e20', prompt: 'Evaluate $\\sqrt[4]{\\dfrac{1}{4}}\\cdot\\sqrt[4]{\\dfrac{1}{64}}$.',
+        answer: { type: 'number', value: 0.25, display: '\\tfrac14' },
+        hints: ['Same index, so multiply the insides under one root.', '$\\tfrac14 \\cdot \\tfrac{1}{64} = \\tfrac{1}{256}$, and $256 = 4^4$.'],
+        solution: [{ math: '\\sqrt[4]{\\frac{1}{4}\\cdot\\frac{1}{64}} = \\sqrt[4]{\\frac{1}{256}} = \\frac{1}{4}', text: 'Combine under one fourth root; $256 = 4^4$.' }] }
     ],
 
     generators: [
@@ -223,16 +276,22 @@
         } },
       { id: '1.2-g-add-roots', title: 'Add and subtract roots', desc: 'Simplify first, then combine like terms.',
         make(r) {
-          const rad = r.pick([2, 3, 5, 6, 7]);
-          const a = r.pick([4, 9, 16, 25]), b = r.pick([4, 9, 16, 25, 36].filter(x => x !== a));
+          const cube = r.bool(0.35);
+          const n = cube ? 3 : 2;
+          const rad = cube ? r.pick([2, 3, 5, 7]) : r.pick([2, 3, 5, 6, 7]);
+          const cubes = [8, 27, 64, 125], squares = [4, 9, 16, 25, 36];
+          const pool = cube ? cubes : squares;
+          const a = r.pick(pool), b = r.pick(pool.filter(x => x !== a));
           const op = r.pick(['+', '-']);
-          const ca = Math.sqrt(a), cb = Math.sqrt(b);
+          const ca = Math.round(Math.pow(a, 1 / n)), cb = Math.round(Math.pow(b, 1 / n));
           const res = op === '+' ? ca + cb : ca - cb;
-          const display = (res === 0 ? '0' : (res === 1 ? '' : res === -1 ? '-' : res) + '\\sqrt{' + rad + '}');
-          return { prompt: 'Simplify $\\sqrt{' + (a * rad) + '} ' + op + ' \\sqrt{' + (b * rad) + '}$.',
-            answer: { type: 'expression', value: res + '*sqrt(' + rad + ')', form: 'simplified-radical', display },
-            hints: ['Simplify each root: $' + (a * rad) + ' = ' + a + ' \\cdot ' + rad + '$ and $' + (b * rad) + ' = ' + b + ' \\cdot ' + rad + '$.', 'Then combine $' + ca + '\\sqrt{' + rad + '} ' + op + ' ' + cb + '\\sqrt{' + rad + '}$ like terms.'],
-            solution: [{ text: 'Simplify each root.', math: '\\sqrt{' + (a * rad) + '} = ' + ca + '\\sqrt{' + rad + '}, \\qquad \\sqrt{' + (b * rad) + '} = ' + cb + '\\sqrt{' + rad + '}' }, { text: 'Same radicand, so combine the coefficients.', math: ca + '\\sqrt{' + rad + '} ' + op + ' ' + cb + '\\sqrt{' + rad + '} = ' + display }] };
+          const rt = x => n === 2 ? '\\sqrt{' + x + '}' : '\\sqrt[3]{' + x + '}';
+          const rtS = x => n === 2 ? 'sqrt(' + x + ')' : 'root(' + x + ',3)';
+          const display = (res === 0 ? '0' : (res === 1 ? '' : res === -1 ? '-' : res) + rt(rad));
+          return { prompt: 'Simplify $' + rt(a * rad) + ' ' + op + ' ' + rt(b * rad) + '$.',
+            answer: { type: 'expression', value: res + '*' + rtS(rad), form: 'simplified-radical', display },
+            hints: ['Simplify each root: $' + (a * rad) + ' = ' + a + ' \\cdot ' + rad + '$ and $' + (b * rad) + ' = ' + b + ' \\cdot ' + rad + '$' + (cube ? ' (look for perfect **cubes**)' : '') + '.', 'Then combine $' + ca + rt(rad) + ' ' + op + ' ' + cb + rt(rad) + '$ like terms.'],
+            solution: [{ text: 'Simplify each root.', math: rt(a * rad) + ' = ' + ca + rt(rad) + ', \\qquad ' + rt(b * rad) + ' = ' + cb + rt(rad) }, { text: 'Same radicand, so combine the coefficients.', math: ca + rt(rad) + ' ' + op + ' ' + cb + rt(rad) + ' = ' + display }] };
         } },
       { id: '1.2-g-rationalise', title: 'Rationalise the denominator', desc: 'Single roots and conjugates.',
         make(r) {
@@ -257,6 +316,54 @@
             answer: { type: 'expression', value, form: 'no-radical-denominator', display },
             hints: ['Multiply top and bottom by the conjugate $\\sqrt{' + b + '} ' + conjSgn + ' ' + c + '$.', 'The bottom becomes $(\\sqrt{' + b + '})^2 - ' + c + '^2 = ' + den + '$.'],
             solution: [{ text: 'Multiply by the conjugate over itself.', math: '\\frac{' + a + '}{\\sqrt{' + b + '} ' + sgn + ' ' + c + '} \\cdot \\frac{\\sqrt{' + b + '} ' + conjSgn + ' ' + c + '}{\\sqrt{' + b + '} ' + conjSgn + ' ' + c + '}' }, { text: 'Difference of squares underneath.', math: '= \\frac{' + a + '(\\sqrt{' + b + '} ' + conjSgn + ' ' + c + ')}{' + b + ' - ' + (c * c) + '} = ' + display }] };
+        } },
+      { id: '1.2-g-nested', title: 'Roots inside roots, and mixed indices', desc: 'Multiply the indices, or use fractional powers.',
+        make(r) {
+          const kind = r.pick(['nested', 'nested', 'mixed', 'sameindex']);
+          if (kind === 'nested') {
+            const base = r.pick([2, 3]), m = r.pick([2, 3]), n = r.pick([2, 3]);
+            const idx = m * n, val = Math.pow(base, idx);
+            const inner = n === 2 ? '\\sqrt{' + val + 'x^{' + idx + '}}' : '\\sqrt[' + n + ']{' + val + 'x^{' + idx + '}}';
+            const outer = m === 2 ? '\\sqrt{' + inner + '}' : '\\sqrt[' + m + ']{' + inner + '}';
+            return { prompt: 'Simplify $' + outer + '$ (assume $x > 0$).',
+              answer: { type: 'expression', value: base + 'x', vars: ['x'], assume: 'x > 0', display: base + 'x' },
+              hints: ['A root of a root: **multiply the indices**, $' + m + ' \\times ' + n + ' = ' + idx + '$.', '$\\sqrt[' + idx + ']{' + val + 'x^{' + idx + '}} = \\sqrt[' + idx + ']{(' + base + 'x)^{' + idx + '}}$.'],
+              solution: [{ math: outer + ' = \\sqrt[' + idx + ']{' + val + 'x^{' + idx + '}} = \\sqrt[' + idx + ']{(' + base + 'x)^{' + idx + '}} = ' + base + 'x', text: 'Combine the indices, then take the root.' }] };
+          }
+          if (kind === 'mixed') {
+            const n1 = r.pick([2, 3]), n2 = r.pick([3, 4, 6].filter(x => x !== n1));
+            const L = M.lcm(n1, n2), top = L / n1 + L / n2;
+            const rt = (n, inside) => n === 2 ? '\\sqrt{' + inside + '}' : '\\sqrt[' + n + ']{' + inside + '}';
+            return { prompt: 'Simplify $' + rt(n1, 'y') + '\\cdot' + rt(n2, 'y') + '$, writing the answer as a single root (assume $y > 0$).',
+              answer: { type: 'expression', value: 'root(y^' + top + ',' + L + ')', vars: ['y'], assume: 'y > 0', display: top === L ? 'y' : '\\sqrt[' + L + ']{y^{' + top + '}}' },
+              hints: ['Different indices — write each as a fractional power: $y^{1/' + n1 + '}$ and $y^{1/' + n2 + '}$.', 'Add the exponents over the common denominator $' + L + '$.'],
+              solution: [{ math: 'y^{1/' + n1 + '}\\,y^{1/' + n2 + '} = y^{' + (L / n1) + '/' + L + ' + ' + (L / n2) + '/' + L + '} = y^{' + top + '/' + L + '}', text: 'Convert to fractional powers and add.' }, { math: '= ' + (top === L ? 'y' : '\\sqrt[' + L + ']{y^{' + top + '}}'), text: 'Write it back as a root.' }] };
+          }
+          const n = r.pick([3, 3, 4]), a = r.int(2, 4), b = r.int(2, 5);
+          const A = Math.pow(a, n), B = Math.pow(b, n);
+          const rt = inside => n === 2 ? '\\sqrt{' + inside + '}' : '\\sqrt[' + n + ']{' + inside + '}';
+          return { prompt: 'Simplify $' + rt(A) + '\\cdot' + rt(B) + '$.',
+            answer: { type: 'number', value: a * b },
+            hints: ['The indices match, so combine them into one root of the product.', '$' + A + ' \\cdot ' + B + ' = ' + (A * B) + ' = ' + (a * b) + '^{' + n + '}$.'],
+            solution: [{ math: rt(A) + '\\cdot' + rt(B) + ' = ' + rt(A + ' \\cdot ' + B) + ' = ' + rt(A * B) + ' = ' + (a * b), text: 'Same index: multiply the insides, then take the root.' }] };
+        } },
+      { id: '1.2-g-absroot', title: 'Even roots and absolute value', desc: 'Does the answer need |x| bars?',
+        make(r) {
+          const n = r.pick([2, 4, 6]);
+          const e = n * r.pick([1, 1, 2]);
+          const c = r.pick([1, 2, 3]);
+          const inside = (c === 1 ? '' : Math.pow(c, n)) + 'x^{' + e + '}';
+          const outPow = e / n;
+          const evenOut = outPow % 2 === 0;               // x^even is never negative, so no bars needed
+          const body = (c === 1 ? '' : c) + (outPow === 1 ? 'x' : 'x^{' + outPow + '}');
+          const needBars = !evenOut;
+          const display = needBars ? (c === 1 ? '' : c) + '|x' + (outPow === 1 ? '' : '^{' + outPow + '}') + '|' : body;
+          const value = needBars ? (c === 1 ? '' : c + '*') + 'abs(x^' + outPow + ')' : (c === 1 ? '' : c + '*') + 'x^' + outPow;
+          const rt = n === 2 ? '\\sqrt{' + inside + '}' : '\\sqrt[' + n + ']{' + inside + '}';
+          return { prompt: 'Simplify $' + rt + '$. Do **not** assume $x$ is positive — include absolute value bars if they are needed.',
+            answer: { type: 'expression', value, vars: ['x'], display },
+            hints: ['The index $' + n + '$ is even, so $\\sqrt[' + n + ']{a^{' + n + '}} = |a|$.', needBars ? 'Here what comes out is $' + body + '$, and $x^{' + outPow + '}$ **can** be negative — so it needs bars.' : 'Here what comes out is $' + body + '$, and $x^{' + outPow + '}$ is never negative — so no bars are needed.'],
+            solution: [{ math: rt + ' = \\sqrt[' + n + ']{\\left(' + body + '\\right)^{' + n + '}} = ' + display, text: needBars ? 'The index is even and the result could be negative, so bars are required.' : 'The index is even, but an even power is already non-negative, so no bars are needed.' }] };
         } }
     ]
   });

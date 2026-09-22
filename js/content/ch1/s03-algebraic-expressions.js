@@ -29,6 +29,14 @@
       { html: V.areaModel({ rows: ['A', '+B'], cols: ['A', '+B'], cells: [['A^2', 'AB'], ['AB', 'B^2']] }), caption: 'Why $(A+B)^2$ has a middle term: the square splits into $A^2$, $B^2$ and **two** rectangles of area $AB$. So $(A + B)^2 = A^2 + 2AB + B^2$ — never just $A^2 + B^2$.' },
       { warn: 'The number-one algebra mistake', md: '$(x + 3)^2$ is **not** $x^2 + 9$. It is $x^2 + 6x + 9$. Check with $x = 1$: $(1+3)^2 = 16$, but $1 + 9 = 10$.' },
 
+      { h: 'The same patterns with roots and fractional powers' },
+      'The special products do not care what $A$ and $B$ stand for. They work just as well when $A$ is a **root** or a **fractional power** — and that is where they become really useful, because squaring a square root removes it.',
+      '| Looks like | Pattern | Result |\n|---|---|---|\n| $(\\sqrt{x} + 2)(\\sqrt{x} - 2)$ | $(A+B)(A-B)$ with $A = \\sqrt x$ | $(\\sqrt x)^2 - 2^2 = x - 4$ |\n| $(x^{1/2} + y^{1/2})(x^{1/2} - y^{1/2})$ | $(A+B)(A-B)$ | $x - y$ |\n| $\\left(\\sqrt{h^2+1} + 1\\right)\\left(\\sqrt{h^2+1} - 1\\right)$ | $(A+B)(A-B)$ | $(h^2+1) - 1 = h^2$ |',
+      { key: 'Why it works', md: 'The middle terms always cancel, and then $\\left(\\sqrt{A}\\right)^2 = A$ — the root disappears. This is exactly the conjugate trick from §1.2, seen from the other side.' },
+      'Distributing works the same way — just **add the exponents**, remembering $\\sqrt{x} = x^{1/2}$ and $\\dfrac{1}{\\sqrt x} = x^{-1/2}$:',
+      '$$x^{3/2}\\left(\\sqrt{x} - \\frac{1}{\\sqrt{x}}\\right) = x^{3/2}x^{1/2} - x^{3/2}x^{-1/2} = x^{2} - x$$',
+      { tip: 'Turn roots into powers first', md: 'Almost every one of these gets easier if you rewrite roots as fractional powers before you start. Then it is only the exponent laws from §1.2.' },
+
       { h: 'Factoring: multiplying in reverse' },
       'To **factor** means to write an expression as a **product** — the opposite of expanding. $x^2 + 7x + 12$ factors as $(x + 3)(x + 4)$. Factoring is the key skill for solving equations later, so it is worth getting fluent.',
       { key: 'Step 1 — always look for a common factor first', md: 'Find the biggest thing that divides **every** term and pull it out front.\n\n$$2x^3 - 50x = 2x(x^2 - 25) \\qquad\\qquad 3x^4 - 9x^3 + 6x^2 = 3x^2(x^2 - 3x + 2)$$\n\nThen look at what is left in the bracket — it may factor further.' },
@@ -58,6 +66,14 @@
       '| Pattern | How to spot it |\n|---|---|\n| $A^2 - B^2 = (A - B)(A + B)$ | two terms, both perfect squares, a minus between |\n| $A^2 + 2AB + B^2 = (A + B)^2$ | first and last are squares, middle is twice their roots multiplied |\n| $A^3 - B^3 = (A - B)(A^2 + AB + B^2)$ | two terms, both cubes |\n| $A^3 + B^3 = (A + B)(A^2 - AB + B^2)$ | two terms, both cubes |',
       { tip: 'Remembering the cube formulas', md: 'The first bracket has the **same sign** as the original; the middle sign of the second bracket is the **opposite**; the last sign is always **plus**. Perfect cubes to recognise: $1, 8, 27, 64, 125$, and $x^3, 8x^3 = (2x)^3, 27x^3 = (3x)^3$.\n\n$$x^3 - 8 = (x - 2)(x^2 + 2x + 4) \\qquad 8x^3 + 27 = (2x + 3)(4x^2 - 6x + 9)$$' },
       { warn: 'A sum of squares does not factor', md: '$x^2 + 4$ cannot be factored using real numbers. Only a **difference** of squares splits.' },
+
+      { h: 'When the "letter" is a whole bracket' },
+      'In every rule so far, $A$ and $B$ can stand for *anything* — including a bracket. Spotting that turns hard-looking questions into easy ones.',
+      { key: 'Common factor that is a bracket', md: 'In $(z+2)^2 - 5(z+2)$ both terms contain $(z + 2)$, so pull it out exactly as you would pull out an $x$:\n\n$$(z+2)^2 - 5(z+2) = (z+2)\\big[(z+2) - 5\\big] = (z+2)(z-3)$$' },
+      { key: 'Difference of squares where $A$ is a bracket', md: '$$(x+3)^2 - 4 = (x+3)^2 - 2^2 = \\big[(x+3) - 2\\big]\\big[(x+3) + 2\\big] = (x+1)(x+5)$$\n\nAnd with two brackets: $(a+b)^2 - (a-b)^2 = \\big[(a+b)-(a-b)\\big]\\big[(a+b)+(a-b)\\big] = (2b)(2a) = 4ab$.' },
+      { key: 'Factoring by substitution — let $u = \\ldots$', md: 'If the same bracket appears squared and plain, give it a name. To factor $2(a+b)^2 + 5(a+b) - 3$, let $u = a + b$:\n\n$$2u^2 + 5u - 3 = (2u - 1)(u + 3)$$\n\nNow put $a + b$ back: $\\big(2(a+b) - 1\\big)(a + b + 3)$. **Always substitute back at the end.**' },
+      { warn: 'Keep going until nothing factors', md: 'With $(a^2+1)^2 - 7(a^2+1) + 10$ and $u = a^2+1$ you get $(u-2)(u-5) = (a^2-1)(a^2-4)$ — and *both* of those are differences of squares:\n\n$$(a-1)(a+1)(a-2)(a+2)$$' },
+      { key: 'Factor out the lowest power', md: 'When the powers are negative or fractional, take out the **smallest** one (the most negative). For $x^{-3/2} + 2x^{-1/2} + x^{1/2}$ the smallest power is $-\\tfrac32$:\n\n$$x^{-3/2}\\left(1 + 2x + x^2\\right) = x^{-3/2}(x+1)^2$$\n\nCheck by adding exponents: $x^{-3/2}\\cdot 2x = 2x^{-1/2}$ ✓.' },
 
       { h: 'Factoring by grouping (four terms)' },
       'Group the terms in pairs, factor each pair, and hope the same bracket appears in both. If it does, pull it out.',
@@ -174,7 +190,63 @@
       { id: '1.3-e13', prompt: 'Factor $9x^2 - 12x + 4$.',
         answer: { type: 'expression', value: '(3x-2)^2', form: 'factored' },
         hints: ['First and last terms are perfect squares: $(3x)^2$ and $2^2$. Is the middle $-2(3x)(2)$?'],
-        solution: ['$(3x)^2 - 2(3x)(2) + 2^2$ matches the perfect-square pattern, so $9x^2 - 12x + 4 = (3x - 2)^2$.'] }
+        solution: ['$(3x)^2 - 2(3x)(2) + 2^2$ matches the perfect-square pattern, so $9x^2 - 12x + 4 = (3x - 2)^2$.'] },
+      { id: '1.3-e14', prompt: 'Expand $(2x + 3y)^2$.',
+        answer: { type: 'expression', value: '4x^2 + 12xy + 9y^2', form: 'expanded', vars: ['x', 'y'] },
+        hints: ['Perfect square with $A = 2x$ and $B = 3y$.', 'The middle term is $2AB = 2(2x)(3y)$.'],
+        solution: [{ math: '(2x)^2 + 2(2x)(3y) + (3y)^2 = 4x^2 + 12xy + 9y^2', text: 'Apply $A^2 + 2AB + B^2$.' }] },
+      { id: '1.3-e15', prompt: 'Expand $(\\sqrt{x} + 2)(\\sqrt{x} - 2)$ (assume $x \\ge 0$).',
+        answer: { type: 'expression', value: 'x - 4', vars: ['x'], assume: 'x > 0' },
+        hints: ['Difference of squares with $A = \\sqrt{x}$, $B = 2$.', '$(\\sqrt{x})^2 = x$.'],
+        solution: [{ math: '(\\sqrt{x})^2 - 2^2 = x - 4', text: 'The middle terms cancel and the square undoes the root.' }] },
+      { id: '1.3-e16', prompt: 'Expand $\\left(\\sqrt{h^2 + 1} + 1\\right)\\left(\\sqrt{h^2 + 1} - 1\\right)$.',
+        answer: { type: 'expression', value: 'h^2', vars: ['h'] },
+        hints: ['Difference of squares with $A = \\sqrt{h^2+1}$ and $B = 1$.', '$\\left(\\sqrt{h^2+1}\\right)^2 = h^2 + 1$.'],
+        solution: [{ math: '\\left(\\sqrt{h^2+1}\\right)^2 - 1^2 = (h^2 + 1) - 1 = h^2', text: 'Squaring removes the root.' }] },
+      { id: '1.3-e17', prompt: 'Expand $\\left(x^{1/2} + y^{1/2}\\right)\\left(x^{1/2} - y^{1/2}\\right)$ (assume $x, y \\ge 0$).',
+        answer: { type: 'expression', value: 'x - y', vars: ['x', 'y'], assume: 'x > 0 ' },
+        hints: ['Difference of squares again.', '$\\left(x^{1/2}\\right)^2 = x^{1} = x$.'],
+        solution: [{ math: '\\left(x^{1/2}\\right)^2 - \\left(y^{1/2}\\right)^2 = x - y', text: 'Multiply the exponents: $\\tfrac12 \\cdot 2 = 1$.' }] },
+      { id: '1.3-e18', prompt: 'Expand and simplify $x^{3/2}\\left(\\sqrt{x} - \\dfrac{1}{\\sqrt{x}}\\right)$ (assume $x > 0$).',
+        answer: { type: 'expression', value: 'x^2 - x', form: 'expanded', vars: ['x'], assume: 'x > 0' },
+        hints: ['Write the bracket with powers: $\\sqrt{x} = x^{1/2}$ and $\\dfrac{1}{\\sqrt{x}} = x^{-1/2}$.', 'Multiply each term, adding exponents: $\\tfrac32 + \\tfrac12$ and $\\tfrac32 - \\tfrac12$.'],
+        solution: [{ math: 'x^{3/2}x^{1/2} - x^{3/2}x^{-1/2} = x^{2} - x^{1} = x^2 - x', text: 'Distribute and add the exponents.' }] },
+      { id: '1.3-e19', prompt: 'Expand and simplify $y^{1/3}\\left(y^{2/3} + y^{5/3}\\right)$.',
+        answer: { type: 'expression', value: 'y + y^2', form: 'expanded', vars: ['y'], assume: 'y > 0' },
+        hints: ['Multiply into the bracket, adding exponents each time.', '$\\tfrac13 + \\tfrac23 = 1$ and $\\tfrac13 + \\tfrac53 = 2$.'],
+        solution: [{ math: 'y^{1/3 + 2/3} + y^{1/3 + 5/3} = y + y^2', text: 'Add the exponents term by term.' }] },
+      { id: '1.3-e20', prompt: 'Factor $(z + 2)^2 - 5(z + 2)$ completely.',
+        answer: { type: 'expression', value: '(z+2)(z-3)', form: 'factored', vars: ['z'] },
+        hints: ['The common factor is the whole bracket $(z + 2)$.', 'Taking it out leaves $(z + 2) - 5$.'],
+        solution: [{ math: '(z+2)\\big[(z+2) - 5\\big] = (z+2)(z-3)', text: 'Pull out the common bracket, then tidy what is left.' }] },
+      { id: '1.3-e21', prompt: 'Factor $(x + 3)^2 - 4$ completely.',
+        answer: { type: 'expression', value: '(x+1)(x+5)', form: 'factored', vars: ['x'] },
+        hints: ['A difference of squares with $A = x + 3$ and $B = 2$.', '$(A - B)(A + B) = (x + 3 - 2)(x + 3 + 2)$.'],
+        solution: [{ math: '(x+3)^2 - 2^2 = (x + 1)(x + 5)', text: 'Difference of squares where $A$ is a bracket.' }] },
+      { id: '1.3-e22', prompt: 'Factor $(a + b)^2 - (a - b)^2$ completely.',
+        answer: { type: 'expression', value: '4ab', vars: ['a', 'b'] },
+        hints: ['Difference of squares with $A = a+b$ and $B = a-b$.', '$(A-B) = (a+b)-(a-b) = 2b$ and $(A+B) = 2a$.'],
+        solution: [{ math: '\\big[(a+b)-(a-b)\\big]\\big[(a+b)+(a-b)\\big] = (2b)(2a) = 4ab', text: 'Difference of squares, then tidy each bracket.' }] },
+      { id: '1.3-e23', prompt: 'Factor $x^2(x^2 - 1) - 9(x^2 - 1)$ completely.',
+        answer: { type: 'expression', value: '(x-1)(x+1)(x-3)(x+3)', form: 'factored', vars: ['x'] },
+        hints: ['Both terms share the bracket $(x^2 - 1)$.', 'You get $(x^2-1)(x^2-9)$ — and **both** of those are differences of squares.'],
+        solution: [{ math: '(x^2 - 1)(x^2 - 9) = (x-1)(x+1)(x-3)(x+3)', text: 'Common bracket first, then factor both differences of squares.' }] },
+      { id: '1.3-e24', prompt: 'Factor $2(a + b)^2 + 5(a + b) - 3$. (Hint: let $u = a + b$.)',
+        answer: { type: 'expression', value: '(2(a+b) - 1)(a+b+3)', form: 'factored', vars: ['a', 'b'] },
+        hints: ['With $u = a + b$ the expression is $2u^2 + 5u - 3$.', '$2u^2 + 5u - 3 = (2u - 1)(u + 3)$. Now put $a + b$ back in place of $u$.'],
+        solution: [{ text: 'Substitute $u = a+b$.', math: '2u^2 + 5u - 3 = (2u - 1)(u + 3)' }, { text: 'Replace $u$ by $a + b$.', math: '\\big(2(a+b) - 1\\big)(a + b + 3)' }] },
+      { id: '1.3-e25', prompt: 'Factor $(a^2 + 1)^2 - 7(a^2 + 1) + 10$ completely. (Hint: let $u = a^2 + 1$.)',
+        answer: { type: 'expression', value: '(a-1)(a+1)(a-2)(a+2)', form: 'factored', vars: ['a'] },
+        hints: ['With $u = a^2 + 1$: $u^2 - 7u + 10 = (u - 2)(u - 5)$.', 'Put $u$ back: $(a^2 + 1 - 2)(a^2 + 1 - 5) = (a^2 - 1)(a^2 - 4)$ — keep factoring!'],
+        solution: [{ text: 'Substitute and factor.', math: 'u^2 - 7u + 10 = (u-2)(u-5)' }, { text: 'Put $u = a^2+1$ back and simplify each bracket.', math: '(a^2 - 1)(a^2 - 4)' }, { text: 'Both are differences of squares.', math: '(a-1)(a+1)(a-2)(a+2)' }] },
+      { id: '1.3-e26', prompt: 'Factor $x^{-3/2} + 2x^{-1/2} + x^{1/2}$ by taking out the lowest power of $x$ (assume $x > 0$).',
+        answer: { type: 'expression', value: 'x^(-3/2)(x+1)^2', vars: ['x'], assume: 'x > 0', display: 'x^{-3/2}(x+1)^2' },
+        hints: ['The three powers are $-\\tfrac32$, $-\\tfrac12$ and $\\tfrac12$. The smallest is $-\\tfrac32$.', 'Taking out $x^{-3/2}$ leaves $1 + 2x + x^2$ — which factors.'],
+        solution: [{ text: 'Take out the lowest power.', math: 'x^{-3/2}\\left(1 + 2x + x^2\\right)' }, { text: 'The bracket is a perfect square.', math: '= x^{-3/2}(x+1)^2' }] },
+      { id: '1.3-e27', prompt: 'Factor $18y^3x^2 - 2xy^4$ completely.',
+        answer: { type: 'expression', value: '2x y^3 (9x - y)', form: 'factored', vars: ['x', 'y'] },
+        hints: ['What is the biggest thing dividing both terms? Look at the numbers, then each letter.', 'Numbers: $2$. Powers of $x$: $x$. Powers of $y$: $y^3$.'],
+        solution: [{ math: '18y^3x^2 - 2xy^4 = 2xy^3(9x - y)', text: 'Take out $2xy^3$ — the lowest power of each common factor.' }] }
     ],
 
     generators: [
@@ -286,6 +358,80 @@
           return { prompt: 'Factor $' + M.polyTex(coeffs) + '$ completely.', answer: { type: 'expression', value: factoredS, form: 'factored', display: factored },
             hints: ['Group the first two terms and the last two terms.', 'Factor $x^2$ from the first pair and $' + (sgn * q) + '$ from the second; the same bracket $(' + lin(1, p) + ')$ should appear in both.' + extra],
             solution: [{ text: 'Group and factor each pair.', math: 'x^2' + paren(lin(1, p)) + ' ' + (sgn > 0 ? '+ ' + q : '- ' + q) + paren(lin(1, p)) }, { text: 'Pull out the common bracket' + (extra ? ', then factor the difference of squares' : '') + '.', math: '= ' + factored }] };
+        } },
+      { id: '1.3-g-radical-products', title: 'Special products with roots and powers', desc: 'The patterns still work when A is a root.',
+        make(r) {
+          const kind = r.pick(['dos-root', 'dos-root', 'dos-frac', 'distribute']);
+          if (kind === 'dos-root') {
+            const b = r.int(1, 6);
+            // inner is a polynomial in x; the answer is that polynomial with b^2 taken off the constant
+            const inner = r.pick([[1, 0], [1, 0], [1, 1], [1, -3], [1, 0, 1]]);
+            const innerTex = M.polyTex(inner), innerStr = M.polyStr(inner);
+            const ansCoeffs = inner.slice(); ansCoeffs[ansCoeffs.length - 1] -= b * b;
+            return { prompt: 'Expand $\\left(\\sqrt{' + innerTex + '} + ' + b + '\\right)\\left(\\sqrt{' + innerTex + '} - ' + b + '\\right)$ (assume the root is defined).',
+              answer: { type: 'expression', value: M.polyStr(ansCoeffs), form: 'expanded', vars: ['x'], assume: 'x > 0', display: M.polyTex(ansCoeffs) },
+              hints: ['Difference of squares with $A = \\sqrt{' + innerTex + '}$ and $B = ' + b + '$.', 'Squaring a square root removes it: $\\left(\\sqrt{' + innerTex + '}\\right)^2 = ' + innerTex + '$.'],
+              solution: [{ math: '\\left(\\sqrt{' + innerTex + '}\\right)^2 - ' + b + '^2 = ' + innerTex + ' - ' + (b * b) + ' = ' + M.polyTex(ansCoeffs), text: 'The middle terms cancel and the square undoes the root.' }] };
+          }
+          if (kind === 'dos-frac') {
+            const [v1, v2] = r.pick([['x', 'y'], ['a', 'b'], ['u', 'v']]);
+            return { prompt: 'Expand $\\left(' + v1 + '^{1/2} + ' + v2 + '^{1/2}\\right)\\left(' + v1 + '^{1/2} - ' + v2 + '^{1/2}\\right)$ (assume both are $\\ge 0$).',
+              answer: { type: 'expression', value: v1 + ' - ' + v2, form: 'expanded', vars: [v1, v2], assume: v1 + ' > 0', display: v1 + ' - ' + v2 },
+              hints: ['Difference of squares.', 'Multiply the exponents: $\\left(' + v1 + '^{1/2}\\right)^2 = ' + v1 + '$.'],
+              solution: [{ math: '\\left(' + v1 + '^{1/2}\\right)^2 - \\left(' + v2 + '^{1/2}\\right)^2 = ' + v1 + ' - ' + v2, text: 'Apply $(A+B)(A-B) = A^2 - B^2$.' }] };
+          }
+          const d = r.pick([2, 3]);
+          const outer = r.int(d + 1, 2 * d + 1);        // outer power p/d
+          const t1 = r.int(1, 2 * d), t2 = r.int(1, 2 * d);
+          if ((outer + t1) % d !== 0 || (outer + t2) % d !== 0 || t1 === t2) return this.make(r);
+          const e1 = (outer + t1) / d, e2 = (outer + t2) / d;
+          const pw = (n) => n % d === 0 ? (n / d === 1 ? '' : '^{' + (n / d) + '}') : '^{' + n + '/' + d + '}';
+          const term = (n, v) => v + pw(n);
+          const res = M.polyStr([0, 0]) && (term(e1 * d, 'y').replace('y', 'x') + ' + ' + term(e2 * d, 'y').replace('y', 'x'));
+          const value = 'x^' + e1 + ' + x^' + e2;
+          return { prompt: 'Expand and simplify $x^{' + outer + '/' + d + '}\\left(x^{' + t1 + '/' + d + '} + x^{' + t2 + '/' + d + '}\\right)$ (assume $x > 0$).',
+            answer: { type: 'expression', value, form: 'expanded', vars: ['x'], assume: 'x > 0', display: 'x^{' + e1 + '} + x^{' + e2 + '}' },
+            hints: ['Multiply into the bracket — when you multiply powers of the same base you **add** the exponents.', '$\\tfrac{' + outer + '}{' + d + '} + \\tfrac{' + t1 + '}{' + d + '} = ' + e1 + '$ and $\\tfrac{' + outer + '}{' + d + '} + \\tfrac{' + t2 + '}{' + d + '} = ' + e2 + '$.'],
+            solution: [{ math: 'x^{' + outer + '/' + d + ' + ' + t1 + '/' + d + '} + x^{' + outer + '/' + d + ' + ' + t2 + '/' + d + '} = x^{' + e1 + '} + x^{' + e2 + '}', text: 'Add the exponents term by term.' }] };
+        } },
+      { id: '1.3-g-bracket-factor', title: 'Factoring when A is a bracket', desc: 'Common bracket, or a difference of squares of brackets.',
+        make(r) {
+          const kind = r.pick(['common', 'common', 'dos']);
+          const v = r.pick(['x', 'z', 't']);
+          const p = r.nz(-5, 5);
+          if (kind === 'common') {
+            const k = r.nz(-6, 6);
+            const inner = M.polyTex([1, p], v), innerS = M.polyStr([1, p], v);
+            const second = M.polyTex([1, p + k], v), secondS = M.polyStr([1, p + k], v);
+            return { prompt: 'Factor $' + paren(inner) + '^2 ' + (k > 0 ? '+ ' + k : '- ' + (-k)) + paren(inner) + '$ completely.',
+              answer: { type: 'expression', value: paren(innerS) + paren(secondS), form: 'factored', vars: [v], display: paren(inner) + paren(second) },
+              hints: ['The common factor is the whole bracket $(' + inner + ')$.', 'Taking it out leaves $(' + inner + ') ' + (k > 0 ? '+ ' + k : '- ' + (-k)) + '$.'],
+              solution: [{ math: paren(inner) + '\\big[' + inner + ' ' + (k > 0 ? '+ ' + k : '- ' + (-k)) + '\\big] = ' + paren(inner) + paren(second), text: 'Pull out the common bracket and tidy up.' }] };
+          }
+          const b = r.int(1, 5);
+          const inner = M.polyTex([1, p], v);
+          const f1 = M.polyTex([1, p - b], v), f2 = M.polyTex([1, p + b], v);
+          return { prompt: 'Factor $' + paren(inner) + '^2 - ' + (b * b) + '$ completely.',
+            answer: { type: 'expression', value: paren(M.polyStr([1, p - b], v)) + paren(M.polyStr([1, p + b], v)), form: 'factored', vars: [v], display: paren(f1) + paren(f2) },
+            hints: ['A difference of squares where $A$ is the bracket $(' + inner + ')$ and $B = ' + b + '$.', '$(A - B)(A + B) = (' + inner + ' - ' + b + ')(' + inner + ' + ' + b + ')$.'],
+            solution: [{ math: paren(inner) + '^2 - ' + b + '^2 = ' + paren(f1) + paren(f2), text: 'Difference of squares, then simplify each bracket.' }] };
+        } },
+      { id: '1.3-g-substitution', title: 'Factor by substitution', desc: 'Let u = the repeated bracket.',
+        make(r) {
+          const p = r.nz(-5, 5), q = r.nz(-5, 5);
+          if (p === q) return this.make(r);
+          const inner = r.pick(['a + b', 'x + y', 's + t']);
+          const innerS = inner;
+          const vars = inner.split(' + ');
+          const b = -(p + q), c = p * q;
+          if (b === 0) return this.make(r);            // no middle term is not what this skill is about
+          // "+ 3(a+b)" but "- (a+b)" when the coefficient is 1
+          const mid = (b > 0 ? '+ ' : '- ') + (Math.abs(b) === 1 ? '' : Math.abs(b)) + '\\left(' + inner + '\\right)';
+          const prompt = '$\\left(' + inner + '\\right)^2 ' + mid + ' ' + M.signed(c) + '$';
+          return { prompt: 'Factor ' + prompt + '. (Hint: let $u = ' + inner + '$.)',
+            answer: { type: 'expression', value: '(' + innerS + M.signed(-p) + ')(' + innerS + M.signed(-q) + ')', form: 'factored', vars, display: paren(inner + ' ' + M.signed(-p)) + paren(inner + ' ' + M.signed(-q)) },
+            hints: ['With $u = ' + inner + '$ the expression becomes $' + M.polyTex([1, b, c], 'u') + '$.', 'Two numbers multiplying to $' + c + '$ and adding to $' + b + '$ are $' + p + '$ and $' + q + '$, so $' + M.polyTex([1, b, c], 'u') + ' = (u ' + M.signed(-p) + ')(u ' + M.signed(-q) + ')$. Now put $' + inner + '$ back.'],
+            solution: [{ text: 'Substitute $u = ' + inner + '$ and factor.', math: M.polyTex([1, b, c], 'u') + ' = (u ' + M.signed(-p) + ')(u ' + M.signed(-q) + ')' }, { text: 'Replace $u$ again.', math: paren(inner + ' ' + M.signed(-p)) + paren(inner + ' ' + M.signed(-q)) }] };
         } }
     ]
   });

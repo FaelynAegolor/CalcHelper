@@ -34,12 +34,14 @@
   }
 
   // deterministic pseudo-random sample points for a list of variables
-  function samplePoints(varList, count) {
+  // `assume` is an optional parsed relation (e.g. "a < b") that every sample point must satisfy,
+  // for questions stated under a condition such as "|a - b|, where a < b".
+  function samplePoints(varList, count, assume) {
     count = count || 16;
     let seed = 12345;
     const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
     const pts = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; pts.length < count && i < count * 40; i++) {
       const pt = {};
       for (const v of varList) {
         let x;
@@ -47,6 +49,7 @@
         else { x = -3 + rnd() * 6; if (Math.abs(x) < 0.2) x += 0.7; }
         pt[v] = x;
       }
+      if (assume && P.evalRelation(assume, pt) !== true) continue;
       pts.push(pt);
     }
     return pts;
@@ -54,8 +57,8 @@
   const num = v => typeof v === 'number' && !Number.isNaN(v);
 
   // Compare two expression ASTs on sample points (reference decides the domain).
-  function compareExpr(astS, astR, varList) {
-    const pts = samplePoints(varList);
+  function compareExpr(astS, astR, varList, assume) {
+    const pts = samplePoints(varList, 16, assume);
     let tested = 0;
     for (const pt of pts) {
       const r = P.evaluate(astR, pt);
@@ -461,7 +464,7 @@
           const allowed = new Set(spec.vars || [...freeVars(astR)]);
           const extra = [...freeVars(astS)].filter(x => !allowed.has(x));
           if (extra.length) return { ok: false, readAs: P.toLatex(astS), message: 'Your answer uses ' + extra.join(', ') + ', which should not appear here.' };
-          const cmp = compareExpr(astS, astR, [...allowed]);
+          const cmp = compareExpr(astS, astR, [...allowed], spec.assume ? P.parseRelation(spec.assume) : null);
           if (cmp.equal === null) return { ok: false, readAs: P.toLatex(astS), message: 'Could not compare — is the expression defined for ordinary values?' };
           if (!cmp.equal) return { ok: false, readAs: P.toLatex(astS), message: 'Not equivalent to the correct answer. For example, when ' + Object.entries(cmp.point).map(([k, x]) => k + ' = ' + fmt(x)).join(', ') + ' yours gives ' + fmt(cmp.s) + ' but the answer gives ' + fmt(cmp.r) + '.' };
           if (spec.form) { const f = checkForm(astS, spec.form, astR); if (!f.ok) return { ok: false, readAs: P.toLatex(astS), message: f.msg, equivalent: true }; }

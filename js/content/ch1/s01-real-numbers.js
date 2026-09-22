@@ -62,6 +62,7 @@
       'A **set** is just a collection of things, written in curly brackets: $A = \\{1, 2, 3\\}$. Two ways to combine sets:',
       '- **Union** $A \\cup B$ — everything that is in $A$ **or** in $B$ (or both). Think "**u**nion = **u**nite them".\n- **Intersection** $A \\cap B$ — only the things in **both** $A$ **and** $B$. Think "where they overlap".',
       'For example, if $A = \\{1, 2, 3, 4, 5, 6\\}$ and $B = \\{-6, -4, -2, 0, 2, 4\\}$ then $A \\cap B = \\{2, 4\\}$ (the shared elements) and $A \\cup B = \\{-6, -4, -2, 0, 1, 2, 3, 4, 5, 6\\}$ (everything, listed once).',
+      'Sets are often written in **set-builder notation**: $\\{x : -2 < x \\le 2\\}$ is read "the set of all $x$ such that $-2 < x \\le 2$". That is just an interval in words — here $(-2, 2]$.',
       'An **interval** is a set of *all* the real numbers between two endpoints. The bracket shape tells you whether the endpoint itself is included:',
       { key: 'Reading the brackets', md: '- A **square bracket** $[$ or $]$ means the endpoint **is included** (drawn as a filled dot ●).\n- A **round bracket** $($ or $)$ means the endpoint is **not included** (drawn as an open dot ○).\n- $\\infty$ and $-\\infty$ always get a round bracket — infinity is not a number you can reach.' },
       { html: intervalTable },
@@ -73,7 +74,8 @@
       'Useful facts: $|ab| = |a|\\,|b|$ and $\\left|\\dfrac{a}{b}\\right| = \\dfrac{|a|}{|b|}$ — but $|a + b|$ is **not** always $|a| + |b|$ (try $a = 3$, $b = -3$).',
       { def: 'Distance between two numbers', md: 'The distance between $a$ and $b$ on the number line is $$d(a, b) = |a - b|.$$ The order does not matter, because $|a - b| = |b - a|$.' },
       { widget: 'abs-distance' },
-      { warn: 'A sneaky one', md: '$|3 - \\pi|$: since $\\pi \\approx 3.14$ is bigger than $3$, the inside is negative, so $|3 - \\pi| = -(3 - \\pi) = \\pi - 3$. Always ask "is the inside positive or negative?" before dropping the bars.' }
+      { warn: 'A sneaky one', md: '$|3 - \\pi|$: since $\\pi \\approx 3.14$ is bigger than $3$, the inside is negative, so $|3 - \\pi| = -(3 - \\pi) = \\pi - 3$. Always ask "is the inside positive or negative?" before dropping the bars.' },
+      { key: 'Absolute value with letters', md: 'The same question — *is the inside positive or negative?* — answers questions with letters in them, as long as you are told which is bigger.\n\nIf $a < b$, then $a - b$ is **negative**, so the bars flip its sign:\n\n$$|a - b| = -(a - b) = b - a$$\n\nOnce you know that, things tidy up nicely: $a + b + |a - b| = a + b + (b - a) = 2b$ — the larger of the two, doubled.' }
     ],
 
     examples: [
@@ -164,7 +166,37 @@
       { id: '1.1-e10', prompt: 'Which of these numbers is **irrational**?',
         answer: { type: 'choice', value: 'c', options: [{ id: 'a', label: '$0.\\overline{27}$' }, { id: 'b', label: '$\\sqrt{16}$' }, { id: 'c', label: '$\\sqrt{10}$' }, { id: 'd', label: '$-\\dfrac{22}{7}$' }], wrongMessage: 'Not quite. Repeating decimals and fractions are rational, and $\\sqrt{16} = 4$ is a whole number.' },
         hints: ['A repeating decimal is always rational.', '$\\sqrt{16} = 4$ — a perfect square root is a whole number. $10$ is not a perfect square.'],
-        solution: ['$0.\\overline{27} = \\tfrac{3}{11}$ and $-\\tfrac{22}{7}$ are fractions, and $\\sqrt{16} = 4$. Only $\\sqrt{10}$ cannot be written as a fraction: it is irrational.'] }
+        solution: ['$0.\\overline{27} = \\tfrac{3}{11}$ and $-\\tfrac{22}{7}$ are fractions, and $\\sqrt{16} = 4$. Only $\\sqrt{10}$ cannot be written as a fraction: it is irrational.'] },
+      { id: '1.1-e11', prompt: 'From the list $\\{-1.5,\\ 0,\\ \\tfrac{5}{2},\\ \\sqrt{7},\\ 2.71,\\ -\\pi,\\ 3.14,\\ 100,\\ -8\\}$, write each collection as a set.',
+        answer: { type: 'multi', parts: [
+          { label: 'Natural numbers', type: 'set', value: [100] },
+          { label: 'Integers', type: 'set', value: [-8, 0, 100] },
+          { label: 'Rational numbers', type: 'set', value: [-8, -1.5, 0, 2.5, 2.71, 3.14, 100] },
+          { label: 'Irrational numbers', type: 'set', value: [-Math.PI, Math.sqrt(7)], display: '\\{-\\pi,\\ \\sqrt7\\}' }] },
+        hints: ['Natural numbers are the counting numbers $1, 2, 3, \\ldots$', 'Every integer is also rational, and so is every terminating decimal such as $2.71$.', 'Only $\\sqrt{7}$ and $-\\pi$ have decimals that never stop and never repeat.'],
+        solution: ['Natural: only $100$. Integers: $-8, 0, 100$. Rational: everything that can be written as a fraction — $-8, -1.5, 0, \\tfrac52, 2.71, 3.14, 100$. Irrational: $\\sqrt7$ and $-\\pi$.'] },
+      { id: '1.1-e12', prompt: 'Write $D = \\{x : -4 < x < 1\\}$ and $E = \\{x : -1 \\le x \\le 3\\}$ in interval notation, then find $D \\cap E$ and $D \\cup E$.',
+        answer: { type: 'multi', parts: [
+          { label: '$D$', type: 'interval', value: '(-4, 1)' },
+          { label: '$E$', type: 'interval', value: '[-1, 3]' },
+          { label: '$D \\cap E$', type: 'interval', value: '[-1, 1)' },
+          { label: '$D \\cup E$', type: 'interval', value: '(-4, 3]' }] },
+        hints: ['$<$ becomes a round bracket, $\\le$ becomes a square bracket.', 'Sketch both intervals on one number line: the overlap is the intersection, everything shaded is the union.'],
+        solution: ['$D = (-4, 1)$ and $E = [-1, 3]$.', 'The shadings overlap from $-1$ (included, from $E$) up to $1$ (not included, from $D$): $D \\cap E = [-1, 1)$.', 'Together they run from $-4$ (open) to $3$ (closed): $D \\cup E = (-4, 3]$.'] },
+      { id: '1.1-e13', prompt: 'Let $A = (-2, 2]$ and $C = \\{x : x > 6\\}$. Find $A \\cap C$ and $A \\cup C$.',
+        answer: { type: 'multi', parts: [
+          { label: '$A \\cap C$', type: 'interval', value: 'empty' },
+          { label: '$A \\cup C$', type: 'interval', value: '(-2, 2] U (6, inf)' }] },
+        hints: ['$C = (6, \\infty)$. Sketch both on a number line — do they overlap anywhere?', 'They never touch, so the union has to stay as **two separate pieces** joined by $\\cup$.'],
+        solution: ['$C = (6, \\infty)$. The two intervals never overlap, so $A \\cap C = \\varnothing$.', 'Because the pieces do not join up, the union is written as two intervals: $A \\cup C = (-2, 2] \\cup (6, \\infty)$.'] },
+      { id: '1.1-e14', prompt: 'Simplify $|a - b|$, given that $a < b$.',
+        answer: { type: 'expression', value: 'b - a', vars: ['a', 'b'], assume: 'a < b' },
+        hints: ['If $a < b$, is $a - b$ positive or negative?', 'It is negative, so the bars flip its sign: $|a-b| = -(a-b)$.'],
+        solution: ['Since $a < b$, the inside $a - b$ is negative, so $|a - b| = -(a - b) = b - a$.'] },
+      { id: '1.1-e15', prompt: 'Simplify $a + b + |a - b|$, given that $a < b$.',
+        answer: { type: 'expression', value: '2b', vars: ['a', 'b'], assume: 'a < b' },
+        hints: ['From the previous question, $|a - b| = b - a$.', 'Substitute: $a + b + (b - a)$ — the $a$ terms cancel.'],
+        solution: ['Because $a < b$ we have $|a - b| = b - a$, so $a + b + |a - b| = a + b + b - a = 2b$.'] }
     ],
 
     generators: [
@@ -243,7 +275,11 @@
         } },
       { id: '1.1-g-intervals', title: 'Union and intersection of intervals', desc: 'Draw both on one number line.',
         make(r) {
-          const a = r.int(-6, 1), b = a + r.int(2, 5), c = r.int(a - 2, b - 1), d = c + r.int(2, 5);
+          const a = r.int(-6, 1), b = a + r.int(2, 5);
+          // about a third of the time the second interval sits clear of the first, so the
+          // intersection is empty and the union has to stay as two separate pieces
+          const disjoint = r.bool(0.3);
+          const c = disjoint ? b + r.int(1, 4) : r.int(a - 2, b - 1), d = c + r.int(2, 5);
           const aC = r.bool(), bC = r.bool(), cC = r.bool(), dC = r.bool();
           const I1 = { lo: a, hi: b, loC: aC, hiC: bC }, I2 = { lo: c, hi: d, loC: cC, hiC: dC };
           const which = r.pick(['cap', 'cup']);
@@ -269,6 +305,21 @@
             answer: { type: 'number', value: dist, display: disp },
             hints: ['Distance $= |a - b|$ — subtract, then take the absolute value.'],
             solution: [{ text: 'Subtract and take the absolute value.', math: 'd = \\left|' + aT + ' - \\left(' + bT + '\\right)\\right| = ' + disp }] };
+        } },
+      { id: '1.1-g-setbuilder', title: 'Set-builder notation → interval', desc: 'Turn $\\{x : \\ldots\\}$ into an interval.',
+        make(r) {
+          const kind = r.pick(['both', 'both', 'left', 'right']);
+          const a = r.int(-7, 3), b = a + r.int(2, 7);
+          const o1 = r.pick(['<', '<=']), o2 = r.pick(['<', '<=']);
+          const OPS = { '<': '<', '<=': '\\le', '>': '>', '>=': '\\ge' };
+          let desc, val;
+          if (kind === 'both') { desc = a + ' ' + OPS[o1] + ' x ' + OPS[o2] + ' ' + b; val = (o1 === '<=' ? '[' : '(') + a + ', ' + b + (o2 === '<=' ? ']' : ')'); }
+          else if (kind === 'left') { const o = r.pick(['<', '<=']); desc = 'x ' + OPS[o] + ' ' + b; val = '(-inf, ' + b + (o === '<=' ? ']' : ')'); }
+          else { const o = r.pick(['>', '>=']); desc = 'x ' + OPS[o] + ' ' + a; val = (o === '>=' ? '[' : '(') + a + ', inf)'; }
+          return { prompt: 'Write the set $\\{x : ' + desc + '\\}$ in interval notation.',
+            answer: { type: 'interval', value: val },
+            hints: ['A strict sign ($<$ or $>$) gives a **round** bracket; an "or equal" sign ($\\le$ or $\\ge$) gives a **square** bracket.', 'Infinity always takes a round bracket.'],
+            solution: ['$\\{x : ' + desc + '\\} = ' + CH.C.intervalsToLatex(CH.C.parseIntervalSet(val)) + '$'] };
         } }
     ]
   });
