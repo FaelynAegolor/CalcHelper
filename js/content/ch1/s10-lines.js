@@ -41,6 +41,9 @@
         ], answer: '$5x + 2y = -1$' } },
       { tip: 'Two points? Find the slope first', md: 'For the line through $(-1, 2)$ and $(3, 4)$: $m = \\dfrac{4 - 2}{3 - (-1)} = \\dfrac{2}{4} = \\dfrac12$. Then use point–slope with **either** point: $y - 2 = \\tfrac12(x + 1)$, which tidies to $x - 2y = -5$.' },
       { key: 'Horizontal and vertical lines', md: '- **Horizontal** through $(a, b)$: every point has the same $y$, so the equation is $y = b$. Slope $0$.\n- **Vertical** through $(a, b)$: every point has the same $x$, so the equation is $x = a$. Slope undefined.\n\nThrough $(3, 4)$: horizontal line $y = 4$, vertical line $x = 3$.' },
+      { key: 'The same thing said in different words', md: 'Questions often describe these lines indirectly. All of these mean just two things:\n\n| The question says… | It means | Through $(4, 5)$ |\n|---|---|---|\n| parallel to the **$x$-axis** | horizontal | $y = 5$ |\n| perpendicular to the **$y$-axis** | horizontal | $y = 5$ |\n| parallel to $y = 1$ (a horizontal line) | horizontal | $y = 5$ |\n| parallel to the **$y$-axis** | vertical | $x = 4$ |\n| perpendicular to the **$x$-axis** | vertical | $x = 4$ |\n| parallel to $x = 5$ (a vertical line) | vertical | $x = 4$ |\n| perpendicular to $y = 1$ | vertical | $x = 4$ |\n\nThe method is always the same: decide **horizontal or vertical**, then read off the matching coordinate of the given point.' },
+      { warn: 'Slope $0$ versus no slope', md: 'These sound alike but are opposites.\n\n- $y = 4$ is **horizontal**: slope $m = 0$, $y$-intercept $4$.\n- $x = 3$ is **vertical**: the run is $0$, so the slope is **undefined** — and the line never crosses the $y$-axis, so it has **no $y$-intercept** at all.' },
+      { key: 'Two points with the same $x$', md: 'If two points share an $x$-coordinate — say $(1, 7)$ and $(1, 6)$ — the slope formula gives $\\dfrac{6-7}{1-1} = \\dfrac{-1}{0}$, which is undefined. That is the signal for a **vertical** line, here $x = 1$. (Sharing a $y$-coordinate instead gives slope $0$: a horizontal line.)' },
 
       { h: 'Reading a line from its equation' },
       'To find the slope and $y$-intercept of $3y - 2x = 1$, **solve for $y$**: $3y = 2x + 1$, so $y = \\tfrac23 x + \\tfrac13$. Slope $\\tfrac23$, $y$-intercept $\\tfrac13$.',
@@ -151,7 +154,39 @@
       { id: '1.10-e12', prompt: 'Find the equation of the line through the origin that is perpendicular to $y = -\\dfrac32 x + 1$.',
         answer: { type: 'equation', value: 'y = 2/3 x' },
         hints: ['Perpendicular slope to $-\\tfrac32$ is $\\tfrac23$.', 'Through $(0, 0)$: $y - 0 = \\tfrac23(x - 0)$.'],
-        solution: [{ math: 'y = \\tfrac23 x \\quad (\\text{or } 2x - 3y = 0)' }] }
+        solution: [{ math: 'y = \\tfrac23 x \\quad (\\text{or } 2x - 3y = 0)' }] },
+      { id: '1.10-e13', prompt: 'Find the slope and $y$-intercept of the line $y = 4$.',
+        answer: { type: 'multi', parts: [{ label: 'Slope $m$', type: 'number', value: 0 }, { label: '$y$-intercept $b$', type: 'number', value: 4 }] },
+        hints: ['Write it as $y = mx + b$: here $y = 0\\cdot x + 4$.', 'A horizontal line does not rise at all.'],
+        solution: ['$y = 4$ is the same as $y = 0x + 4$, so the slope is $0$ and the $y$-intercept is $4$. It is a horizontal line.'] },
+      { id: '1.10-e14', prompt: 'What are the slope and $y$-intercept of the line $x = 3$?',
+        answer: { type: 'choice', value: 'c', options: [{ id: 'a', label: 'Slope $0$, $y$-intercept $3$' }, { id: 'b', label: 'Slope $3$, no $y$-intercept' }, { id: 'c', label: 'Slope undefined, no $y$-intercept' }, { id: 'd', label: 'Slope undefined, $y$-intercept $3$' }], wrongMessage: 'A vertical line has a run of $0$, and it never crosses the $y$-axis.' },
+        hints: ['Is $x = 3$ horizontal or vertical?', 'It is vertical: the run is $0$, so the slope is undefined — and the line never meets the $y$-axis.'],
+        solution: ['$x = 3$ is a **vertical** line. Its slope is **undefined** (you would be dividing by a run of $0$), and since it never crosses the $y$-axis it has **no $y$-intercept**.'] },
+      { id: '1.10-e15', prompt: 'Find the equation of the line through $(1, 7)$ and $(1, 6)$.',
+        answer: { type: 'equation', value: 'x = 1' },
+        hints: ['Try the slope formula: $\\dfrac{6 - 7}{1 - 1}$ — what goes wrong?', 'The run is $0$, so the slope is undefined: the line is vertical.'],
+        solution: ['Both points have $x = 1$, so the slope formula divides by $0$ and the line is **vertical**: $x = 1$.'] },
+      { id: '1.10-e16', prompt: 'Find the equation of the line with $x$-intercept $1$ and $y$-intercept $-3$.',
+        answer: { type: 'equation', value: 'y = 3x - 3' },
+        hints: ['An $x$-intercept of $1$ means the line passes through $(1, 0)$; a $y$-intercept of $-3$ means it passes through $(0, -3)$.', 'Now it is just a line through two points: $m = \\dfrac{-3 - 0}{0 - 1} = 3$.'],
+        solution: [{ text: 'Turn the intercepts into points: $(1, 0)$ and $(0, -3)$.', math: 'm = \\frac{-3 - 0}{0 - 1} = 3' }, { text: 'The $y$-intercept is given, so use $y = mx + b$ directly.', math: 'y = 3x - 3' }] },
+      { id: '1.10-e17', prompt: 'Find the equation of the line through $(4, 5)$ that is parallel to the $x$-axis.',
+        answer: { type: 'equation', value: 'y = 5' },
+        hints: ['The $x$-axis is horizontal, so the line is horizontal too.', 'A horizontal line through $(4, 5)$ keeps $y$ fixed.'],
+        solution: ['Parallel to the $x$-axis means **horizontal**, so every point has $y = 5$: the line is $y = 5$.'] },
+      { id: '1.10-e18', prompt: 'Find the equation of the line through $(-1, 2)$ that is parallel to the line $x = 5$.',
+        answer: { type: 'equation', value: 'x = -1' },
+        hints: ['$x = 5$ is a vertical line, so the one you want is vertical too.', 'A vertical line through $(-1, 2)$ keeps $x$ fixed.'],
+        solution: ['$x = 5$ is **vertical**, so the parallel line through $(-1, 2)$ is also vertical: $x = -1$.'] },
+      { id: '1.10-e19', prompt: 'Find the equation of the line through $(2, 6)$ that is perpendicular to the line $y = 1$.',
+        answer: { type: 'equation', value: 'x = 2' },
+        hints: ['$y = 1$ is horizontal. What is perpendicular to a horizontal line?', 'A vertical line. Through $(2, 6)$ that means $x$ stays at $2$.'],
+        solution: ['$y = 1$ is **horizontal**, so a perpendicular line is **vertical**: through $(2, 6)$ it is $x = 2$.'] },
+      { id: '1.10-e20', prompt: 'Find the equation of the line through $(-2, -11)$ that is perpendicular to the line through $(1, 1)$ and $(5, -1)$.',
+        answer: { type: 'equation', value: 'y = 2x - 7' },
+        hints: ['First find the slope of the line through $(1,1)$ and $(5,-1)$.', '$m = \\dfrac{-1-1}{5-1} = -\\tfrac12$, so the perpendicular slope is $2$.', 'Now point–slope through $(-2, -11)$.'],
+        solution: [{ text: 'Slope of the given line.', math: 'm = \\frac{-1 - 1}{5 - 1} = -\\frac12' }, { text: 'Flip and change sign for the perpendicular slope.', math: 'm_\\perp = 2' }, { text: 'Point–slope through $(-2, -11)$.', math: 'y + 11 = 2(x + 2) \\Rightarrow y = 2x - 7' }] }
     ],
 
     generators: [
@@ -219,11 +254,60 @@
             hints: ['Find both slopes ($m = -A/B$).', 'Same slope → parallel. Product $-1$ → perpendicular.'],
             solution: ['Slopes are $' + fr(m1.n, m1.d) + '$ and $' + fr(m2.n, m2.d) + '$. ' + (kind === 'par' ? 'They are equal, so the lines are parallel.' : kind === 'perp' ? 'Their product is $-1$, so the lines are perpendicular.' : 'They are not equal and their product is not $-1$: neither.')] };
         } },
-      { id: '1.10-g-hv', title: 'Horizontal and vertical lines', desc: 'y = b or x = a.',
+      { id: '1.10-g-hv', title: 'Horizontal and vertical lines', desc: 'Said directly, or as "parallel to the x-axis".',
         make(r) {
-          const a = r.int(-6, 6), b = r.int(-6, 6), horiz = r.bool();
-          return { prompt: 'Write the equation of the **' + (horiz ? 'horizontal' : 'vertical') + '** line through $' + pt(a, b) + '$.', answer: { type: 'equation', value: horiz ? 'y = ' + b : 'x = ' + a },
-            hints: [horiz ? 'Every point on a horizontal line has the same $y$-coordinate.' : 'Every point on a vertical line has the same $x$-coordinate.'], solution: [horiz ? '$y = ' + b + '$ (slope $0$).' : '$x = ' + a + '$ (slope undefined).'] };
+          const a = r.int(-6, 6), b = r.int(-6, 6), k = r.int(-6, 6);
+          // each phrasing below is just a different way of saying "horizontal" or "vertical"
+          const ways = [
+            { horiz: true, how: 'the **horizontal** line', why: 'A horizontal line keeps $y$ fixed.' },
+            { horiz: false, how: 'the **vertical** line', why: 'A vertical line keeps $x$ fixed.' },
+            { horiz: true, how: 'the line **parallel to the $x$-axis**', why: 'The $x$-axis is horizontal, so this line is horizontal too.' },
+            { horiz: false, how: 'the line **parallel to the $y$-axis**', why: 'The $y$-axis is vertical, so this line is vertical too.' },
+            { horiz: false, how: 'the line **perpendicular to the $x$-axis**', why: 'The $x$-axis is horizontal, so anything perpendicular to it is vertical.' },
+            { horiz: true, how: 'the line **perpendicular to the $y$-axis**', why: 'The $y$-axis is vertical, so anything perpendicular to it is horizontal.' },
+            { horiz: false, how: 'the line **parallel to $x = ' + k + '$**', why: '$x = ' + k + '$ is a vertical line, so this one is vertical too.' },
+            { horiz: true, how: 'the line **parallel to $y = ' + k + '$**', why: '$y = ' + k + '$ is a horizontal line, so this one is horizontal too.' },
+            { horiz: false, how: 'the line **perpendicular to $y = ' + k + '$**', why: '$y = ' + k + '$ is horizontal, so a perpendicular line is vertical.' },
+            { horiz: true, how: 'the line **perpendicular to $x = ' + k + '$**', why: '$x = ' + k + '$ is vertical, so a perpendicular line is horizontal.' }
+          ];
+          const w = r.pick(ways);
+          return { prompt: 'Write the equation of ' + w.how + ' through $' + pt(a, b) + '$.',
+            answer: { type: 'equation', value: w.horiz ? 'y = ' + b : 'x = ' + a },
+            hints: [w.why, w.horiz ? 'Every point on a horizontal line has the same $y$-coordinate — here $y = ' + b + '$.' : 'Every point on a vertical line has the same $x$-coordinate — here $x = ' + a + '$.'],
+            solution: [w.why + ' Through $' + pt(a, b) + '$ that gives $' + (w.horiz ? 'y = ' + b : 'x = ' + a) + '$ (slope ' + (w.horiz ? '$0$' : 'undefined') + ').'] };
+        } },
+      { id: '1.10-g-intercept-line', title: 'Line from its two intercepts', desc: 'Turn the intercepts into points first.',
+        make(r) {
+          const a = r.nz(-6, 6), b = r.nz(-6, 6);        // x-intercept a, y-intercept b
+          const n = -b, d = a;                            // slope = (b - 0)/(0 - a) = -b/a
+          const f = M.frac(n, d);
+          const L = standardForm(a, 0, f.n, f.d);
+          return { prompt: 'Find the equation of the line with $x$-intercept $' + a + '$ and $y$-intercept $' + b + '$.',
+            answer: { type: 'equation', value: lineStr(L), display: lineTex(L) },
+            hints: ['An $x$-intercept of $' + a + '$ means the line goes through $' + pt(a, 0) + '$; a $y$-intercept of $' + b + '$ means it goes through $' + pt(0, b) + '$.', 'Now it is a line through two points: $m = \\dfrac{' + b + ' - 0}{0 - (' + a + ')} = ' + fr(f.n, f.d) + '$.'],
+            solution: [{ text: 'Turn the intercepts into points.', math: pt(a, 0) + ' \\text{ and } ' + pt(0, b) },
+              { text: 'Find the slope.', math: 'm = \\frac{' + b + ' - 0}{0 - (' + a + ')} = ' + fr(f.n, f.d) },
+              { text: 'The $y$-intercept is already known, so use $y = mx + b$ and tidy.', math: 'y = ' + fr(f.n, f.d) + 'x ' + M.signed(b) + ' \\;\\Rightarrow\\; ' + lineTex(L) }] };
+        } },
+      { id: '1.10-g-perp-twopoints', title: 'Perpendicular to a line through two points', desc: 'Two steps: slope of theirs, then flip it.',
+        make(r) {
+          const x1 = r.int(-6, 6), y1 = r.int(-6, 6);
+          let x2 = r.int(-6, 6), y2 = r.int(-6, 6);
+          if (x2 === x1) x2 += 3;
+          if (y2 === y1) y2 += 2;
+          const m0 = M.frac(y2 - y1, x2 - x1);
+          const m = M.frac(-m0.d, m0.n);                  // perpendicular slope
+          const px = r.int(-6, 6), py = r.int(-6, 6);
+          const L = standardForm(px, py, m.n, m.d);
+          const par = r.bool(0.35);                       // sometimes ask for parallel instead
+          const mm = par ? m0 : m;
+          const LL = par ? standardForm(px, py, m0.n, m0.d) : L;
+          return { prompt: 'Find the equation of the line through $' + pt(px, py) + '$ that is **' + (par ? 'parallel' : 'perpendicular') + '** to the line through $' + pt(x1, y1) + '$ and $' + pt(x2, y2) + '$.',
+            answer: { type: 'equation', value: lineStr(LL), display: lineTex(LL) },
+            hints: ['First find the slope of the line through the two given points: $m = \\dfrac{' + (y2 - y1) + '}{' + (x2 - x1) + '} = ' + fr(m0.n, m0.d) + '$.', par ? 'Parallel means the **same** slope.' : 'Perpendicular means **flip it and change the sign**: $m_\\perp = ' + fr(m.n, m.d) + '$.', 'Then use point–slope through $' + pt(px, py) + '$.'],
+            solution: [{ text: 'Slope of the given line.', math: 'm = \\frac{' + y2 + ' - (' + y1 + ')}{' + x2 + ' - (' + x1 + ')} = ' + fr(m0.n, m0.d) },
+              { text: par ? 'Parallel: use the same slope.' : 'Perpendicular: flip and change the sign.', math: 'm_{\\text{new}} = ' + fr(mm.n, mm.d) },
+              { text: 'Point–slope, then tidy.', math: 'y - (' + py + ') = ' + fr(mm.n, mm.d) + '(x - (' + px + ')) \\;\\Rightarrow\\; ' + lineTex(LL) }] };
         } }
     ]
   });

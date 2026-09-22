@@ -21,6 +21,7 @@
       { def: 'Distance formula', md: '$$d(A, B) = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$\n\nIt is just $\\sqrt{(\\text{horizontal change})^2 + (\\text{vertical change})^2}$. The order of subtraction does not matter, because squaring removes the sign.' },
       { def: 'Midpoint formula', md: 'The point halfway between $A$ and $B$ is the **average** of the coordinates:\n\n$$M = \\left(\\frac{x_1 + x_2}{2},\\ \\frac{y_1 + y_2}{2}\\right)$$' },
       { widget: 'two-points' },
+      { tip: 'Which point is closer?', md: 'To compare two distances you never need the square roots — whichever has the smaller value **under** the root is closer. For $A(6,7)$ and $B(-5,8)$ from the origin: $6^2 + 7^2 = 85$ and $(-5)^2 + 8^2 = 89$. Since $85 < 89$, $A$ is closer.' },
       { example: {
         title: 'Distance and midpoint',
         problem: 'For $A(-3, 0)$ and $B(5, 6)$, find $d(A, B)$ and the midpoint.',
@@ -164,7 +165,19 @@
       { id: '1.9-e14', prompt: 'Is the point $(3, -4)$ on the circle $x^2 + y^2 = 25$?',
         answer: { type: 'choice', value: 'yes', options: [{ id: 'yes', label: 'Yes' }, { id: 'no', label: 'No' }], wrongMessage: 'Substitute: $3^2 + (-4)^2 = 9 + 16 = 25$.' },
         hints: ['A point is on the graph if its coordinates make the equation true.'],
-        solution: ['$3^2 + (-4)^2 = 9 + 16 = 25$ ✓, so yes.'] }
+        solution: ['$3^2 + (-4)^2 = 9 + 16 = 25$ ✓, so yes.'] },
+      { id: '1.9-e15', prompt: 'Which of the points $A(6, 7)$ or $B(-5, 8)$ is closer to the **origin**?',
+        answer: { type: 'choice', value: 'a', options: [{ id: 'a', label: '$A(6, 7)$' }, { id: 'b', label: '$B(-5, 8)$' }], wrongMessage: 'Compare the squared distances: $6^2 + 7^2$ against $(-5)^2 + 8^2$.' },
+        hints: ['Distance from the origin to $(x, y)$ is $\\sqrt{x^2 + y^2}$.', 'You do not need the roots — just compare what is under them: $85$ against $89$.'],
+        solution: ['$d(O,A)^2 = 36 + 49 = 85$ and $d(O,B)^2 = 25 + 64 = 89$. Since $85 < 89$, **$A$ is closer**.'] },
+      { id: '1.9-e16', prompt: 'Which of the points $P(1, -2)$ or $Q(8, 9)$ is closer to $A(5, 3)$?',
+        answer: { type: 'choice', value: 'p', options: [{ id: 'p', label: '$P(1, -2)$' }, { id: 'q', label: '$Q(8, 9)$' }], wrongMessage: 'Compare $(5-1)^2 + (3+2)^2$ with $(8-5)^2 + (9-3)^2$.' },
+        hints: ['Work out each squared distance to $A$ and compare.', '$P$: $4^2 + 5^2 = 41$. $Q$: $3^2 + 6^2 = 45$.'],
+        solution: ['$d(A,P)^2 = 16 + 25 = 41$ and $d(A,Q)^2 = 9 + 36 = 45$. Since $41 < 45$, **$P$ is closer**.'] },
+      { id: '1.9-e17', prompt: 'Find the $x$- and $y$-intercepts of $9x^2 - 4y^2 = 36$.',
+        answer: { type: 'multi', parts: [{ label: '$x$-intercepts (as a set)', type: 'set', value: [-2, 2] }, { label: '$y$-intercepts (as a set)', type: 'set', value: [] }] },
+        hints: ['$x$-intercepts: put $y = 0$, giving $9x^2 = 36$.', '$y$-intercepts: put $x = 0$, giving $-4y^2 = 36$, i.e. $y^2 = -9$. Can that happen?'],
+        solution: ['$y = 0$: $9x^2 = 36 \\Rightarrow x^2 = 4 \\Rightarrow x = \\pm 2$.', '$x = 0$: $-4y^2 = 36 \\Rightarrow y^2 = -9$, which is impossible — so there are **no** $y$-intercepts. The graph never touches the $y$-axis.'] }
     ],
 
     generators: [
@@ -177,6 +190,21 @@
           return { prompt: 'Find the distance between $A' + pt(x1, y1) + '$ and $B' + pt(x2, y2) + '$. Give an exact, simplified answer.', answer: { type: 'number', value: Math.sqrt(d2), display: M.sqrtTex(d2) },
             hints: ['$d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$.', 'Horizontal change $' + (x2 - x1) + '$, vertical change $' + (y2 - y1) + '$.'],
             solution: [{ math: 'd = \\sqrt{(' + x2 + ' - (' + x1 + '))^2 + (' + y2 + ' - (' + y1 + '))^2} = \\sqrt{' + (dx * dx) + ' + ' + (dy * dy) + '} = \\sqrt{' + d2 + '} = ' + M.sqrtTex(d2) }] };
+        } },
+      { id: '1.9-g-closer', title: 'Which point is closer?', desc: 'Compare squared distances — no roots needed.',
+        make(r) {
+          const toOrigin = r.bool(0.4);
+          const t = toOrigin ? [0, 0] : [r.int(-5, 5), r.int(-5, 5)];
+          const mk = () => [r.int(-8, 8), r.int(-8, 8)];
+          let p = mk(), q = mk();
+          const d2 = a => (a[0] - t[0]) * (a[0] - t[0]) + (a[1] - t[1]) * (a[1] - t[1]);
+          if (d2(p) === d2(q) || d2(p) === 0 || d2(q) === 0) return this.make(r);
+          const winner = d2(p) < d2(q) ? 'p' : 'q';
+          const pt = a => '(' + a[0] + ',\\ ' + a[1] + ')';
+          return { prompt: 'Which of the points $P' + pt(p) + '$ or $Q' + pt(q) + '$ is closer to ' + (toOrigin ? 'the **origin**' : '$A' + pt(t) + '$') + '?',
+            answer: { type: 'choice', value: winner, options: [{ id: 'p', label: '$P' + pt(p) + '$' }, { id: 'q', label: '$Q' + pt(q) + '$' }], wrongMessage: 'Compare the squared distances: $' + d2(p) + '$ against $' + d2(q) + '$.' },
+            hints: ['Work out each distance with $d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$.', 'You do not need the square roots — the smaller number **under** the root wins.'],
+            solution: ['$d(P)^2 = (' + (p[0] - t[0]) + ')^2 + (' + (p[1] - t[1]) + ')^2 = ' + d2(p) + '$ and $d(Q)^2 = (' + (q[0] - t[0]) + ')^2 + (' + (q[1] - t[1]) + ')^2 = ' + d2(q) + '$. Since $' + Math.min(d2(p), d2(q)) + ' < ' + Math.max(d2(p), d2(q)) + '$, **$' + winner.toUpperCase() + '$ is closer**.'] };
         } },
       { id: '1.9-g-midpoint', title: 'Midpoints', desc: 'Average the coordinates — or work backwards.',
         make(r) {

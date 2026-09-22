@@ -35,6 +35,16 @@ node tools/check-latex.js
 
 renders every formula on the site (including generated ones) through KaTeX and reports anything that does not parse.
 
+```
+node tools/check-alignment.js
+```
+
+is the alignment audit against the real course material. It encodes every problem from the
+course worksheets together with its official answer, checks numerically that each official
+answer really does answer its problem (so it tests the engine too), and reports any worksheet
+skill that no exercise or generator on the site covers. It should report 0 mismatches and 0
+uncovered skills.
+
 ## Adding content
 
 Each section is one file in `js/content/ch1/` and registers itself with `CH.registerSection({...})`. Add the file to the script list in `index.html`. A section has:
