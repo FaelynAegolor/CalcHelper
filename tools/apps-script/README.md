@@ -17,16 +17,14 @@ You don't need to add any tabs or headers. The script creates `Summary`, `Daily`
 In that Sheet: **Extensions → Apps Script**. Delete the sample `myFunction` stub,
 paste in the whole of [`Code.gs`](Code.gs), and save.
 
-## 3. Set a token
+## 3. The token
 
-At the top of the script, replace
+Already done — `Code.gs` and [`js/sync-config.js`](../../js/sync-config.js) ship with
+the same random 40-character token, so there is nothing to match up by hand. Skip to
+step 4.
 
-```js
-var TOKEN = 'change-me-to-a-long-random-string';
-```
-
-with a long random string of your own — mash the keyboard, 30+ characters. Keep a
-copy; you need the identical string in step 5.
+If you ever want to change it, change it in **both** files and redeploy (see the last
+section).
 
 The token stops anyone who finds the endpoint from dropping junk rows into your
 Sheet. It is **not** a secret: it ends up in the site's JavaScript, which is public.
@@ -54,10 +52,12 @@ Copy the **Web app URL** it gives you. It ends in `/exec`.
 
 Edit [`js/sync-config.js`](../../js/sync-config.js) in this repo:
 
+Only `ENDPOINT` needs filling in — the token is already there and already matches.
+
 ```js
 window.CH.syncConfig = {
   ENDPOINT: 'https://script.google.com/macros/s/AKfy...../exec',
-  TOKEN: 'the-same-long-random-string-from-step-3',
+  TOKEN: 'H8YJYTEnpfKrvWCNTDKkBKuCbstn3iDMXEfGuAmM',
   MIN_INTERVAL_MIN: 10
 };
 ```

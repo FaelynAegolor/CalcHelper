@@ -6,7 +6,7 @@
    It only ever writes. Nothing here can read the Sheet back out to the browser,
    so the Sheet's own Google permissions are what keep it private to you. */
 
-var TOKEN = 'change-me-to-a-long-random-string';
+var TOKEN = 'H8YJYTEnpfKrvWCNTDKkBKuCbstn3iDMXEfGuAmM';
 
 function doPost(e) {
   try {

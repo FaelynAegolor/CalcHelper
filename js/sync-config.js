@@ -10,7 +10,7 @@
    ===================================================================== */
 window.CH = window.CH || {};
 window.CH.syncConfig = {
-  ENDPOINT: '',          // e.g. 'https://script.google.com/macros/s/AKfy..../exec'
-  TOKEN: '',             // the same string you put at the top of Code.gs
+  ENDPOINT: '',          // <-- the only thing left to fill in: the /exec URL from step 4
+  TOKEN: 'H8YJYTEnpfKrvWCNTDKkBKuCbstn3iDMXEfGuAmM',   // already matches Code.gs
   MIN_INTERVAL_MIN: 10   // never send more often than this while she is working
 };
