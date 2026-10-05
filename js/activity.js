@@ -162,7 +162,9 @@
     const h = [];
     h.push('<header class="act-head"><div><h2>Activity' + (name ? ' · ' + esc(name) : '') + '</h2>' +
       '<p class="act-sub">As of ' + esc(stamp(o.now)) + ' · last seen <strong>' + esc(ago(o.lastSeen)) + '</strong></p></div>' +
-      '<div class="act-head-btns"><button class="act-btn" data-act="copy">Copy data</button><button class="act-btn" data-act="close">Close</button></div></header>');
+      '<div class="act-head-btns">' +
+      (CH.Sync && CH.Sync.enabled() ? '<button class="act-btn" data-act="sync">Sync now</button>' : '') +
+      '<button class="act-btn" data-act="copy">Copy data</button><button class="act-btn" data-act="close">Close</button></div></header>');
 
     if (!o.activityEvents) {
       h.push('<div class="act-empty"><p><strong>No activity recorded yet.</strong></p>' +
@@ -231,8 +233,14 @@
       h.push('<p class="act-note act-warn">Progress was cleared from the settings page on ' +
         o.resets.map(t => esc(stamp(t))).join(', ') + '. Anything before that is gone.</p>');
     }
-    h.push('<p class="act-note act-foot">Everything here is read from this browser only — nothing is uploaded, and this view is not linked from any page. ' +
-      'It records what was done, never what was typed.</p>');
+    const sync = CH.Sync && CH.Sync.enabled() ? CH.Sync.status() : null;
+    h.push('<p class="act-note act-foot">This view is not linked from any page, and it records what was done — never what was typed. ' +
+      (sync
+        ? 'A summary of these counts is sent to your Google Sheet' +
+          (sync.at ? ', last ' + esc(ago(sync.at)) + (sync.ok === false ? ' <strong>(that attempt failed)</strong>' : '') : ' — nothing sent yet') +
+          '. Answers and working never leave this browser.'
+        : 'Nothing is uploaded: everything here is read from this browser only.') +
+      '<span class="act-sync-msg"></span></p>');
     return h.join('');
   }
 
@@ -264,6 +272,14 @@
       const b = e.target.closest('[data-act]');
       if (!b) { if (e.target === el) close(); return; }
       if (b.dataset.act === 'close') close();
+      if (b.dataset.act === 'sync' && CH.Sync) {
+        b.disabled = true; b.textContent = 'Sending…';
+        CH.Sync.syncNow().then(r => {
+          b.disabled = false; b.textContent = 'Sync now';
+          const msg = el && el.querySelector('.act-sync-msg');
+          if (msg) { msg.textContent = ' ' + r.msg; msg.className = 'act-sync-msg ' + (r.ok ? 'act-ok' : 'act-bad'); }
+        });
+      }
       if (b.dataset.act === 'copy') {
         const text = S.exportJSON();
         const done = () => { b.textContent = 'Copied'; setTimeout(() => { b.textContent = 'Copy data'; }, 1500); };
