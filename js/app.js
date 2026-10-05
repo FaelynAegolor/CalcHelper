@@ -126,10 +126,12 @@
       if (allOk) html += '<div class="fb-celebrate">' + pick(['Nice work! 🎉', 'Correct — well done! 🌟', 'Yes! That’s right. ✨', 'Great — you’ve got it. 💪']) + '</div>';
       fb.innerHTML = html; fb.hidden = false;
       if (opts.practice) {
-        if (!checkedOnce) { S.recordPractice(ex.gen, allOk); checkedOnce = true; if (opts.onResult) opts.onResult(allOk); }
+        if (!checkedOnce) { S.recordPractice(ex.gen, allOk); S.logEvent('p', ex.gen, allOk ? 1 : 0); checkedOnce = true; if (opts.onResult) opts.onResult(allOk); }
       } else {
         const rec = S.ex(ex.id) || {};
-        S.setEx(ex.id, { attempts: (rec.attempts || 0) + 1, correct: !!(rec.correct || allOk), last: isMulti ? undefined : inputs[0].get() });
+        const n = (rec.attempts || 0) + 1;
+        S.setEx(ex.id, { attempts: n, correct: !!(rec.correct || allOk), last: isMulti ? undefined : inputs[0].get() });
+        S.logEvent('a', ex.id, allOk ? 1 : 0, n);
         updateBadge();
         if (opts.onProgress) opts.onProgress();
       }
@@ -150,7 +152,7 @@
         $('.hint-count', btn).textContent = shown < ex.hints.length ? '(' + shown + '/' + ex.hints.length + ')' : '(all shown)';
         btn.disabled = shown >= ex.hints.length;
       };
-      btn.addEventListener('click', () => { shown++; if (!opts.practice) S.setEx(ex.id, { hints: shown }); render(); });
+      btn.addEventListener('click', () => { shown++; if (!opts.practice) { S.setEx(ex.id, { hints: shown }); S.logEvent('h', ex.id, shown); } render(); });
       render();
     }
 
@@ -160,7 +162,7 @@
       if (!box.hidden) { box.hidden = true; $('.act-solution', card).textContent = '📖 Show solution'; return; }
       box.innerHTML = solutionHtml(ex);
       box.hidden = false; $('.act-solution', card).textContent = '📖 Hide solution';
-      if (!opts.practice) S.setEx(ex.id, { viewedSolution: true });
+      if (!opts.practice) { S.setEx(ex.id, { viewedSolution: true }); S.logEvent('x', ex.id); }
     });
 
     // working
@@ -183,7 +185,7 @@
       if (stored && stored.working) ta.value = stored.working;
       $('.act-check-working', box).addEventListener('click', () => {
         const res = C.checkWorking(ta.value, spec);
-        if (!opts.practice) S.setEx(ex.id, { working: ta.value });
+        if (!opts.practice) { S.setEx(ex.id, { working: ta.value }); S.logEvent('w', ex.id, res.bad === 0 && res.checked > 0 ? 1 : 0); }
         $('.working-results', box).innerHTML = workingHtml(res);
         card._lastWorking = res;
       });
@@ -275,7 +277,7 @@
     html += '<div class="hero-actions">' + (last ? '<a class="btn btn-primary" href="#/s/' + last.id + '">Continue: ' + esc(last.id + ' ' + last.title) + '</a>' : '<a class="btn btn-primary" href="#/s/' + (CH.sections[0] ? CH.sections[0].id : '') + '">Start at the beginning</a>') +
       '<a class="btn" href="#/practice/1">🎲 Mixed practice</a><a class="btn btn-ghost" href="#/help">How to type maths</a></div></section>';
     html += '<section class="how"><div class="how-step"><div class="how-n">1</div><div><strong>Learn</strong><br>Short, plain-English explanations with pictures.</div></div><div class="how-step"><div class="how-n">2</div><div><strong>See examples</strong><br>Reveal worked solutions one step at a time.</div></div><div class="how-step"><div class="how-n">3</div><div><strong>Practise</strong><br>Type an answer to get it marked; write your steps to find slips.</div></div></section>';
-    html += '<section class="hero-note"><p><strong>Before you start.</strong> Nothing here is timed, nothing is graded, and nothing leaves this device. You can get a question wrong as many times as you like — the hints appear one at a time, and the full worked solution is always there if you want it.</p><p>Every section opens with a panel called <em>The short version</em>: five lines telling you what the whole topic is actually about. If a page ever feels like too much, that panel is the part that matters.</p></section>';
+    html += '<section class="hero-note"><p><strong>Before you start.</strong> Nothing here is timed. You can get a question wrong as many times as you like — the hints appear one at a time, and the full worked solution is always there if you want it.</p><p>Every section opens with a panel called <em>The short version</em>: five lines telling you what the whole topic is actually about. If a page ever feels like too much, that panel is the part that matters.</p></section>';
     for (const ch of CH.chapters) {
       html += '<section class="chapter"><h2><span class="ch-num">Chapter ' + ch.num + '</span> ' + esc(ch.title) + '</h2>' + (ch.blurb ? '<p class="muted">' + esc(ch.blurb) + '</p>' : '') + '<div class="section-grid">';
       for (const s of CH.sectionsOf(ch.num)) {
@@ -292,6 +294,7 @@
     const s = CH.sectionById(id);
     if (!s) { main().innerHTML = '<div class="page"><p>Section not found.</p></div>'; return; }
     S.visit(id);
+    S.logEvent('v', id, tab);
     const isPractice = tab === 'exercises' || tab === 'practice';
     setMode(isPractice ? 'practice' : 'learn');
     const ch = CH.chapterOf(s);
