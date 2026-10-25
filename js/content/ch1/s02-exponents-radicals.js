@@ -70,16 +70,29 @@
       { html: V.areaModel({ rows: ['\\sqrt{7}', '+2'], cols: ['\\sqrt{7}', '-2'], cells: [['7', '-2\\sqrt{7}'], ['+2\\sqrt{7}', '-4']] }), caption: '$(\\sqrt{7} - 2)(\\sqrt{7} + 2)$: the two middle terms cancel, leaving $7 - 4 = 3$ — no root left.' },
       '$$\\frac{2}{\\sqrt{7} - 2} = \\frac{2}{\\sqrt{7} - 2}\\cdot\\frac{\\sqrt{7} + 2}{\\sqrt{7} + 2} = \\frac{2(\\sqrt{7} + 2)}{7 - 4} = \\frac{2\\sqrt{7} + 4}{3}$$',
       { calm: true, md: 'There are a lot of laws on this page. You are not meant to memorise them as a list, and you do not need to.\n\nEvery one of them comes from the same idea: **a power counts how many copies you are multiplying**. If you forget a law, write it out in full — $a^3 \\cdot a^2 = a \\cdot a \\cdot a \\cdot a \\cdot a = a^5$ — and read the answer off. That works every time, and it is not cheating.\n\nIf you practise one thing here, practise adding the powers when you multiply and subtracting them when you divide.' },
+      { sid: '1.2', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Add the powers when multiplying, subtract them when dividing',
+          'Deal with a whole bracket raised to a power, like $(5yz^3)^2$',
+          'Rewrite a negative power as "one over", leaving no negative powers in the answer',
+          'Simplify a square root by pulling out the biggest perfect square',
+          'Add roots like $\\sqrt{32} + \\sqrt{18}$ by simplifying each one first',
+          'Read a fractional power: the bottom is the root, the top is the power',
+          'Get a root off the bottom of a fraction using the conjugate'
+        ] },
     ],
 
     examples: [
       { title: 'Power of a product',
+        checklist: ['Every factor inside the bracket gets the outside power.', 'A power on a power means multiply the powers.', 'Work out the number part on its own.'],
         problem: 'Simplify $(5yz^3)^2$.',
         steps: [
           { text: 'The power applies to **every** factor inside the bracket: $(ab)^n = a^n b^n$.', math: '(5yz^3)^2 = 5^2 \\cdot y^2 \\cdot (z^3)^2' },
           { text: 'For the power of a power, multiply the exponents: $(z^3)^2 = z^{3 \\cdot 2}$.', math: '= 25\\,y^2\\,z^6' }
         ], answer: '$25y^2z^6$' },
       { title: 'Mixed laws with negative exponents',
+        checklist: ['Deal with the brackets first.', 'Add powers when multiplying, subtract when dividing.', 'Move anything with a negative power across the fraction bar.', 'Tidy up the number in front.'],
         problem: 'Simplify $\\dfrac{(2a^3b)^2\\; a^{-4}}{b^{-3}}$ and write the answer with positive exponents only.',
         steps: [
           { text: 'Deal with the bracket first: square every factor.', math: '(2a^3b)^2 = 4a^6b^2' },
@@ -87,36 +100,42 @@
           { text: 'Now combine like bases by adding or subtracting exponents.', math: '= 4a^{6-4}b^{2+3} = 4a^2b^5' }
         ], answer: '$4a^2b^5$' },
       { title: 'Negative power of a fraction',
+        checklist: ['A negative power means turn the fraction upside down.', 'Now apply the positive power to the top and the bottom.'],
         problem: 'Evaluate $\\left(\\dfrac{5}{3}\\right)^{-2}$.',
         steps: [
           { text: 'A negative exponent flips the fraction.', math: '\\left(\\frac{5}{3}\\right)^{-2} = \\left(\\frac{3}{5}\\right)^{2}' },
           { text: 'Square the top and the bottom.', math: '= \\frac{9}{25}' }
         ], answer: '$\\dfrac{9}{25}$' },
       { title: 'Adding square roots',
+        checklist: ['Simplify each root first — pull out the biggest perfect square.', 'Only roots with the same thing left inside can be added.', 'Add the numbers in front; keep the root.'],
         problem: 'Simplify $\\sqrt{32} + \\sqrt{18}$.',
         steps: [
           { text: 'They look different, so simplify each one. Largest perfect square in $32$ is $16$; in $18$ it is $9$.', math: '\\sqrt{32} = \\sqrt{16 \\cdot 2} = 4\\sqrt{2}, \\qquad \\sqrt{18} = \\sqrt{9 \\cdot 2} = 3\\sqrt{2}' },
           { text: 'Now they are like terms — add the coefficients, just as $4x + 3x = 7x$.', math: '4\\sqrt{2} + 3\\sqrt{2} = 7\\sqrt{2}' }
         ], answer: '$7\\sqrt{2}$' },
       { title: 'A cube root with variables',
+        checklist: ['Split the inside into a perfect-cube part and the rest.', 'Take the cube root of the perfect-cube part outside.', 'For letters, every group of three powers comes out as one.'],
         problem: 'Simplify $\\sqrt[3]{54x^4}$.',
         steps: [
           { text: 'Look for perfect **cubes** inside. $54 = 27 \\cdot 2$ and $x^4 = x^3 \\cdot x$.', math: '\\sqrt[3]{54x^4} = \\sqrt[3]{27 \\cdot 2 \\cdot x^3 \\cdot x}' },
           { text: 'Pull the cubes out: $\\sqrt[3]{27} = 3$ and $\\sqrt[3]{x^3} = x$. What is left stays inside.', math: '= 3x\\sqrt[3]{2x}' }
         ], answer: '$3x\\sqrt[3]{2x}$' },
       { title: 'Rational exponents',
+        checklist: ['The bottom of the fraction is the root; the top is the power.', 'Take the root first — it keeps the numbers small.', 'A negative power means one over the answer.'],
         problem: 'Evaluate (a) $27^{2/3}$ and (b) $8^{-2/3}$.',
         steps: [
           { text: '(a) Bottom of the fraction is the root, top is the power. Root first.', math: '27^{2/3} = \\left(\\sqrt[3]{27}\\right)^2 = 3^2 = 9' },
           { text: '(b) The minus flips it, then proceed as before.', math: '8^{-2/3} = \\frac{1}{8^{2/3}} = \\frac{1}{\\left(\\sqrt[3]{8}\\right)^2} = \\frac{1}{2^2} = \\frac{1}{4}' }
         ], answer: '(a) $9$ &nbsp; (b) $\\dfrac14$' },
       { title: 'Simplifying with fractional exponents',
+        checklist: ['Add the powers when multiplying, subtract when dividing.', 'Add and subtract the fractions carefully.', 'Make sure the final power is positive.'],
         problem: 'Simplify $\\dfrac{y^{5/2}\\, y^{-1/2}}{y^{3}}$.',
         steps: [
           { text: 'Same base everywhere, so add the exponents on top.', math: 'y^{5/2} \\cdot y^{-1/2} = y^{5/2 - 1/2} = y^{2}' },
           { text: 'Subtract the exponent underneath.', math: '\\frac{y^2}{y^3} = y^{2-3} = y^{-1} = \\frac{1}{y}' }
         ], answer: '$\\dfrac{1}{y}$' },
       { title: 'Rationalising with a conjugate',
+        checklist: ['Write the conjugate: the same two terms with the middle sign flipped.', 'Multiply the top and the bottom by it.', 'The bottom becomes a difference of squares, so the root vanishes.', 'Simplify and cancel.'],
         problem: 'Rationalise the denominator of $\\dfrac{2}{\\sqrt{7} - 2}$.',
         steps: [
           { text: 'The conjugate of $\\sqrt{7} - 2$ is $\\sqrt{7} + 2$. Multiply top and bottom by it.', math: '\\frac{2}{\\sqrt{7} - 2} \\cdot \\frac{\\sqrt{7} + 2}{\\sqrt{7} + 2}' },
@@ -349,7 +368,7 @@
             hints: ['The indices match, so combine them into one root of the product.', '$' + A + ' \\cdot ' + B + ' = ' + (A * B) + ' = ' + (a * b) + '^{' + n + '}$.'],
             solution: [{ math: rt(A) + '\\cdot' + rt(B) + ' = ' + rt(A + ' \\cdot ' + B) + ' = ' + rt(A * B) + ' = ' + (a * b), text: 'Same index: multiply the insides, then take the root.' }] };
         } },
-      { id: '1.2-g-absroot', title: 'Even roots and absolute value', desc: 'Does the answer need |x| bars?',
+      { id: '1.2-g-absroot', title: 'Even roots and absolute value', desc: 'Does the answer need $|x|$ bars?',
         make(r) {
           const n = r.pick([2, 4, 6]);
           const e = n * r.pick([1, 1, 2]);

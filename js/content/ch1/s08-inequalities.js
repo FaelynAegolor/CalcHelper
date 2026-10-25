@@ -48,7 +48,7 @@
       { note: 'The rule in one line', md: '$$S = (-\\infty, -2) \\cup (-2, 4)$$\n\nThat one missing point is the thing almost everybody forgets, so it is worth a deliberate check every time. A factor raised to an **even** power never flips the sign; an **odd** power flips it as usual.' },
 
       { h: 'Quotients (fractions)' },
-      'The same method works when there is a denominator — with two extra cares: the **denominator\'s zero** is also a place where the sign can change, and it can **never** be included (division by zero), even with $\\le$ or $\\ge$.',
+      'The same method works when the expression is a fraction. There are just two extra things to watch.\n\nFirst, the value that makes the **bottom** zero is also a place where the sign can flip, so mark it on the number line like any other.\n\nSecond, that value can **never** be part of your answer — it would mean dividing by zero. That holds even when the sign is $\\le$ or $\\ge$.',
       { html: V.signChart({ zeros: [-3, 1, 3], rows: [{ label: 'x + 3', signs: ['-', '+', '+', '+'] }, { label: 'x - 1', signs: ['-', '-', '+', '+'] }, { label: 'x - 3', signs: ['-', '-', '-', '+'] }], result: { label: '\\frac{(x-3)(x+3)}{x-1}', signs: ['-', '+', '-', '+'] }, solution: [true, false, true, false], includeZeros: [true, false, true], excludeZeros: [false, true, false] }), caption: '$\\dfrac{(x-3)(x+3)}{x-1} \\le 0$. Negative in the first and third regions. Include $-3$ and $3$ (zeros of the top, $\\le$), exclude $1$ (zero of the bottom): $S = (-\\infty, -3] \\cup (1, 3]$.' },
       { warn: 'Never multiply both sides by something with x in it', md: 'It is tempting to clear the fraction in $\\dfrac{4x - 5}{x + 2} \\le 0$ by multiplying by $x + 2$. But $x + 2$ might be negative — and then the sign should flip — and you do not know which. Use the sign chart instead. (The working checker flags this step as not equivalent.)' },
       { key: 'When the fraction is not against zero yet', md: 'Move everything to one side and combine into a **single** fraction first. For $\\dfrac{4}{x} < x$:\n\n$$\\frac{4}{x} - x < 0 \\;\\Rightarrow\\; \\frac{4 - x^2}{x} < 0 \\;\\Rightarrow\\; \\frac{(2-x)(2+x)}{x} < 0$$\n\nZeros at $-2$, $0$ (from the bottom) and $2$. Testing each region gives $S = (-2, 0) \\cup (2, \\infty)$. Note $x = 0$ is excluded because the original fraction is undefined there.' },
@@ -78,10 +78,22 @@
       { svg: nl({ min: -4, max: 7, intervals: [{ lo: -Infinity, hi: -1, hiC: true }, { lo: 4, hi: Infinity, loC: true, color: 'var(--viz-1)' }], points: [{ x: 1.5, label: '3/2', color: 'var(--viz-5)', open: true }] }), caption: '$|2x - 3| \\ge 5$ means $|x - \\tfrac32| \\ge \\tfrac52$: at least $\\tfrac52$ away from $\\tfrac32$, on either side.' },
       { key: 'Special cases — think before you compute', md: 'An absolute value is always $\\ge 0$. So:\n\n- $|A| < c$ with $c \\le 0$ (e.g. $|2x + 7| \\le -5$): **no solution**, $\\varnothing$.\n- $|A| > c$ with $c < 0$ (e.g. $|3x - 4| \\ge -7$): **always true**, $S = \\mathbb{R} = (-\\infty, \\infty)$.\n- $|A| \\le 0$: only when $A = 0$ — a single number.' },
       { calm: true, md: 'If sign charts feel fiddly, that is a fair reaction — there are a lot of small steps. But they are **mechanical**, and that is the good news: you follow the same five steps every time, and none of them ask you to be clever.\n\nWhen it goes wrong it is nearly always one of two things: forgetting to **flip the sign** after dividing by a negative, or including a value that makes the **bottom** of a fraction zero.\n\nIf you practise one thing here, practise marking the zeros on a number line and testing one point in each region.' },
+      { sid: '1.8', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Solve a linear inequality, flipping the sign when dividing by a negative',
+          'Handle a double inequality such as $-2 \\le 2x - 3 < 10$',
+          'Build a sign chart: find the zeros, mark them, test one point in each region',
+          'Solve a factored or quadratic inequality from that chart',
+          'Solve one containing a fraction, never including a value that makes the bottom zero',
+          'Write the answer as an interval',
+          'Turn $|x| < c$ into "between" and $|x| > c$ into "outside"'
+        ] },
     ],
 
     examples: [
       { title: 'Clearing fractions in an inequality',
+        checklist: ['Multiply every term by the common bottom.', 'Solve it like an ordinary equation.', 'Flip the sign only if you multiply or divide by a negative.', 'Write the answer as an interval.'],
         problem: 'Solve $\\dfrac{x}{3} + 1 \\ge \\dfrac{x - 1}{2}$.',
         steps: [
           { text: 'Multiply every term by the LCD, $6$ — a positive number, so the sign stays.', math: '2x + 6 \\ge 3(x - 1)' },
@@ -89,12 +101,14 @@
           { text: 'Divide by $-1$: flip.', math: 'x \\le 9 \\qquad S = (-\\infty, 9]' }
         ], answer: '$(-\\infty, 9]$' },
       { title: 'A double inequality',
+        checklist: ['Do the same thing to all three parts at once.', 'Keep the letter in the middle.', 'Flip both signs if you divide by a negative.', 'Write it as a single interval.'],
         problem: 'Solve $-2 \\le 2x - 3 < 10$.',
         steps: [
           { text: 'Add $3$ to all three parts.', math: '1 \\le 2x < 13' },
           { text: 'Divide all three parts by $2$.', math: '\\tfrac12 \\le x < \\tfrac{13}{2} \\qquad S = \\left[\\tfrac12, \\tfrac{13}{2}\\right)' }
         ], answer: '$\\left[\\tfrac12, \\tfrac{13}{2}\\right)$' },
       { title: 'Three factors',
+        checklist: ['Get zero on one side, then factor.', 'Find the zero of each factor and mark them on a number line.', 'Test one point in each region.', 'Keep the regions with the sign you want, then decide the endpoints.'],
         problem: 'Solve $x(x + 2)(x - 7) \\le 0$.',
         steps: [
           { text: 'Already factored with $0$ on the right. Zeros: $x = -2$, $x = 0$, $x = 7$. They cut the line into four regions.' },
@@ -102,6 +116,7 @@
           { text: 'We want $\\le 0$: the negative regions, plus the zeros themselves.', math: 'S = (-\\infty, -2] \\cup [0, 7]' }
         ], answer: '$(-\\infty, -2] \\cup [0, 7]$' },
       { title: 'A quotient',
+        checklist: ['Get zero on one side as one single fraction.', 'Find the zeros of the top and of the bottom.', 'Mark them all, then test each region.', 'Include top zeros if the sign is $\\le$ or $\\ge$ — never include a bottom zero.'],
         problem: 'Solve $\\dfrac{4x - 5}{x + 2} \\le 0$.',
         steps: [
           { text: 'Zero of the numerator: $4x - 5 = 0 \\Rightarrow x = \\tfrac54$. Zero of the denominator: $x = -2$.' },
@@ -109,6 +124,7 @@
           { text: 'We want $\\le 0$: the middle region. Include $\\tfrac54$ (numerator zero, $\\le$); exclude $-2$ (denominator).', math: 'S = \\left(-2, \\tfrac54\\right]' }
         ], answer: '$\\left(-2, \\tfrac54\\right]$' },
       { title: 'Absolute value special cases',
+        checklist: ['Remember a size can never be negative.', 'Less than a negative: no solutions at all.', 'Greater than a negative: every number works.', 'Otherwise $|A| < c$ means between, and $|A| > c$ means outside.'],
         problem: 'Solve (a) $|2x + 7| \\le -5$, (b) $|3x - 4| \\ge -7$, (c) $|x - 2| < 12$.',
         steps: [
           { text: '(a) An absolute value is never negative, so it can never be $\\le -5$.', math: 'S = \\varnothing' },

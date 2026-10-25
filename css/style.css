@@ -57,6 +57,11 @@ body {
   background: linear-gradient(180deg, var(--bg-tint) 0, var(--bg) 420px);
   min-height: 100vh; transition: background 0.4s;
 }
+/* Any author rule that sets `display` outranks the browser's own
+   [hidden] { display: none }, so .step (flex) and .btn (inline-flex) were staying
+   on screen while the code believed they were hidden — which silently disabled the
+   step-by-step reveal in worked examples. Keep this above everything else. */
+[hidden] { display: none !important; }
 a { color: var(--accent-deep); text-decoration: none; }
 a:hover { text-decoration: underline; }
 h1, h2, h3, h4 { font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; color: var(--text); }
@@ -336,4 +341,32 @@ figcaption, .figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 6
   .tab { padding: 7px 12px; font-size: 0.92rem; }
   .ex-prompt, .ex-answer, .ex-feedback { padding-left: 14px; padding-right: 14px; }
   .ex-feedback { margin-left: 14px; margin-right: 14px; }
+}
+
+/* ---- checklists ----------------------------------------------------------
+   Two kinds, on purpose:
+   .callout-checklist  end-of-section "Can I do this?" — tickable, saved
+   .example-method     the recipe under a worked example — ordered, not tickable */
+/* Green, not pink: blue stays the textbook colour and pink the practice colour,
+   and green already means "that's right" everywhere else on the site. */
+.callout-checklist { border-left-color: var(--ok); background: var(--ok-soft); }
+.callout-checklist .callout-title { color: var(--ok); }
+.checklist { list-style: none; margin: 0.5em 0 0; padding: 0; }
+.checklist li { margin: 0; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 8px; border-radius: var(--radius-sm); cursor: pointer; transition: background 0.12s; }
+.check-item:hover { background: color-mix(in srgb, var(--ok) 12%, transparent); }
+.check-box { appearance: none; flex: none; width: 20px; height: 20px; margin: 1px 0 0; border: 2px solid var(--ok); border-radius: 6px; background: var(--surface); cursor: pointer; display: grid; place-items: center; }
+.check-box::after { content: '✓'; font-size: 13px; font-weight: 900; color: #fff; opacity: 0; }
+.check-box:checked { background: var(--ok); }
+.check-box:checked::after { opacity: 1; }
+.check-box:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.check-item.is-done span { color: var(--muted); }
+
+.example-method { margin: 14px 0 0; padding: 13px 16px 11px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--accent-soft) 55%, var(--surface)); border: 1px solid var(--border); }
+.method-title { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 6px; }
+.method-list { margin: 0; padding-left: 1.25em; font-size: 0.94rem; color: var(--text); }
+.method-list li { margin: 0.3em 0; }
+
+@media (max-width: 640px) {
+  .check-item { padding: 9px 6px; }
 }

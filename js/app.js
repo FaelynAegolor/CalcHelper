@@ -442,13 +442,29 @@
     const btn = e.target.closest('[data-act]');
     if (!btn) return;
     const ex = btn.closest('.example'); if (!ex) return;
-    const steps = $$('.step', ex), ans = $('.example-answer', ex);
+    const steps = $$('.step', ex), ans = $('.example-answer', ex), method = $('.example-method', ex);
     const revealed = () => steps.filter(s => !s.hidden).length;
     const act = btn.dataset.act;
-    const showUpTo = n => { steps.forEach((s, i) => { s.hidden = i >= n; }); if (ans) ans.hidden = n < steps.length; $('[data-act=hide-steps]', ex).hidden = n === 0; $('[data-act=next-step]', ex).hidden = n >= steps.length; $('[data-act=all-steps]', ex).hidden = n >= steps.length; };
+    // the method recipe appears with the answer: it is the takeaway, not a hint
+    const showUpTo = n => { steps.forEach((s, i) => { s.hidden = i >= n; }); if (ans) ans.hidden = n < steps.length; if (method) method.hidden = n < steps.length; $('[data-act=hide-steps]', ex).hidden = n === 0; $('[data-act=next-step]', ex).hidden = n >= steps.length; $('[data-act=all-steps]', ex).hidden = n >= steps.length; };
     if (act === 'next-step') showUpTo(revealed() + 1);
     else if (act === 'all-steps') showUpTo(steps.length);
     else if (act === 'hide-steps') showUpTo(0);
+  });
+
+  /* Checklist ticks. Restored after every render, saved on change. These are the
+     student's own "I can do this" marks — nothing checks or scores them. */
+  function restoreChecks() {
+    $$('.check-box').forEach(b => {
+      b.checked = S.check(b.dataset.check);
+      b.closest('.check-item').classList.toggle('is-done', b.checked);
+    });
+  }
+  document.addEventListener('change', e => {
+    const b = e.target.closest('.check-box');
+    if (!b) return;
+    S.setCheck(b.dataset.check, b.checked);
+    b.closest('.check-item').classList.toggle('is-done', b.checked);
   });
 
   // ---------- routing ----------
@@ -466,6 +482,7 @@
       main().innerHTML = '<div class="page"><h1>Something went wrong</h1><pre>' + esc(e.stack || e.message) + '</pre></div>';
       console.error(e);
     }
+    restoreChecks();
     refreshSidebar();
   }
 

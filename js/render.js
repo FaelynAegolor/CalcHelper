@@ -36,6 +36,16 @@
     return s;
   }
 
+  /* Headings, callout titles and example titles are single lines, not markdown blocks,
+     so they never pass through md() — which is where $...$ normally gets rendered.
+     They still need their maths, so do the same extract/restore around inline().
+     (inline() itself must stay maths-free: md() calls it on text whose maths has
+     already been lifted out into placeholders.) */
+  function inlineMath(s) {
+    const r = extractMath(String(s == null ? '' : s));
+    return restoreMath(inline(r.s), r.slots);
+  }
+
   function md(text) {
     if (text == null) return '';
     const { s, slots } = extractMath(String(text));
@@ -71,7 +81,10 @@
         out.push('<ol>' + items.map(i => '<li>' + inline(i) + '</li>').join('') + '</ol>');
         continue;
       }
-      if (lines.every(l => /^\s*\|/.test(l))) {
+      /* A real table is at least a header plus one row. Without the length guard a
+         single line that merely starts with a pipe — "|a - b|, with decimals" — was
+         silently turned into a one-cell table. */
+      if (lines.length > 1 && lines.every(l => /^\s*\|/.test(l))) {
         const rows = lines.filter(l => !/^\s*\|\s*:?-+/.test(l)).map(l => l.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim()));
         let html = '<div class="table-wrap"><table>';
         rows.forEach((r, i) => {
@@ -103,12 +116,23 @@
   //   {cols: [block, block]}    -> two columns
   function block(b) {
     if (typeof b === 'string') return md(b);
-    if (b.h) return '<h3 class="theory-h">' + inline(b.h) + '</h3>';
+    if (b.h) return '<h3 class="theory-h">' + inlineMath(b.h) + '</h3>';
+    /* Checked before the callout kinds below: a checklist block carries its own
+       title, and must not be mistaken for one of them. */
+    if (b.checklist) {
+      const items = b.checklist.map((t, i) =>
+        '<li><label class="check-item"><input type="checkbox" class="check-box" data-check="' +
+        esc((b.sid || '') + '#' + i) + '"><span>' + inlineMath(t) + '</span></label></li>').join('');
+      return '<div class="callout callout-checklist"><div class="callout-title">' +
+        inlineMath(b.title || 'Can I do this?') + '</div>' +
+        (b.intro ? md(b.intro) : '') +
+        '<ul class="checklist">' + items + '</ul></div>';
+    }
     for (const kind of ['short', 'def', 'key', 'tip', 'warn', 'note', 'why', 'calm']) {
       if (b[kind] !== undefined) {
         const titles = { short: 'The short version', def: 'What it means', key: 'The main idea', tip: 'Tip', warn: 'Watch out', note: 'Note', why: 'Why it works', calm: 'Feeling stuck?' };
         const title = b[kind] === true || b[kind] === '' ? titles[kind] : b[kind];
-        return '<div class="callout callout-' + kind + '"><div class="callout-title">' + inline(title) + '</div>' + md(b.md) + '</div>';
+        return '<div class="callout callout-' + kind + '"><div class="callout-title">' + inlineMath(title) + '</div>' + md(b.md) + '</div>';
       }
     }
     if (b.svg) return '<figure class="fig">' + b.svg + (b.caption ? '<figcaption>' + md(b.caption) + '</figcaption>' : '') + '</figure>';
@@ -123,7 +147,7 @@
   function exampleHtml(ex, inlineMode) {
     const steps = (ex.steps || []).map(s => typeof s === 'string' ? { text: s } : s);
     let html = '<div class="example' + (inlineMode ? ' example-inline' : '') + '">';
-    html += '<div class="example-head"><span class="example-label">' + (ex.label || 'Worked example') + '</span>' + (ex.title ? ' <span class="example-title">' + inline(ex.title) + '</span>' : '') + '</div>';
+    html += '<div class="example-head"><span class="example-label">' + inlineMath(ex.label || 'Worked example') + '</span>' + (ex.title ? ' <span class="example-title">' + inlineMath(ex.title) + '</span>' : '') + '</div>';
     html += '<div class="example-problem">' + md(ex.problem) + '</div>';
     html += '<div class="steps" data-revealed="0">';
     steps.forEach((s, i) => {
@@ -131,12 +155,18 @@
     });
     html += '</div>';
     if (ex.answer) html += '<div class="example-answer" hidden><strong>Answer:</strong> ' + md(ex.answer) + '</div>';
+    /* The reusable recipe, so the next question of this type is not a blank page.
+       Deliberately not tickable: it is a method to follow, not progress to record. */
+    if (ex.checklist && ex.checklist.length) {
+      html += '<div class="example-method" hidden><div class="method-title">Every time, in this order</div><ol class="method-list">' +
+        ex.checklist.map(t => '<li>' + inlineMath(t) + '</li>').join('') + '</ol></div>';
+    }
     html += '<div class="example-controls"><button class="btn btn-sm" data-act="next-step">Show next step</button> <button class="btn btn-sm btn-ghost" data-act="all-steps">Show all</button> <button class="btn btn-sm btn-ghost" data-act="hide-steps" hidden>Hide</button></div>';
     html += '</div>';
     return html;
   }
 
-  const R = { esc, tex, md, inline, block, exampleHtml };
+  const R = { esc, tex, md, inline, inlineMath, block, exampleHtml };
   if (typeof module !== 'undefined' && module.exports) module.exports = R;
   root.CH = root.CH || {};
   root.CH.R = R;

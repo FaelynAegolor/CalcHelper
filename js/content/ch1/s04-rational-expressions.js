@@ -64,10 +64,21 @@
       'The conjugate trick from §1.2 works with variables too. It is often used on the **numerator** in calculus:',
       '$$\\frac{\\sqrt{a + h} - \\sqrt{a}}{h} \\cdot \\frac{\\sqrt{a + h} + \\sqrt{a}}{\\sqrt{a + h} + \\sqrt{a}} = \\frac{(a + h) - a}{h\\left(\\sqrt{a + h} + \\sqrt{a}\\right)} = \\frac{1}{\\sqrt{a + h} + \\sqrt{a}}$$',
       { calm: true, md: 'Nothing on this page is new. It is the fraction rules from 1.1, with letters where the numbers used to be.\n\nIf a question looks frightening, do the same question with plain numbers first — $\\tfrac12 + \\tfrac13$ instead of $\\tfrac1x + \\tfrac1y$ — and then copy your own steps.\n\nAnd keep hold of the one slip that costs the most marks: **you can only cancel things that are multiplied.**' },
+      { sid: '1.4', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Say which values are banned, by setting the bottom equal to zero',
+          'Factor the top and the bottom first, then cancel only what is multiplied',
+          'Multiply and divide algebraic fractions — dividing means flip and multiply',
+          'Add and subtract them by building a common bottom',
+          'Simplify a fraction that has fractions inside it',
+          'Get a root off the top or the bottom using the conjugate'
+        ] },
     ],
 
     examples: [
       { title: 'Finding domains',
+        checklist: ['Set the bottom equal to zero and solve — those values are banned.', 'A square root also needs its inside to be $\\ge 0$.', 'Write what is allowed as intervals.'],
         problem: 'Find the domain of (a) $\\dfrac{1}{x^2 - 5x + 6}$ and (b) $\\dfrac{\\sqrt{x}}{x - 2}$.',
         steps: [
           { text: '(a) Only a denominator to worry about. Factor it and find where it is zero.', math: 'x^2 - 5x + 6 = (x - 2)(x - 3) = 0 \\;\\Rightarrow\\; x = 2 \\text{ or } x = 3' },
@@ -75,12 +86,14 @@
           { text: '(b) The root needs $x \\ge 0$; the denominator needs $x \\ne 2$. Both at once:', math: '\\text{Domain: } [0, 2) \\cup (2, \\infty)' }
         ], answer: '(a) $(-\\infty,2)\\cup(2,3)\\cup(3,\\infty)$ &nbsp; (b) $[0,2)\\cup(2,\\infty)$' },
       { title: 'Simplifying',
+        checklist: ['Factor the top.', 'Factor the bottom.', 'Cancel only whole factors that are multiplied — never single terms.'],
         problem: 'Simplify $\\dfrac{x^2 - 1}{x^2 + x - 2}$.',
         steps: [
           { text: 'Factor the top (difference of squares) and the bottom (trinomial).', math: '\\frac{(x - 1)(x + 1)}{(x - 1)(x + 2)}' },
           { text: 'Cancel the common factor.', math: '= \\frac{x + 1}{x + 2}' }
         ], answer: '$\\dfrac{x + 1}{x + 2}$' },
       { title: 'Dividing',
+        checklist: ['Turn the division into multiplying by the second fraction upside down.', 'Factor everything.', 'Cancel across the whole thing.'],
         problem: 'Simplify $\\dfrac{x - 4}{x^2 - 4} \\div \\dfrac{x^2 - 3x - 4}{x^2 + 5x + 6}$.',
         steps: [
           { text: 'Flip the second fraction and multiply.', math: '\\frac{x - 4}{x^2 - 4} \\cdot \\frac{x^2 + 5x + 6}{x^2 - 3x - 4}' },
@@ -88,6 +101,7 @@
           { text: 'Cancel $(x - 4)$ and $(x + 2)$.', math: '= \\frac{x + 3}{(x - 2)(x + 1)}' }
         ], answer: '$\\dfrac{x + 3}{(x - 2)(x + 1)}$' },
       { title: 'Adding with a repeated factor',
+        checklist: ['The common bottom is the higher power of the repeated factor.', 'Multiply each fraction up to that bottom.', 'Add the tops; keep the bottom.', 'Factor the top to see whether anything cancels.'],
         problem: 'Simplify $\\dfrac{5}{2x - 3} + \\dfrac{3}{(2x - 3)^2}$.',
         steps: [
           { text: 'The LCD is $(2x - 3)^2$ (the highest power of the only factor). The first fraction is missing one $(2x - 3)$.', math: '\\frac{5(2x - 3)}{(2x - 3)^2} + \\frac{3}{(2x - 3)^2}' },
@@ -95,12 +109,14 @@
           { text: 'Factor the top to check for cancelling: $2(5x - 6)$ — nothing cancels.' }
         ], answer: '$\\dfrac{10x - 12}{(2x - 3)^2}$' },
       { title: 'The calculus-style compound fraction',
+        checklist: ['Combine the top into one fraction.', 'Dividing by $h$ is the same as multiplying by $\\frac{1}{h}$.', 'Cancel.'],
         problem: 'Simplify $\\dfrac{\\;\\dfrac{1}{a + h} - \\dfrac{1}{a}\\;}{h}$.',
         steps: [
           { text: 'Combine the top into one fraction (LCD is $a(a + h)$).', math: '\\frac{1}{a + h} - \\frac{1}{a} = \\frac{a - (a + h)}{a(a + h)} = \\frac{-h}{a(a + h)}' },
           { text: 'Now divide by $h$: that is multiplying by $\\frac{1}{h}$.', math: '\\frac{-h}{a(a + h)} \\cdot \\frac{1}{h} = \\frac{-1}{a(a + h)}' }
         ], answer: '$-\\dfrac{1}{a(a + h)}$' },
       { title: 'Rationalising a numerator',
+        checklist: ['Multiply the top and the bottom by the conjugate of the top.', 'The top becomes a difference of squares, so the roots go.', 'Simplify, leaving the bottom factored.'],
         problem: 'Rationalise the numerator of $\\dfrac{\\sqrt{x + 2} - \\sqrt{x}}{2}$.',
         steps: [
           { text: 'Multiply top and bottom by the conjugate $\\sqrt{x + 2} + \\sqrt{x}$.', math: '\\frac{(\\sqrt{x + 2} - \\sqrt{x})(\\sqrt{x + 2} + \\sqrt{x})}{2(\\sqrt{x + 2} + \\sqrt{x})}' },

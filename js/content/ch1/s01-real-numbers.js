@@ -51,7 +51,7 @@
       { warn: 'Subtraction and division are not commutative', md: '$5 - 3 \\ne 3 - 5$ and $6 \\div 2 \\ne 2 \\div 6$. Only addition and multiplication can be swapped freely.' },
 
       { h: 'Fractions' },
-      'A fraction $\\dfrac{a}{b}$ is a division: $a$ (the **numerator**) divided by $b$ (the **denominator**). Here are the rules, all in one place:',
+      'A fraction $\\dfrac{a}{b}$ just means $a$ divided by $b$. The top has a posh name, the **numerator**, and the bottom is the **denominator** — but "top" and "bottom" work just as well, and that is what this page mostly says. Here are the rules, all in one place:',
       '| To… | Do this | Example |\n|---|---|---|\n| multiply | multiply tops, multiply bottoms | $\\dfrac{2}{3}\\cdot\\dfrac{5}{7} = \\dfrac{10}{21}$ |\n| divide | flip the second fraction, then multiply | $\\dfrac{2}{3}\\div\\dfrac{5}{7} = \\dfrac{2}{3}\\cdot\\dfrac{7}{5} = \\dfrac{14}{15}$ |\n| add / subtract, same denominator | add the tops, keep the bottom | $\\dfrac{2}{5} + \\dfrac{1}{5} = \\dfrac{3}{5}$ |\n| add / subtract, different denominators | rewrite both with the **LCD** first | $\\dfrac{3}{8} + \\dfrac{5}{6} = \\dfrac{9}{24} + \\dfrac{20}{24} = \\dfrac{29}{24}$ |\n| cancel | divide top and bottom by the same thing | $\\dfrac{6}{9} = \\dfrac{2\\cdot 3}{3\\cdot 3} = \\dfrac{2}{3}$ |',
       'Why do we need a common denominator to add? Because you can only add pieces that are the **same size**. Eighths and sixths are different-sized pieces, but both can be cut into twenty-fourths:',
       { svg: V.fractionBars([{ n: 3, d: 8, label: '3/8' }, { n: 9, d: 24, label: '9/24' }, { n: 5, d: 6, label: '5/6' }, { n: 20, d: 24, label: '20/24' }]), caption: '$\\tfrac{3}{8}$ is the same amount as $\\tfrac{9}{24}$, and $\\tfrac{5}{6}$ is the same as $\\tfrac{20}{24}$. Now the pieces match and we can just count: $9 + 20 = 29$ twenty-fourths.' },
@@ -78,10 +78,22 @@
       { warn: 'A sneaky one', md: '$|3 - \\pi|$: since $\\pi \\approx 3.14$ is bigger than $3$, the inside is negative, so $|3 - \\pi| = -(3 - \\pi) = \\pi - 3$. Always ask "is the inside positive or negative?" before dropping the bars.' },
       { key: 'Absolute value with letters', md: 'The same question — *is the inside positive or negative?* — answers questions with letters in them, as long as you are told which is bigger.\n\nIf $a < b$, then $a - b$ is **negative**, so the bars flip its sign:\n\n$$|a - b| = -(a - b) = b - a$$\n\nOnce you know that, things tidy up nicely: $a + b + |a - b| = a + b + (b - a) = 2b$ — the larger of the two, doubled.' },
       { calm: true, md: 'If this section felt like a lot, here is the honest version: most of it is **one skill** — making the bottoms of two fractions match — plus some new names for things you already knew.\n\nYou do not have to memorise the number families. What matters is that you can add two fractions and read an interval off a number line.\n\nIf you practise one thing here, practise adding fractions.' },
+      { sid: '1.1', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Say which family a number belongs to — counting number, whole number, fraction, or one that cannot be written as a fraction',
+          'Turn a repeating decimal such as $0.\\overline{18}$ into a fraction',
+          'Add or subtract two fractions by making the bottoms match first',
+          'Simplify a fraction that has fractions inside it',
+          'Write an interval with the right brackets — square means the end is included, round means it is not',
+          'Find the overlap ($\\cap$) and the combination ($\\cup$) of two intervals',
+          'Work out $|x|$, and the distance between two numbers on the number line'
+        ] },
     ],
 
     examples: [
       { title: 'Two repeating digits',
+        checklist: ['Call the number $x$.', 'Count the repeating digits — multiply by $10$ for one, $100$ for two.', 'Subtract the two lines so the repeating tail cancels.', 'Divide, then cancel down.'],
         problem: 'Express $0.\\overline{18}$ as a fraction in lowest terms.',
         steps: [
           { text: 'Name it.', math: 'x = 0.181818\\ldots' },
@@ -90,6 +102,7 @@
           { text: 'Divide and simplify (both $18$ and $99$ are divisible by $9$).', math: 'x = \\frac{18}{99} = \\frac{9 \\cdot 2}{9 \\cdot 11} = \\frac{2}{11}' }
         ], answer: '$\\dfrac{2}{11}$' },
       { title: 'A whole-number part as well',
+        checklist: ['Call the number $x$.', 'Multiply by $10$ for each repeating digit.', 'Subtract to kill the repeating tail.', 'Divide and simplify.'],
         problem: 'Express $1.\\overline{3}$ as a fraction.',
         steps: [
           { text: 'Name it and multiply by $10$ (one repeating digit).', math: 'x = 1.333\\ldots, \\qquad 10x = 13.333\\ldots' },
@@ -97,6 +110,7 @@
           { text: 'Simplify.', math: 'x = \\frac{12}{9} = \\frac{4}{3}' }
         ], answer: '$\\dfrac{4}{3}$' },
       { title: 'Adding fractions',
+        checklist: ['Find the smallest number both bottoms divide into.', 'Multiply each fraction top and bottom to reach it.', 'Add the tops; keep the bottom.', 'Cancel down if you can.'],
         problem: 'Compute $\\dfrac{3}{8} + \\dfrac{5}{6}$.',
         steps: [
           { text: 'Find the LCD of $8$ and $6$. Multiples of $8$: $8, 16, 24, \\ldots$ Multiples of $6$: $6, 12, 18, 24, \\ldots$ The smallest shared one is $24$.', math: '\\text{LCD} = 24' },
@@ -105,6 +119,7 @@
           { text: 'Check whether it simplifies: $29$ is prime and does not divide $24$, so it is already in lowest terms.' }
         ], answer: '$\\dfrac{29}{24}$' },
       { title: 'A compound fraction',
+        checklist: ['Make the top into one single fraction.', 'Make the bottom into one single fraction.', 'Dividing by a fraction means multiplying by it upside down.', 'Cancel down.'],
         problem: 'Simplify $\\dfrac{\\;\\dfrac{3}{4} + \\dfrac{2}{5}\\;}{\\;\\dfrac{2}{3} - \\dfrac{3}{5}\\;}$.',
         steps: [
           { text: 'Tidy the **top** into a single fraction. LCD of $4$ and $5$ is $20$.', math: '\\frac{3}{4} + \\frac{2}{5} = \\frac{15}{20} + \\frac{8}{20} = \\frac{23}{20}' },
@@ -113,6 +128,7 @@
           { text: 'Cancel the common factor $5$ before multiplying out ($15 = 5 \\cdot 3$, $20 = 5 \\cdot 4$).', math: '= \\frac{23 \\cdot 3}{4} = \\frac{69}{4}' }
         ], answer: '$\\dfrac{69}{4}$' },
       { title: 'Union and intersection of intervals',
+        checklist: ['Draw both intervals on the same number line.', 'For $\\cap$ keep only the part they share.', 'For $\\cup$ keep everything either one covers.', 'Copy each end bracket from the interval it came from.'],
         problem: 'Find (a) $(-2, 3] \\cap [1, 5)$ and (b) $(-2, 3] \\cup [1, 5)$.',
         steps: [
           { text: 'Draw both on one number line. $(-2, 3]$: open dot at $-2$, filled dot at $3$. $[1, 5)$: filled dot at $1$, open dot at $5$.' },
@@ -120,6 +136,7 @@
           { text: '**(b) Union** = everything shaded by either: from $-2$ to $5$. $-2$ is not in either (open), and $5$ is not in either (open).', math: '(-2, 3] \\cup [1, 5) = (-2, 5)' }
         ], answer: '(a) $[1, 3]$ &nbsp; (b) $(-2, 5)$' },
       { title: 'Absolute values',
+        checklist: ['Ask one question: is the inside positive or negative?', 'Positive or zero — the bars simply disappear.', 'Negative — the bars flip the sign.', 'For a distance, subtract either way round and take the positive answer.'],
         problem: 'Evaluate (a) $|-3|$, (b) $|3 - \\pi|$, (c) the distance between $-2$ and $5$.',
         steps: [
           { text: '(a) $-3$ is negative, so flip the sign.', math: '|-3| = 3' },
@@ -294,7 +311,7 @@
             hints: ['Sketch both intervals on the same number line.', which === 'cap' ? 'Keep only the part shaded by **both**. Check each endpoint: is it in both intervals?' : 'Keep everything shaded by **either**. If the pieces touch or overlap they join into one interval.'],
             solution: [{ text: 'On a number line, $' + tex(I1) + '$ runs from $' + a + '$ to $' + b + '$ and $' + tex(I2) + '$ runs from $' + c + '$ to $' + d + '$. ' + (which === 'cap' ? 'The overlap is' : 'Everything covered by either is') + ' $' + resTex + '$.' }] };
         } },
-      { id: '1.1-g-distance', title: 'Distance on the number line', desc: '|a − b|, with fractions and decimals.',
+      { id: '1.1-g-distance', title: 'Distance on the number line', desc: 'Distance is $|a - b|$, with fractions and decimals.',
         make(r) {
           const kind = r.pick(['int', 'frac', 'dec']);
           let a, b, aT, bT;

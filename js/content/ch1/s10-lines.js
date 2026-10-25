@@ -65,15 +65,27 @@
           { text: 'Tidy (multiply by $2$).', math: '2y - 6 = x + 1 \\;\\Rightarrow\\; x - 2y = -7' }
         ], answer: '$x - 2y = -7$ (or $y = \\tfrac12 x + \\tfrac72$)' } },
       { calm: true, md: 'There are several line formulas here and you do not need all of them. **Point-slope is enough on its own**: if you know one point and the slope, write $y - y_1 = m(x - x_1)$ and tidy it up afterwards.\n\nSo whatever a question asks for, you are only ever hunting two things — a point, and the slope. Find those and the rest is rearranging.\n\nAnd if you are not sure your line is right, put one of the given points back in and check both sides match.' },
+      { sid: '1.10', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Work out the slope from two points',
+          'Write the equation of a line from one point and the slope',
+          'Read the slope and the $y$-intercept straight off $y = mx + b$',
+          'Rearrange any line equation into the form a question asks for',
+          'Write horizontal lines ($y = 4$) and vertical lines ($x = 3$)',
+          'Find a parallel line (same slope) and a perpendicular one (flip it over, change the sign)'
+        ] },
     ],
 
     examples: [
       { title: 'Slope from two points',
+        checklist: ['Label the points $(x_1, y_1)$ and $(x_2, y_2)$.', 'Slope is the change in $y$ over the change in $x$.', 'Subtract in the same order on the top and the bottom.'],
         problem: 'Find the slope of the line through $(-1, 2)$ and $(3, 4)$.',
         steps: [
           { text: 'Rise over run, subtracting in the same order.', math: 'm = \\frac{4 - 2}{3 - (-1)} = \\frac{2}{4} = \\frac12' }
         ], answer: '$m = \\tfrac12$' },
       { title: 'Line through two points',
+        checklist: ['Find the slope first.', 'Put one point and that slope into $y - y_1 = m(x - x_1)$.', 'Rearrange into whichever form the question asks for.'],
         problem: 'Find an equation of the line through $(-1, 2)$ and $(3, 4)$, in standard form.',
         steps: [
           { text: 'Slope first (from the previous example): $m = \\tfrac12$.' },
@@ -81,18 +93,21 @@
           { text: 'Multiply by $2$ and rearrange.', math: '2y - 4 = x + 1 \\;\\Rightarrow\\; x - 2y = -5' }
         ], answer: '$x - 2y = -5$' },
       { title: 'Slope and intercept from an equation',
+        checklist: ['Rearrange until $y$ is on its own.', 'The number multiplying $x$ is the slope.', 'The number on its own is the $y$-intercept.'],
         problem: 'Find the slope and $y$-intercept of (a) $y = 3x - 2$ and (b) $3y - 2x = 1$.',
         steps: [
           { text: '(a) Already in $y = mx + b$ form.', math: 'm = 3, \\quad b = -2' },
           { text: '(b) Solve for $y$.', math: '3y = 2x + 1 \\;\\Rightarrow\\; y = \\tfrac23 x + \\tfrac13 \\;\\Rightarrow\\; m = \\tfrac23, \\quad b = \\tfrac13' }
         ], answer: '(a) $m = 3$, $b = -2$ &nbsp; (b) $m = \\tfrac23$, $b = \\tfrac13$' },
       { title: 'Horizontal and vertical lines',
+        checklist: ['A horizontal line keeps $y$ fixed: $y = $ the $y$-coordinate.', 'A vertical line keeps $x$ fixed: $x = $ the $x$-coordinate.', 'Horizontal slope is $0$; a vertical line has no slope.'],
         problem: 'Find the equations of the horizontal and the vertical line through $(3, 4)$.',
         steps: [
           { text: 'Horizontal: every point has $y = 4$.', math: 'y = 4' },
           { text: 'Vertical: every point has $x = 3$.', math: 'x = 3' }
         ], answer: '$y = 4$ and $x = 3$' },
       { title: 'Slope from the general form',
+        checklist: ['Get $y$ on its own.', 'Divide every term by whatever multiplies $y$.', 'Read the slope off the $x$ term.'],
         problem: 'Find the slope of $5y = -2x + 3$ and of $2x + 5y - 3 = 0$.',
         steps: [
           { text: 'First one: divide by $5$.', math: 'y = -\\tfrac25 x + \\tfrac35 \\;\\Rightarrow\\; m = -\\tfrac25' },
@@ -100,6 +115,7 @@
           { text: 'They have the same slope, so the two lines are parallel (in fact, they are the same line).' }
         ], answer: 'Both have slope $-\\tfrac25$' },
       { title: 'A parallel line through a point',
+        checklist: ['Rearrange the given line to find its slope.', 'Parallel means exactly the same slope.', 'Use the point and that slope in $y - y_1 = m(x - x_1)$.'],
         problem: 'Find the equation of the line through $(5, 2)$ parallel to $4x + 6y + 5 = 0$.',
         steps: [
           { text: 'Slope of the given line.', math: 'm = -\\frac{A}{B} = -\\frac{4}{6} = -\\frac23' },

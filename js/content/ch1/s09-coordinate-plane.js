@@ -62,33 +62,48 @@
           { text: 'The right side changed sign, so it is not the same equation: **not** symmetric about the $y$-axis.' }
         ], answer: 'Neither symmetry holds.' } },
       { calm: true, md: 'Every formula in this section is something you can see. If you forget one, **draw the picture** — the two points, and the right triangle between them — and it comes back.\n\nDistance is Pythagoras. Midpoint is an average. A circle is "every point a fixed distance from the centre". That is the whole section.\n\nSketching first is not the slow way of doing these. It is how most people get them right.' },
+      { sid: '1.9', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Plot a point, and find the distance between two points',
+          'Find a midpoint — and work backwards to a missing endpoint',
+          'Find where a graph crosses each axis by setting the other letter to zero',
+          'Write a circle equation from its centre and radius',
+          'Find the centre and radius from the multiplied-out form by completing the square',
+          'Test a graph for symmetry'
+        ] },
     ],
 
     examples: [
       { title: 'Finding the other endpoint',
+        checklist: ['Sketch $A$, then $M$, then $B$ beyond it.', 'Work out the step from $A$ to $M$ — how far across, how far up.', 'Take that same step again from $M$.', 'Or put the midpoint formula together and solve for the missing coordinate.'],
         problem: '$M(5, 1)$ is the midpoint of $AB$, where $A = (2, -3)$. Find $B$.',
         steps: [
           { text: 'Let $B = (x, y)$. The midpoint formula gives two little equations.', math: '\\frac{2 + x}{2} = 5, \\qquad \\frac{-3 + y}{2} = 1' },
           { text: 'Solve each.', math: '2 + x = 10 \\Rightarrow x = 8, \\qquad -3 + y = 2 \\Rightarrow y = 5' }
         ], answer: '$B = (8, 5)$' },
       { title: 'Intercepts',
+        checklist: ['For the $y$-intercept, set $x = 0$.', 'For the $x$-intercepts, set $y = 0$ and solve.', 'Write each answer as a point.'],
         problem: 'Find the intercepts of $y = x^2 - 4$.',
         steps: [
           { text: '$x$-intercepts: set $y = 0$.', math: '0 = x^2 - 4 \\Rightarrow x = \\pm 2 \\quad\\text{points } (-2, 0), (2, 0)' },
           { text: '$y$-intercept: set $x = 0$.', math: 'y = 0 - 4 = -4 \\quad\\text{point } (0, -4)' }
         ], answer: '$x$-intercepts $\\pm 2$; $y$-intercept $-4$' },
       { title: 'Circle from centre and radius',
+        checklist: ['Start from $(x - h)^2 + (y - k)^2 = r^2$.', 'Put the centre in, watching the signs carefully.', 'Square the radius.'],
         problem: 'Find the equation of the circle with centre $(2, -5)$ and radius $5$.',
         steps: [
           { text: 'Substitute $h = 2$, $k = -5$, $r = 5$ into $(x - h)^2 + (y - k)^2 = r^2$. Note $y - (-5) = y + 5$.', math: '(x - 2)^2 + (y + 5)^2 = 25' }
         ], answer: '$(x - 2)^2 + (y + 5)^2 = 25$' },
       { title: 'Circle from centre and a point',
+        checklist: ['Find the radius as the distance from the centre to that point.', 'You only need $r^2$, so there is no need to square-root it.', 'Put the centre and $r^2$ into the standard form.'],
         problem: 'Find the equation of the circle with centre $C(-2, 1)$ that passes through $P(4, 3)$.',
         steps: [
           { text: 'The radius is the distance from the centre to the point. We only need $r^2$, so skip the square root.', math: 'r^2 = (4 - (-2))^2 + (3 - 1)^2 = 36 + 4 = 40' },
           { text: 'Write the equation.', math: '(x + 2)^2 + (y - 1)^2 = 40' }
         ], answer: '$(x + 2)^2 + (y - 1)^2 = 40$' },
       { title: 'Centre and radius from the general form',
+        checklist: ['Group the $x$ terms and the $y$ terms; move the number across.', 'Complete the square on each group, adding to both sides.', 'Read the centre off — remember the signs flip.', 'Square-root the right-hand side to get the radius.'],
         problem: 'Find the centre and radius of $x^2 + y^2 - 6x + 4 = 0$.',
         steps: [
           { text: 'Group the $x$ terms and move the constant over. There is no $y$ term, so $y^2$ is already a perfect square.', math: '(x^2 - 6x) + y^2 = -4' },
@@ -96,6 +111,7 @@
           { text: 'Read off the centre and radius.', math: 'C(3, 0), \\qquad r = \\sqrt{5}' }
         ], answer: 'Centre $(3, 0)$, radius $\\sqrt5$' },
       { title: 'Circle from a diameter',
+        checklist: ['The centre is the midpoint of the two ends.', 'The radius is half the distance between them.', 'Put the centre and $r^2$ into the standard form.'],
         problem: 'Find the equation of the circle that has $A(2, 1)$ and $B(4, -3)$ as the endpoints of a diameter.',
         steps: [
           { text: 'The centre is the midpoint of $AB$.', math: 'C = \\left(\\frac{2 + 4}{2}, \\frac{1 + (-3)}{2}\\right) = (3, -1)' },
@@ -103,6 +119,7 @@
           { text: 'Equation.', math: '(x - 3)^2 + (y + 1)^2 = 5' }
         ], answer: '$(x - 3)^2 + (y + 1)^2 = 5$' },
       { title: 'Symmetry about the origin',
+        checklist: ['Replace $x$ with $-x$ and $y$ with $-y$.', 'Simplify.', 'If the original equation comes back, it is symmetric.'],
         problem: 'Is the graph of $y = x^3 - x$ symmetric about the origin?',
         steps: [
           { text: 'Replace $x$ with $-x$ and $y$ with $-y$.', math: '-y = (-x)^3 - (-x) = -x^3 + x' },

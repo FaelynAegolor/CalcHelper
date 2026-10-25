@@ -51,7 +51,7 @@
       { tip: 'Reading the signs', md: 'If $c$ is **positive**, both numbers have the **same sign** (the sign of $b$). If $c$ is **negative**, the numbers have **opposite signs** — the bigger one takes the sign of $b$.' },
 
       { h: 'Trinomials $ax^2 + bx + c$ (with $a \\ne 1$)' },
-      'When there is a number in front of $x^2$, use the **$ac$ method**: multiply $a$ and $c$, find two numbers that multiply to $ac$ and add to $b$, use them to **split the middle term**, then factor by grouping.',
+      'When there is a number in front of $x^2$, use the **$ac$ method**. It is four steps, and they are the same every time:\n\n1. Multiply $a$ by $c$.\n2. Find two numbers that multiply to $ac$ and add to $b$.\n3. Use those two numbers to **split the middle term** into two terms.\n4. Factor the four terms by grouping them in pairs.',
       { example: {
         title: 'Factor $3x^2 + 7x + 2$',
         problem: 'Factor $3x^2 + 7x + 2$.',
@@ -61,7 +61,7 @@
           { text: 'Group in pairs and take out the common factor of each pair.', math: 'x(3x + 1) + 2(3x + 1)' },
           { text: 'Both pieces contain $(3x + 1)$ — pull it out.', math: '(3x + 1)(x + 2)' }
         ], answer: '$(3x + 1)(x + 2)$' } },
-      'It is also fine to use **trial and error**: the first terms must multiply to $3x^2$ (so $3x$ and $x$), the last terms to $2$ (so $1$ and $2$, or $2$ and $1$), then check which arrangement gives the middle term $7x$.',
+      '**Trial and error** is just as allowed, and plenty of people prefer it. The two first terms have to multiply to $3x^2$, so they are $3x$ and $x$. The two last terms have to multiply to $2$, so they are $1$ and $2$. Now try the arrangements until the middle term comes out as $7x$.',
 
       { h: 'Squares and cubes' },
       '| Pattern | How to spot it |\n|---|---|\n| $A^2 - B^2 = (A - B)(A + B)$ | two terms, both perfect squares, a minus between |\n| $A^2 + 2AB + B^2 = (A + B)^2$ | first and last are squares, middle is twice their roots multiplied |\n| $A^3 - B^3 = (A - B)(A^2 + AB + B^2)$ | two terms, both cubes |\n| $A^3 + B^3 = (A + B)(A^2 - AB + B^2)$ | two terms, both cubes |',
@@ -81,16 +81,30 @@
       '$$x^3 - 3x^2 + 4x - 12 = x^2(x - 3) + 4(x - 3) = (x - 3)(x^2 + 4)$$',
       'Sometimes the bracket that comes out factors again: $t^3 + 3t^2 - 4t - 12 = t^2(t + 3) - 4(t + 3) = (t + 3)(t^2 - 4) = (t + 3)(t - 2)(t + 2)$.',
       { calm: true, md: 'Factoring is the part most people find hardest, and it is normal to look at one for a while before anything happens. That is not a sign you cannot do it — that is what factoring looks like for everybody.\n\nThe order never changes: **common factor first, then look for a pattern, then trial and error.** When you get stuck, go back to step one and check you really pulled out everything that was common.\n\nAnd you can always mark your own work here: multiply your answer back out. If you get the original expression, you are right.' },
+      { sid: '1.3', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Add and subtract polynomials, flipping every sign inside a subtracted bracket',
+          'Multiply any two brackets — every term by every term',
+          'Recognise the difference of squares, the perfect square and the cube patterns',
+          'Always pull out the common factor before anything else',
+          'Factor $x^2 + bx + c$ by finding two numbers that multiply and add correctly',
+          'Factor $ax^2 + bx + c$ when $a$ is not $1$',
+          'Factor four terms by grouping them into pairs',
+          'Check any factorisation by multiplying it back out'
+        ] },
     ],
 
     examples: [
       { title: 'Subtracting polynomials',
+        checklist: ['Flip the sign of every term inside the subtracted bracket.', 'Collect like terms — same letter, same power.', 'Write the answer from the highest power down.'],
         problem: 'Simplify $(2x^3 - x^2 - 5x + 4) - (x^3 - 4x^2 + 3x - 1)$.',
         steps: [
           { text: 'The minus sign flips the sign of **every** term in the second bracket.', math: '2x^3 - x^2 - 5x + 4 - x^3 + 4x^2 - 3x + 1' },
           { text: 'Collect like terms, power by power.', math: '(2x^3 - x^3) + (-x^2 + 4x^2) + (-5x - 3x) + (4 + 1) = x^3 + 3x^2 - 8x + 5' }
         ], answer: '$x^3 + 3x^2 - 8x + 5$' },
       { title: 'Multiplying a binomial by a trinomial',
+        checklist: ['Multiply every term in the first bracket by every term in the second.', 'Collect like terms.', 'Check with $x = 1$: both forms must give the same number.'],
         problem: 'Expand $(2x + 3)(x^2 - 5x + 4)$.',
         steps: [
           { text: 'Multiply each term of the first bracket by the whole second bracket.', math: '2x(x^2 - 5x + 4) + 3(x^2 - 5x + 4)' },
@@ -98,6 +112,7 @@
           { text: 'Combine like terms.', math: '2x^3 - 7x^2 - 7x + 12' }
         ], answer: '$2x^3 - 7x^2 - 7x + 12$' },
       { title: 'Special products',
+        checklist: ['Spot which pattern it is before multiplying anything out.', 'Difference of squares, perfect square, or cube.', 'Put your $A$ and $B$ into the pattern.', 'Check with $x = 1$.'],
         problem: 'Expand (a) $(2x - 3)(2x + 3)$, (b) $(3x + 2)^2$, (c) $(x - 2)^3$.',
         steps: [
           { text: '(a) Difference of squares with $A = 2x$, $B = 3$.', math: '(2x)^2 - 3^2 = 4x^2 - 9' },
@@ -105,6 +120,7 @@
           { text: '(c) Cube with $A = x$, $B = 2$: $A^3 - 3A^2B + 3AB^2 - B^3$.', math: 'x^3 - 3x^2(2) + 3x(4) - 8 = x^3 - 6x^2 + 12x - 8' }
         ], answer: '(a) $4x^2 - 9$ &nbsp; (b) $9x^2 + 12x + 4$ &nbsp; (c) $x^3 - 6x^2 + 12x - 8$' },
       { title: 'Common factor, then difference of squares',
+        checklist: ['Pull out the biggest common factor first.', 'Look at what is left — is it a difference of squares?', 'Factor that as well.', 'Keep going until nothing factors any further.'],
         problem: 'Factor $2x^3 - 50x$ completely.',
         steps: [
           { text: 'Both terms contain $2x$. Pull it out.', math: '2x^3 - 50x = 2x(x^2 - 25)' },
@@ -112,12 +128,14 @@
           { text: 'Check: nothing factors further.' }
         ], answer: '$2x(x - 5)(x + 5)$' },
       { title: 'A trinomial with a common factor',
+        checklist: ['Take the common factor out first.', 'Factor the trinomial that is left behind.', 'Check that nothing factors further.'],
         problem: 'Factor $3x^4 - 9x^3 + 6x^2$ completely.',
         steps: [
           { text: 'Common factor: $3x^2$.', math: '3x^2(x^2 - 3x + 2)' },
           { text: 'Factor the trinomial: two numbers that multiply to $2$ and add to $-3$ are $-1$ and $-2$.', math: '3x^2(x - 1)(x - 2)' }
         ], answer: '$3x^2(x - 1)(x - 2)$' },
       { title: 'Trinomial with $a \\ne 1$',
+        checklist: ['Multiply $a$ by $c$.', 'Find two numbers that multiply to that and add to $b$.', 'Split the middle term using those two numbers.', 'Factor in pairs.'],
         problem: 'Factor $2x^2 - 9x - 5$.',
         steps: [
           { text: '$ac = 2 \\cdot (-5) = -10$. Two numbers that multiply to $-10$ and add to $-9$: $-10$ and $1$.' },
@@ -126,12 +144,14 @@
           { text: 'Pull out the common bracket.', math: '(x - 5)(2x + 1)' }
         ], answer: '$(2x + 1)(x - 5)$' },
       { title: 'Sum of cubes',
+        checklist: ['Write each part as something cubed.', 'Use $A^3 + B^3 = (A + B)(A^2 - AB + B^2)$.', 'Substitute carefully, then tidy up.'],
         problem: 'Factor $8x^3 + 27$.',
         steps: [
           { text: 'Recognise cubes: $8x^3 = (2x)^3$ and $27 = 3^3$. So $A = 2x$, $B = 3$.' },
           { text: 'Use $A^3 + B^3 = (A + B)(A^2 - AB + B^2)$.', math: '(2x + 3)\\left((2x)^2 - (2x)(3) + 3^2\\right) = (2x + 3)(4x^2 - 6x + 9)' }
         ], answer: '$(2x + 3)(4x^2 - 6x + 9)$' },
       { title: 'Grouping',
+        checklist: ['Split the four terms into two pairs.', 'Factor each pair on its own.', 'If the two brackets match, pull that bracket out.', 'Factor anything that is left.'],
         problem: 'Factor $x^4 - 3x^3 + 8x - 24$ completely.',
         steps: [
           { text: 'Four terms: group in pairs and factor each pair.', math: 'x^3(x - 3) + 8(x - 3)' },

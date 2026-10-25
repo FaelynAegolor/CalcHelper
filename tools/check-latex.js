@@ -19,16 +19,15 @@ function tryTex(src, disp, ctx) {
   } catch (e) { bad++; console.log('ERR ', ctx, e.message.slice(0, 110), '|', src.slice(0, 100)); }
 }
 let ctx = '';
-R.tex = (src, disp) => { tryTex(src, disp, ctx); return '<i>' + src + '</i>'; };
+/* render.js calls its own internal tex(), which looks up `katex` at call time, so
+   patching R.tex missed every $...$ inside md() — i.e. nearly all the prose maths.
+   Standing in as the global katex catches those too. */
+globalThis.katex = { renderToString: (src, opts) => { tryTex(src, !!(opts && opts.displayMode), ctx); return '<span>' + src + '</span>'; } };
 const steps = (arr, c) => [].concat(arr || []).forEach(st => { if (typeof st === 'string') R.md(st); else { R.md(st.text || ''); if (st.math) tryTex(st.math, true, c); } });
 const specs = (ans, c) => (ans.type === 'multi' ? ans.parts : [ans]).forEach(p => { if (p.display) tryTex(p.display, false, c + ' display'); if (p.label) R.md(p.label); (p.options || []).forEach(o => R.md(o.label)); if (p.wrongMessage) R.md(p.wrongMessage); });
-function walk(b) {
-  if (typeof b === 'string') R.md(b);
-  else if (b.md) R.md(b.md);
-  else if (b.example) R.exampleHtml(b.example);
-  else if (b.cols) b.cols.forEach(walk);
-  if (b && b.caption) R.md(b.caption);
-}
+/* block() is what the site actually renders, so it covers headings and callout
+   titles as well as bodies, captions, columns and inline examples. */
+const walk = b => R.block(b);
 for (const s of CH.sections) {
   ctx = s.id;
   s.theory.forEach(walk);

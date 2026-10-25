@@ -66,10 +66,22 @@
       { key: 'Absolute value equation', md: '$$|A| = c \\;(c \\ge 0) \\quad\\Rightarrow\\quad A = c \\;\\text{ or }\\; A = -c$$\n\nSolve both little equations. If $c < 0$ there is **no solution** — an absolute value is never negative.\n\n$$|2x - 5| = 3 \\;\\Rightarrow\\; 2x - 5 = 3 \\text{ or } 2x - 5 = -3 \\;\\Rightarrow\\; x = 4 \\text{ or } x = 1$$' },
       { svg: V.numberLine({ min: -1, max: 6, points: [{ x: 1, label: 'x = 1' }, { x: 4, label: 'x = 4' }, { x: 2.5, label: '5/2', color: 'var(--viz-5)', open: true }], intervals: [{ lo: 1, hi: 4, loC: true, hiC: true, color: 'var(--viz-2)' }] }), caption: 'Another view: $|2x - 5| = 3$ is $2|x - \\tfrac52| = 3$, i.e. $x$ is at distance $\\tfrac32$ from $\\tfrac52$. That gives $1$ and $4$ — one on each side.' },
       { calm: true, md: 'Solving equations is what everything later is built on, so it is worth going slowly here. Slow is fine. Slow is how it becomes automatic.\n\nWhen you are stuck, ask one question: **what is being done to $x$, and what undoes it?** Then do that to both sides.\n\nAnd when you have an answer, put it back into the original equation. If both sides come out equal, you are right — you never have to sit there wondering.' },
+      { sid: '1.5', title: 'Can I do this?',
+        intro: 'Tick these off when you are sure. Nothing here is marked — it is just for you to see what is solid and what still needs another go.',
+        checklist: [
+          'Rearrange a formula to get one letter on its own',
+          'Solve a quadratic by factoring',
+          'Solve a quadratic by completing the square',
+          'Use the quadratic formula, and use $b^2 - 4ac$ to count the solutions first',
+          'Clear fractions by multiplying every term by the common bottom',
+          'Solve an equation containing a square root — and check for fake solutions',
+          'Split $|\\text{something}| = c$ into two equations, and spot when there is no solution at all'
+        ] },
     ],
 
     examples: [
       { title: 'Solving for a letter',
+        checklist: ['Multiply out any brackets.', 'Get every term containing that letter on one side.', 'Factor the letter out.', 'Divide by whatever is left beside it.'],
         problem: 'Solve $y(5x - 7) = 3x$ for $x$.',
         steps: [
           { text: 'Expand so you can see every term with an $x$.', math: '5xy - 7y = 3x' },
@@ -78,6 +90,7 @@
           { text: 'Divide by the bracket.', math: 'x = \\frac{7y}{5y - 3}' }
         ], answer: '$x = \\dfrac{7y}{5y - 3}$' },
       { title: 'A formula from geometry',
+        checklist: ['Get every term containing the letter you want on one side.', 'Factor that letter out.', 'Divide by the bracket.'],
         problem: 'The surface area of a box is $A = 2lw + 2wh + 2lh$. Solve for $h$.',
         steps: [
           { text: 'Put the terms containing $h$ on one side, the rest on the other.', math: '2wh + 2lh = A - 2lw' },
@@ -85,6 +98,7 @@
           { text: 'Divide.', math: 'h = \\frac{A - 2lw}{2w + 2l}' }
         ], answer: '$h = \\dfrac{A - 2lw}{2l + 2w}$' },
       { title: 'Quadratic by factoring',
+        checklist: ['Make one side zero.', 'Factor the other side.', 'Set each bracket equal to zero.', 'Solve each small equation.'],
         problem: 'Solve $x^2 + 5x - 24 = 0$.',
         steps: [
           { text: 'Two numbers that multiply to $-24$ and add to $5$: $8$ and $-3$.', math: '(x + 8)(x - 3) = 0' },
@@ -92,6 +106,7 @@
           { text: 'Solve each.', math: 'x = -8 \\;\\text{ or }\\; x = 3 \\qquad S = \\{-8, 3\\}' }
         ], answer: '$S = \\{-8, 3\\}$' },
       { title: 'Completing the square',
+        checklist: ['Move the plain number to the other side.', 'Halve the number in front of $x$, then square it.', 'Add that to both sides.', 'Write the left as a bracket squared, then square-root both sides with $\\pm$.'],
         problem: 'Solve $x^2 + 6x - 3 = 0$ by completing the square.',
         steps: [
           { text: 'Move the number to the right.', math: 'x^2 + 6x = 3' },
@@ -100,6 +115,7 @@
           { text: 'Square root both sides — don\'t forget $\\pm$ — and simplify $\\sqrt{12} = 2\\sqrt{3}$.', math: 'x + 3 = \\pm 2\\sqrt{3} \\;\\Rightarrow\\; x = -3 \\pm 2\\sqrt{3}' }
         ], answer: '$S = \\{-3 - 2\\sqrt3,\\ -3 + 2\\sqrt3\\}$' },
       { title: 'The quadratic formula',
+        checklist: ['Write it as $ax^2 + bx + c = 0$ and note $a$, $b$ and $c$.', 'Work out $b^2 - 4ac$ first.', 'Put everything into the formula.', 'Simplify the root, then cancel.'],
         problem: 'Solve $x^2 + 2x - 4 = 0$.',
         steps: [
           { text: 'Identify $a = 1$, $b = 2$, $c = -4$, and compute the discriminant first.', math: 'D = b^2 - 4ac = 4 - 4(1)(-4) = 20 > 0 \\quad\\text{(two real solutions)}' },
@@ -107,18 +123,21 @@
           { text: 'Simplify the root: $\\sqrt{20} = 2\\sqrt{5}$. Then divide every term by $2$.', math: 'x = \\frac{-2 \\pm 2\\sqrt{5}}{2} = -1 \\pm \\sqrt{5}' }
         ], answer: '$S = \\{-1 - \\sqrt5,\\ -1 + \\sqrt5\\}$' },
       { title: 'Using the discriminant',
+        checklist: ['Note $a$, $b$ and $c$.', 'Work out $b^2 - 4ac$.', 'Positive means two solutions, zero means one, negative means none.'],
         problem: 'How many real solutions do (a) $4x^2 - 4x + 1 = 0$ and (b) $5x^2 - 2x + 1 = 0$ have?',
         steps: [
           { text: '(a) $a = 4$, $b = -4$, $c = 1$.', math: 'D = (-4)^2 - 4(4)(1) = 16 - 16 = 0 \\;\\Rightarrow\\; \\text{exactly one solution: } x = \\tfrac{-b}{2a} = \\tfrac{4}{8} = \\tfrac12' },
           { text: '(b) $a = 5$, $b = -2$, $c = 1$.', math: 'D = (-2)^2 - 4(5)(1) = 4 - 20 = -16 < 0 \\;\\Rightarrow\\; \\text{no real solutions, } S = \\varnothing' }
         ], answer: '(a) one solution, $x = \\tfrac12$ &nbsp; (b) none' },
       { title: 'Quadratic type with fractional powers',
+        checklist: ['Notice one power is exactly double the other.', 'Let $u$ stand for the smaller power.', 'Solve the ordinary quadratic in $u$.', 'Swap back and solve for $x$.'],
         problem: 'Solve $x^{2/3} - 2x^{1/3} - 8 = 0$.',
         steps: [
           { text: 'Notice $x^{2/3} = (x^{1/3})^2$. Let $u = x^{1/3}$.', math: 'u^2 - 2u - 8 = 0 \\;\\Rightarrow\\; (u - 4)(u + 2) = 0' },
           { text: 'So $u = 4$ or $u = -2$. Translate back: $u = x^{1/3} = \\sqrt[3]{x}$.', math: '\\sqrt[3]{x} = 4 \\;\\Rightarrow\\; x = 64 \\qquad \\sqrt[3]{x} = -2 \\;\\Rightarrow\\; x = -8' }
         ], answer: '$S = \\{-8, 64\\}$' },
       { title: 'Clearing fractions',
+        checklist: ['Multiply both sides by everything on the bottom.', 'Solve the equation that is left.', 'Check your answer does not make an original bottom zero.'],
         problem: 'Solve $\\dfrac{3x + 1}{x - 2} = \\dfrac{4}{5}$.',
         steps: [
           { text: 'LCD is $5(x - 2)$. Multiply both sides by it.', math: '5(3x + 1) = 4(x - 2)' },
@@ -126,6 +145,7 @@
           { text: 'Check the denominator: $x = -\\tfrac{13}{11} \\ne 2$, so it is allowed.' }
         ], answer: '$x = -\\dfrac{13}{11}$' },
       { title: 'A radical equation with an extraneous solution',
+        checklist: ['Get the root on its own.', 'Square both sides.', 'Solve.', 'Put every answer back into the original — squaring invents fake ones.'],
         problem: 'Solve $\\sqrt{3x + 4} + x = 0$.',
         steps: [
           { text: 'Isolate the root.', math: '\\sqrt{3x + 4} = -x' },
@@ -135,6 +155,7 @@
           { text: '**Check** $x = -1$: $\\sqrt{1} + (-1) = 0$. ✓', math: 'S = \\{-1\\}' }
         ], answer: '$S = \\{-1\\}$' },
       { title: 'Radical equation, square of a binomial',
+        checklist: ['Get the root on its own.', 'Square both sides — the other side is a bracket squared, so use the pattern.', 'Solve the quadratic.', 'Check both answers in the original.'],
         problem: 'Solve $\\sqrt{2x + 7} = x + 2$.',
         steps: [
           { text: 'The root is already alone. Square both sides — carefully, $(x+2)^2$ has three terms.', math: '2x + 7 = x^2 + 4x + 4' },
@@ -142,6 +163,7 @@
           { text: 'Check $x = -3$: $\\sqrt{1} = 1$ but $x + 2 = -1$. ✗ Check $x = 1$: $\\sqrt{9} = 3 = 1 + 2$. ✓', math: 'S = \\{1\\}' }
         ], answer: '$S = \\{1\\}$' },
       { title: 'Absolute value equations',
+        checklist: ['Get the bars on their own.', 'If the other side is negative, there is no solution — stop there.', 'Otherwise split into two equations, one $= c$ and one $= -c$.', 'Solve both.'],
         problem: 'Solve (a) $|2x - 5| = 3$ and (b) $|2x - 5| = -7$.',
         steps: [
           { text: '(a) Split into two equations.', math: '2x - 5 = 3 \\;\\text{ or }\\; 2x - 5 = -3' },

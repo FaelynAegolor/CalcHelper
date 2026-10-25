@@ -12,6 +12,7 @@
     data.practice = data.practice || {};
     data.settings = Object.assign({ name: 'Z', theme: 'auto' }, data.settings || {});
     data.visited = data.visited || {};
+    data.checks = data.checks || {};
     return data;
   }
   function save() {
@@ -43,6 +44,15 @@
     },
     visit(sectionId) { const d = load(); d.visited.last = sectionId; d.visited.at = Date.now(); save(); },
     get lastVisited() { return load().visited.last || null; },
+    /* "Can I do this?" ticks on the end-of-section checklists. Keyed by section id
+       plus the item's position, e.g. "1.3#2". Her own judgement, not marking. */
+    check(id) { return !!load().checks[id]; },
+    setCheck(id, on) { const d = load(); if (on) d.checks[id] = 1; else delete d.checks[id]; save(); return !!on; },
+    checkStats(sectionId) {
+      const d = load(), pre = sectionId + '#';
+      const done = Object.keys(d.checks).filter(k => k.indexOf(pre) === 0).length;
+      return { done };
+    },
     sectionStats(section) {
       const ids = (section.exercises || []).map(e => e.id);
       const done = ids.filter(id => { const e = S.ex(id); return e && e.correct; }).length;
