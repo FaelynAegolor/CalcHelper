@@ -13,6 +13,15 @@
     CH.sections.push(s);
     return s;
   };
+  /* Past exam papers. A question is shaped exactly like a section exercise, so the
+     same card renders it: answer checking, hints one at a time, working checker. */
+  CH.exams = [];
+  CH.registerExam = function (e) {
+    e.questions = e.questions || [];
+    CH.exams.push(e);
+    return e;
+  };
+  CH.examById = id => CH.exams.find(e => e.id === id) || null;
   CH.sectionById = id => CH.sections.find(s => s.id === id) || null;
   CH.chapterOf = s => CH.chapters.find(c => c.num === s.chapter) || null;
   CH.sectionsOf = num => CH.sections.filter(s => s.chapter === num);

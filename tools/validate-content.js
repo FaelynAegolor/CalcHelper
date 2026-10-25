@@ -82,5 +82,31 @@ for (const s of CH.sections) {
   });
   console.log(ctx.padEnd(5), s.title.padEnd(42), 'theory', String(s.theory.length).padStart(2), ' examples', String(s.examples.length).padStart(2), ' exercises', String(s.exercises.length).padStart(2), ' generators', s.generators.length);
 }
-console.log('\n' + CH.sections.length + ' sections, ' + errors + ' errors, ' + warnings + ' warnings');
+/* Past papers. Every question must self-check, exactly like an exercise — that is
+   what stops a mis-typed model answer going out as the "right" one. */
+const seenQ = new Set();
+for (const e of CH.exams || []) {
+  const ctx = e.id;
+  if (!e.title) err(ctx, 'no title');
+  if (!e.questions.length) err(ctx, 'no questions');
+  for (const q of e.questions) {
+    const c = ctx + ' ' + q.id;
+    if (!q.id) err(c, 'question has no id');
+    if (seenQ.has(q.id)) err(c, 'duplicate question id');
+    seenQ.add(q.id);
+    if (!q.prompt) err(c, 'no prompt');
+    checkText(c + ' prompt', q.prompt);
+    (q.hints || []).forEach((hh, i) => checkText(c + ' hint ' + (i + 1), hh));
+    if (!(q.hints || []).length) warn(c, 'no hints — there is nothing to talk her through it');
+    checkSteps(c, q.solution);
+    checkSpec(c, q.answer);
+    if (q.topic && !CH.sectionById(q.topic)) err(c, 'topic ' + q.topic + ' is not a section');
+    if (q.note) checkText(c + ' note', q.note);
+    if (q.answerText) checkText(c + ' answerText', q.answerText);
+  }
+  const p1 = e.questions.filter(q => q.part === 1).length;
+  console.log(ctx.padEnd(8), e.title.padEnd(34), e.questions.length + ' questions (' + p1 + ' long, ' + (e.questions.length - p1) + ' MCQ)');
+}
+
+console.log('\n' + CH.sections.length + ' sections, ' + (CH.exams || []).length + ' past papers, ' + errors + ' errors, ' + warnings + ' warnings');
 process.exit(errors ? 1 : 0);

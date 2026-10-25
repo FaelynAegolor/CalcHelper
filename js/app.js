@@ -242,7 +242,13 @@
     let html = '<div class="solution-title">Worked solution</div>';
     if (steps.length) html += '<ol class="solution-steps">' + steps.map(s => { const st = typeof s === 'string' ? { text: s } : s; return '<li>' + R.md(st.text) + (st.math ? '<div class="step-math">' + R.tex(st.math, true) + '</div>' : '') + '</li>'; }).join('') + '</ol>';
     const parts = partsOf(ex);
-    html += '<div class="solution-answer"><strong>Answer:</strong> ' + parts.map(p => (parts.length > 1 ? R.md(p.label || '').replace(/^<p>|<\/p>$/g, '') + ' ' : '') + R.tex(specAnswerTex(p))).join('; &nbsp;') + '</div>';
+    html += '<div class="solution-answer"><strong>Answer:</strong> ' + (ex.answerText ? R.md(ex.answerText).replace(/^<p>|<\/p>$/g, '') : parts.map(p => (parts.length > 1 ? R.md(p.label || '').replace(/^<p>|<\/p>$/g, '') + ' ' : '') + R.tex(specAnswerTex(p))).join('; &nbsp;')) + '</div>';
+    /* The reusable recipe, kept inside the solution so it never gives the game away
+       before she has had a go. */
+    if (ex.checklist && ex.checklist.length) {
+      html += '<div class="example-method"><div class="method-title">Every time, in this order</div><ol class="method-list">' +
+        ex.checklist.map(t => '<li>' + R.inlineMath(t) + '</li>').join('') + '</ol></div>';
+    }
     return html;
   }
 
@@ -422,7 +428,7 @@
       for (const s of CH.sectionsOf(ch.num)) html += '<li><a href="#/s/' + s.id + '" data-sec="' + s.id + '"><span class="sb-id">' + s.id + '</span><span class="sb-title">' + esc(s.title) + '</span><span class="sb-dot" data-dot="' + s.id + '"></span></a></li>';
       html += '</ul>';
     }
-    html += '<div class="sb-ch">More</div><ul class="sb-list"><li><a href="#/practice/1">🎲 Mixed practice</a></li><li><a href="#/help">⌨️ Typing maths</a></li><li><a href="#/settings">⚙️ Settings</a></li></ul>';
+    html += '<div class="sb-ch">More</div><ul class="sb-list"><li><a href="#/exams">📄 Past papers</a></li><li><a href="#/mock">📝 Mock paper</a></li><li><a href="#/practice/1">🎲 Mixed practice</a></li><li><a href="#/help">⌨️ Typing maths</a></li><li><a href="#/settings">⚙️ Settings</a></li></ul>';
     sb.innerHTML = html;
     refreshSidebar();
   }
@@ -452,6 +458,140 @@
     else if (act === 'hide-steps') showUpTo(0);
   });
 
+  // ---------- past papers ----------
+  function examStats(e) {
+    const ids = e.questions.map(q => q.id);
+    return { total: ids.length, done: ids.filter(id => { const r = S.ex(id); return r && r.correct; }).length };
+  }
+
+  function renderExams() {
+    setMode('practice');
+    let html = '<div class="page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Past papers</div>' +
+      '<h1>Past papers</h1><p class="lead">The real first-midterm papers, one question at a time, with a walkthrough on every question.</p></div>';
+    html += '<div class="hero-note"><p><strong>How to use these.</strong> Try the question first on paper. Stuck? Press <em>Hint</em> — the hints come one at a time and start by asking what to notice, not by telling you the method. Type your answer in to have it checked, and open the full solution whenever you want it.</p>' +
+      '<p>Nothing is timed and nothing is scored. Getting a question wrong five times and then getting it is exactly how this is meant to go.</p></div>';
+    html += '<div class="exam-grid">';
+    for (const e of CH.exams) {
+      const st = examStats(e);
+      html += '<a class="exam-card" href="#/exam/' + e.id + '"><div class="exam-card-title">' + esc(e.title) + '</div>' +
+        '<div class="exam-card-blurb">' + esc(e.blurb || '') + '</div>' +
+        '<div class="exam-card-foot"><span>' + e.questions.length + ' questions</span>' +
+        '<span class="' + (st.done ? 'exam-done' : 'muted') + '">' + st.done + ' / ' + st.total + ' right</span></div></a>';
+    }
+    html += '</div>';
+    html += '<div class="next-up">Want a fresh paper in the same shape, with different numbers every time? <a class="btn btn-primary" href="#/mock">Generate a mock paper →</a></div>';
+    html += '</div>';
+    main().innerHTML = html;
+  }
+
+  function renderExam(id) {
+    const e = CH.examById(id);
+    if (!e) { renderExams(); return; }
+    setMode('practice');
+    S.visit && S.visit(id);
+    const st = examStats(e);
+    let html = '<div class="page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › <a href="#/exams">Past papers</a></div>' +
+      '<h1>' + esc(e.title) + '</h1>' + (e.blurb ? '<p class="lead">' + esc(e.blurb) + '</p>' : '') + '</div>';
+    html += '<div class="ex-intro">You have answered <strong>' + st.done + ' of ' + st.total + '</strong> correctly so far. Work down the page, or jump to whichever question you are stuck on.</div>';
+    html += '<div class="exam-body"></div></div>';
+    main().innerHTML = html;
+    const body = $('.exam-body', main());
+    let lastPart = null;
+    e.questions.forEach(q => {
+      if (q.part !== lastPart) {
+        lastPart = q.part;
+        body.appendChild(h('<h2 class="exam-part">' + (q.part === 1 ? 'Part I — show your working' : 'Part II — multiple choice') + '</h2>'));
+      }
+      const wrap = h('<div class="exam-q"></div>');
+      wrap.appendChild(exerciseCard(q, {
+        label: (q.marks ? q.marks + ' marks' : 'Question'),
+        onProgress: () => { const s2 = examStats(e); $('.ex-intro', main()).innerHTML = 'You have answered <strong>' + s2.done + ' of ' + s2.total + '</strong> correctly so far. Work down the page, or jump to whichever question you are stuck on.'; }
+      }));
+      if (q.topic) {
+        const sec = CH.sectionById(q.topic);
+        if (sec) wrap.appendChild(h('<div class="exam-topic">Need a refresher? <a href="#/s/' + sec.id + '/learn">' + sec.id + ' ' + esc(sec.title) + '</a></div>'));
+      }
+      if (q.note) wrap.appendChild(h('<div class="exam-note"><strong>About the official answer.</strong> ' + R.md(q.note) + '</div>'));
+      body.appendChild(wrap);
+    });
+  }
+
+  /* A mock paper in the same shape as the real thing. The slots below are the
+     blueprint shared by all six past papers: the same skills turn up in the same
+     order every time, only the numbers change. Each slot names the generators that
+     can fill it, and the paper seed decides which one and with what numbers — so a
+     seed always rebuilds the identical paper, and a new seed is a fresh one. */
+  const MOCK_BLUEPRINT = [
+    { part: 1, marks: 10, from: ['1.2-g-laws', '1.2-g-rational'] },
+    { part: 1, marks: 10, from: ['1.1-g-compound', '1.4-g-compound'] },
+    { part: 1, marks: 8, from: ['1.3-g-grouping', '1.3-g-complete'] },
+    { part: 1, marks: 7, from: ['1.3-g-squares-cubes', '1.3-g-substitution', '1.3-g-bracket-factor'] },
+    { part: 1, marks: 10, from: ['1.4-g-muldiv', '1.4-g-addsub'] },
+    { part: 1, marks: 10, from: ['1.5-g-formula', '1.5-g-factor'] },
+    { part: 1, marks: 10, from: ['1.5-g-literal'] },
+    { part: 1, marks: 10, from: ['1.8-g-quotient', '1.8-g-cubic', '1.8-g-quadratic', '1.8-g-abs'] },
+    { part: 1, marks: 10, from: ['1.9-g-circle-eq', '1.9-g-circle-general', '1.9-g-distance', '1.9-g-midpoint'] },
+    { part: 1, marks: 10, from: ['1.10-g-parperp', '1.10-g-twopoints'] },
+    { part: 2, marks: 2, from: ['1.1-g-repeat'] },
+    { part: 2, marks: 2, from: ['1.2-g-simplify-root', '1.2-g-add-roots'] },
+    { part: 2, marks: 2, from: ['1.2-g-rationalise'] },
+    { part: 2, marks: 2, from: ['1.3-g-special', '1.3-g-expand'] },
+    { part: 2, marks: 2, from: ['1.4-g-simplify', '1.4-g-domain'] },
+    { part: 2, marks: 2, from: ['1.5-g-abs', '1.5-g-fraction'] },
+    { part: 2, marks: 2, from: ['1.9-g-intercepts', '1.9-g-symmetry'] },
+    { part: 2, marks: 2, from: ['1.10-g-hv', '1.10-g-read'] }
+  ];
+
+  function genById(id) {
+    for (const s of CH.sections) {
+      const g = s.generators.find(x => x.id === id);
+      if (g) return { s, g };
+    }
+    return null;
+  }
+
+  function renderMock(seedStr) {
+    setMode('practice');
+    const seed = Math.abs(parseInt(seedStr, 10)) || (Math.floor(Math.random() * 1e9) + 1);
+    const rng = M.makeRng(seed);
+    const picks = [];
+    for (const slot of MOCK_BLUEPRINT) {
+      const ids = slot.from.filter(genById);
+      if (!ids.length) continue;
+      const found = genById(ids[Math.floor(rng.next() * ids.length)]);
+      picks.push({ slot, s: found.s, g: found.g, qSeed: Math.floor(rng.next() * 1e9) + 1 });
+    }
+    const total = picks.reduce((a, p) => a + p.slot.marks, 0);
+
+    let html = '<div class="page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › <a href="#/exams">Past papers</a> › Mock</div>' +
+      '<h1>Mock paper <span class="mock-seed">#' + seed + '</span></h1>' +
+      '<p class="lead">Built in the same shape as the real papers — the same skills in the same order, with fresh numbers.</p></div>';
+    html += '<div class="ex-intro">Total ' + total + ' marks across ' + picks.length + ' questions. ' +
+      'Every question has hints and a full solution. <strong>Part II here is typed rather than multiple choice</strong>, because these are generated fresh — that makes it slightly harder than the real thing, which is no bad way to revise.' +
+      '<div class="mock-actions"><a class="btn btn-primary btn-sm" href="#/mock/' + (Math.floor(Math.random() * 1e9) + 1) + '">New paper</a> ' +
+      '<a class="btn btn-ghost btn-sm" href="#/exams">Back to past papers</a></div>' +
+      '<div class="mock-keep">Keep this link to come back to this exact paper: <code>#/mock/' + seed + '</code></div></div>';
+    html += '<div class="exam-body"></div></div>';
+    main().innerHTML = html;
+
+    const body = $('.exam-body', main());
+    let lastPart = null, n = 0;
+    for (const p of picks) {
+      if (p.slot.part !== lastPart) {
+        lastPart = p.slot.part;
+        body.appendChild(h('<h2 class="exam-part">' + (p.slot.part === 1 ? 'Part I — show your working' : 'Part II — short questions') + '</h2>'));
+      }
+      n++;
+      let ex;
+      try { ex = makeGenerated(p.s, p.g, p.qSeed); }
+      catch (err) { console.error(err); continue; }
+      const wrap = h('<div class="exam-q"></div>');
+      wrap.appendChild(exerciseCard(ex, { practice: true, label: 'Q' + n + ' · ' + p.slot.marks + ' marks' }));
+      wrap.appendChild(h('<div class="exam-topic">This is ' + p.s.id + ' — <a href="#/s/' + p.s.id + '/learn">' + esc(p.s.title) + '</a></div>'));
+      body.appendChild(wrap);
+    }
+  }
+
   /* Checklist ticks. Restored after every render, saved on change. These are the
      student's own "I can do this" marks — nothing checks or scores them. */
   function restoreChecks() {
@@ -475,6 +615,9 @@
       if (!parts.length) renderHome();
       else if (parts[0] === 's') renderSection(parts[1], parts[2] || 'learn');
       else if (parts[0] === 'practice') renderMixedPractice(parts[1]);
+      else if (parts[0] === 'exams') renderExams();
+      else if (parts[0] === 'exam') renderExam(parts[1]);
+      else if (parts[0] === 'mock') renderMock(parts[1]);
       else if (parts[0] === 'settings') renderSettings();
       else if (parts[0] === 'help') renderHelp();
       else renderHome();

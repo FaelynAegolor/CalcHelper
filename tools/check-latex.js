@@ -41,5 +41,18 @@ for (const s of CH.sections) {
     }
   });
 }
+for (const e of CH.exams || []) {
+  for (const q of e.questions) {
+    ctx = e.id + ' ' + q.id;
+    R.md(q.prompt);
+    (q.hints || []).forEach(hh => R.md(hh));
+    steps(q.solution, ctx);
+    specs(q.answer, ctx);
+    if (q.note) R.md(q.note);
+    if (q.answerText) R.md(q.answerText);
+    (q.checklist || []).forEach(t => R.inlineMath(t));
+  }
+}
+
 console.log('KaTeX renders checked:', n, ' problems:', bad);
 process.exit(bad ? 1 : 0);

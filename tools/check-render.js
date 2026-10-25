@@ -100,6 +100,20 @@ for (const s of CH.sections) {
   }
 }
 
+for (const e of CH.exams || []) {
+  for (const q of e.questions) {
+    const ctx = e.id + ' ' + q.id;
+    blocks++;
+    checkHtml(ctx + ' prompt', R.md(q.prompt));
+    (q.hints || []).forEach((hh, i) => checkHtml(ctx + ' hint' + (i + 1), R.md(hh)));
+    steps(ctx, q.solution);
+    specs(ctx, q.answer);
+    if (q.note) checkHtml(ctx + ' note', R.md(q.note));
+    if (q.answerText) checkHtml(ctx + ' answerText', R.md(q.answerText));
+    (q.checklist || []).forEach((t, i) => checkHtml(ctx + ' method' + (i + 1), R.inlineMath(t)));
+  }
+}
+
 /* Collapse generator seeds: one broken template reports 25 times otherwise. */
 const seen = new Map();
 for (const p of problems) {
