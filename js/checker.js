@@ -457,6 +457,86 @@
   }
 
   // ---------- answer checking ----------
+  /* Complex answers need genuine complex arithmetic, not a rewrite of i^k: in
+     (2+3i)(4-i) there is no i^2 node at all until you multiply out. So evaluate the
+     whole expression over the complex numbers, with i as (0,1).
+     Only reached when a question sets `complex: true` on its answer. */
+  const cx = (re, im) => ({ re: re, im: im || 0 });
+  const cxAdd = (a, b) => cx(a.re + b.re, a.im + b.im);
+  const cxSub = (a, b) => cx(a.re - b.re, a.im - b.im);
+  const cxMul = (a, b) => cx(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re);
+  function cxDiv(a, b) {
+    const d = b.re * b.re + b.im * b.im;
+    if (d === 0) return cx(NaN, NaN);
+    return cx((a.re * b.re + a.im * b.im) / d, (a.im * b.re - a.re * b.im) / d);
+  }
+  function cxPow(a, n) {
+    if (!Number.isInteger(n)) {
+      // only meaningful here for a real, non-negative base
+      if (Math.abs(a.im) > 1e-12 || a.re < 0) return cx(NaN, NaN);
+      return cx(Math.pow(a.re, n), 0);
+    }
+    if (n < 0) return cxDiv(cx(1, 0), cxPow(a, -n));
+    let out = cx(1, 0), base = a, k = n;
+    while (k > 0) { if (k & 1) out = cxMul(out, base); base = cxMul(base, base); k >>= 1; }
+    return out;
+  }
+  function evalComplex(n, scope) {
+    switch (n.t) {
+      case 'num': return cx(n.v, 0);
+      case 'var':
+        if (n.name === 'i') return cx(0, 1);
+        if (n.name in scope) return cx(scope[n.name], 0);
+        if (n.name === 'e') return cx(Math.E, 0);
+        return cx(NaN, NaN);
+      case 'const': return cx(P.evaluate(n, scope), 0);
+      case 'group': return evalComplex(n.a, scope);
+      case 'neg': { const a = evalComplex(n.a, scope); return cx(-a.re, -a.im); }
+      case 'bin': {
+        const a = evalComplex(n.a, scope), b = evalComplex(n.b, scope);
+        if (n.op === '+') return cxAdd(a, b);
+        if (n.op === '-') return cxSub(a, b);
+        if (n.op === '*') return cxMul(a, b);
+        if (n.op === '/') return cxDiv(a, b);
+        if (n.op === '^') {
+          if (Math.abs(b.im) > 1e-12) return cx(NaN, NaN);
+          return cxPow(a, b.re);
+        }
+        return cx(NaN, NaN);
+      }
+      case 'root': case 'func': case 'call': {
+        // roots and functions are only supported on real, non-negative values here
+        const inner = evalComplex(n.a || (n.args && n.args[0]), scope);
+        if (Math.abs(inner.im) > 1e-12) return cx(NaN, NaN);
+        return cx(P.evaluate(n, scope), 0);
+      }
+      default: return cx(P.evaluate(n, scope), 0);
+    }
+  }
+  /* Equal if both sides land on the same complex value. Any other letters are
+     sampled as ordinary reals, a few times over, exactly as the real path does. */
+  function compareComplex(astS, astR, varList) {
+    const others = varList.filter(v => v !== 'i');
+    const pts = others.length ? samplePoints(others, 6) : [{}];
+    let checked = 0;
+    for (const pt of pts) {
+      const s = evalComplex(astS, pt), r = evalComplex(astR, pt);
+      if (!isFinite(s.re) || !isFinite(s.im) || !isFinite(r.re) || !isFinite(r.im)) continue;
+      checked++;
+      if (Math.abs(s.re - r.re) > 1e-7 || Math.abs(s.im - r.im) > 1e-7) {
+        return { equal: false, s: s, r: r, point: pt };
+      }
+    }
+    return checked ? { equal: true } : { equal: null };
+  }
+  const cxText = z => {
+    const re = Math.abs(z.re) < 1e-12 ? 0 : z.re, im = Math.abs(z.im) < 1e-12 ? 0 : z.im;
+    if (!im) return fmt(re);
+    const sign = im < 0 ? ' - ' : ' + ';
+    const mag = Math.abs(im) === 1 ? '' : fmt(Math.abs(im));
+    return (re ? fmt(re) + sign : (im < 0 ? '-' : '')) + mag + 'i';
+  };
+
   // spec: {type, value, vars?, form?, solveFor?}
   function checkAnswer(input, spec) {
     const text = String(input || '').trim();
@@ -470,6 +550,16 @@
         }
         case 'expression': {
           const astS = P.parse(text), astR = P.parse(spec.value);
+          if (spec.complex) {
+            const allowedC = new Set(spec.vars || ['i']);
+            allowedC.add('i');
+            const extraC = [...freeVars(astS)].filter(x => !allowedC.has(x));
+            if (extraC.length) return { ok: false, readAs: P.toLatex(astS), message: 'Your answer uses ' + extraC.join(', ') + ', which should not appear here.' };
+            const c = compareComplex(astS, astR, [...allowedC]);
+            if (c.equal === null) return { ok: false, readAs: P.toLatex(astS), message: 'Could not work your answer out — check it is a number in the form $a + bi$.' };
+            if (!c.equal) return { ok: false, readAs: P.toLatex(astS), message: 'Not quite — your answer comes to ' + cxText(c.s) + '.' };
+            return { ok: true, readAs: P.toLatex(astS), message: 'Correct!' };
+          }
           const allowed = new Set(spec.vars || [...freeVars(astR)]);
           const extra = [...freeVars(astS)].filter(x => !allowed.has(x));
           if (extra.length) return { ok: false, readAs: P.toLatex(astS), message: 'Your answer uses ' + extra.join(', ') + ', which should not appear here.' };
