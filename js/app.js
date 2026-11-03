@@ -286,7 +286,7 @@
       html += '<section class="chapter"><h2><span class="ch-num">Chapter ' + ch.num + '</span> ' + esc(ch.title) + '</h2>' + (ch.blurb ? '<p class="muted">' + esc(ch.blurb) + '</p>' : '') + '<div class="section-grid">';
       for (const s of CH.sectionsOf(ch.num)) {
         const st = S.sectionStats(s);
-        html += '<a class="section-card" href="#/s/' + s.id + '"><div class="sc-id">' + s.id + '</div><div class="sc-title">' + esc(s.title) + '</div><div class="sc-summary">' + esc(s.summary || '') + '</div><div class="sc-progress">' + progressBar(st) + '</div></a>';
+        html += '<a class="section-card" href="#/s/' + s.id + '"><div class="sc-id">' + s.id + '</div><div class="sc-title">' + esc(s.title) + '</div><div class="sc-summary">' + R.inlineMath(s.summary || '') + '</div><div class="sc-progress">' + progressBar(st) + '</div></a>';
       }
       html += '</div></section>';
     }
@@ -305,7 +305,7 @@
     const idx = list.indexOf(s);
     const st = S.sectionStats(s);
     const tabs = [['learn', '📘 Learn'], ['examples', '🧭 Examples (' + s.examples.length + ')'], ['exercises', '✏️ Exercises (' + st.done + '/' + s.exercises.length + ')'], ['practice', '🎲 Practice']];
-    let html = '<div class="page section-page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Chapter ' + s.chapter + (ch ? ': ' + esc(ch.title) : '') + '</div><h1><span class="sec-id">' + s.id + '</span> ' + esc(s.title) + '</h1>' + (s.summary ? '<p class="lead">' + esc(s.summary) + '</p>' : '') + '</div>';
+    let html = '<div class="page section-page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Chapter ' + s.chapter + (ch ? ': ' + esc(ch.title) : '') + '</div><h1><span class="sec-id">' + s.id + '</span> ' + esc(s.title) + '</h1>' + (s.summary ? '<p class="lead">' + R.inlineMath(s.summary) + '</p>' : '') + '</div>';
     html += '<nav class="tabs">' + tabs.map(([k, label]) => '<a class="tab' + (k === tab ? ' active' : '') + '" href="#/s/' + s.id + '/' + k + '">' + label + '</a>').join('') + '</nav>';
     html += '<div class="tab-body" id="tab-body"></div>';
     html += '<nav class="pager">' + (idx > 0 ? '<a href="#/s/' + list[idx - 1].id + '/' + tab + '">← ' + list[idx - 1].id + ' ' + esc(list[idx - 1].title) + '</a>' : '<span></span>') + (idx < list.length - 1 ? '<a href="#/s/' + list[idx + 1].id + '/' + tab + '">' + list[idx + 1].id + ' ' + esc(list[idx + 1].title) + ' →</a>' : '<span></span>') + '</nav></div>';

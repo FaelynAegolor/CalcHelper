@@ -74,6 +74,8 @@ const specs = (ctx, ans) => (ans.type === 'multi' ? ans.parts : [ans]).forEach((
 
 let blocks = 0;
 for (const s of CH.sections) {
+  // the summary shows on the home card and under the section title
+  if (s.summary) checkHtml(s.id + ' summary', R.inlineMath(s.summary));
   s.theory.forEach((b, i) => { blocks++; checkHtml(s.id + ' theory[' + i + ']', R.block(b)); });
   s.examples.forEach((e, i) => { blocks++; checkHtml(s.id + ' example' + (i + 1) + ' "' + (e.title || '') + '"', R.exampleHtml(e)); });
   for (const e of s.exercises) {
