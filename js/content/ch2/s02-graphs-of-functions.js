@@ -182,11 +182,12 @@
         make(r) {
           const kind = r.pick(['square', 'cube', 'abs', 'linear']);
           const x = r.nz(-5, 5);
-          let tex, val;
-          if (kind === 'square') { tex = 'x^2'; val = x * x; }
-          else if (kind === 'cube') { tex = 'x^3'; val = x * x * x; }
-          else if (kind === 'abs') { tex = '|x|'; val = Math.abs(x); }
-          else { const m = r.nz(-4, 4), c = r.nz(-6, 6); tex = M.polyTex([m, c]); val = m * x + c; }
+          let tex, val, sub;   // sub = the substituted line, before the answer
+          const bx = x < 0 ? '(' + x + ')' : String(x);
+          if (kind === 'square') { tex = 'x^2'; val = x * x; sub = bx + '^2'; }
+          else if (kind === 'cube') { tex = 'x^3'; val = x * x * x; sub = bx + '^3'; }
+          else if (kind === 'abs') { tex = '|x|'; val = Math.abs(x); sub = '|' + x + '|'; }
+          else { const m = r.nz(-4, 4), c = r.nz(-6, 6); tex = M.polyTex([m, c]); val = m * x + c; sub = (m === 1 ? '' : m === -1 ? '-' : m) + '(' + x + ') ' + M.signed(c) + ' = ' + (m * x) + ' ' + M.signed(c); }
           return {
             prompt: 'For $f(x) = ' + tex + '$, find $f(' + x + ')$.',
             answer: { type: 'number', value: val },
@@ -194,7 +195,7 @@
               kind === 'square' ? 'Squaring makes the answer positive whatever the sign of the input.'
                 : kind === 'cube' ? 'Cubing **keeps** the sign, unlike squaring.'
                 : kind === 'abs' ? 'The bars just strip off any minus sign.' : 'Multiply first, then add.'],
-            solution: [{ text: 'Substitute with brackets.', math: 'f(' + x + ') = ' + val }]
+            solution: [{ text: 'Substitute, then work it out.', math: 'f(' + x + ') = ' + sub + ' = ' + val }]
           };
         } },
 
@@ -222,8 +223,12 @@
           const pow = r.pick([1, 1, 2, 3]);
           const yTex = pow === 1 ? 'y' : 'y^' + pow;
           const isFn = pow !== 2;
+          // b·y^p = c - a·x, so y^p = (c - a·x)/b — kept with a positive bottom
+          const sg = b < 0 ? -1 : 1;
+          const top = String(sg * c) + M.term(-sg * a, 'x', false);
+          const iso = Math.abs(b) === 1 ? top : '\\dfrac{' + top + '}{' + Math.abs(b) + '}';
           return {
-            prompt: 'Does $' + a + 'x ' + (b < 0 ? '-' : '+') + ' ' + Math.abs(b) + yTex + ' = ' + c + '$ define $y$ as a function of $x$?',
+            prompt: 'Does $' + M.term(a, 'x') + M.term(b, yTex, false) + ' = ' + c + '$ define $y$ as a function of $x$?',
             answer: { type: 'choice', value: isFn ? 'yes' : 'no',
               options: [{ id: 'yes', label: 'Yes' }, { id: 'no', label: 'No' }],
               wrongMessage: 'Not quite — rearrange for $y$ and see whether a $\\pm$ has to appear.' },
@@ -231,9 +236,12 @@
               pow === 1 ? 'Just divide — one clean answer, no $\\pm$.'
                 : pow === 2 ? 'Square-rooting forces a $\\pm$, so one input would give two outputs.'
                 : 'A cube root gives exactly one answer, so no $\\pm$ appears.'],
-            solution: [{ text: 'Isolate the $y$ term.', math: Math.abs(b) + yTex + ' = \\ldots' },
-              { text: pow === 2 ? 'Undoing a square needs a $\\pm$, which gives two outputs for one input — not a function.'
-                : 'Undoing this power gives exactly one answer, so it is a function.' }]
+            solution: [{ text: b === 1 ? 'Move the $x$ term to the other side.' : 'Move the $x$ term to the other side, then divide by $' + b + '$.', math: yTex + ' = ' + iso },
+              { text: pow === 2 ? 'To undo the square you must take a square root, and that needs a $\\pm$.'
+                  : 'To undo the cube, take a cube root. Cube roots have only one answer, so no $\\pm$.',
+                math: 'y = ' + (pow === 2 ? '\\pm\\sqrt{' + iso + '}' : '\\sqrt[3]{' + iso + '}') },
+              { text: pow === 2 ? 'The $\\pm$ gives two outputs for one input — **not** a function.' : 'Exactly one output for each input — so **yes**, it is a function.' }]
+              .filter((st, i) => !(pow === 1 && i === 1))
           };
         } }
     ]

@@ -4,6 +4,10 @@
    as a formula. */
 (function () {
   const M = CH.M, V = CH.V;
+  /* worked substitution lines for the generators: subLin(2, 5, -4) gives "2(-4) + 5 = -8 + 5" */
+  const coef = a => a === 1 ? '' : a === -1 ? '-' : String(a);
+  const subLin = (a, b, x) => coef(a) + '(' + x + ') ' + M.signed(b) + ' = ' + (a * x) + ' ' + M.signed(b);
+  const subSq = (c, d, x) => coef(c) + '(' + x + ')^2 ' + M.signed(d) + ' = ' + (c * x * x) + ' ' + M.signed(d);
 
   CH.registerSection({
     id: '2.7', chapter: 2, exam: 2, title: 'Combining Functions',
@@ -206,8 +210,9 @@
             hints: ['Work out $f(' + x + ')$ and $g(' + x + ')$ separately first.',
               '$f(' + x + ') = ' + fv + '$ and $g(' + x + ') = ' + gv + '$.',
               'Now ' + (op === '+' ? 'add them' : op === '-' ? 'subtract, in that order' : 'multiply them') + '.'],
-            solution: [{ text: 'Each function at that input.', math: 'f(' + x + ') = ' + fv + ', \\qquad g(' + x + ') = ' + gv },
-              { text: 'Combine.', math: name + '(' + x + ') = ' + val }]
+            solution: [{ text: 'Put $' + x + '$ into $f$, in brackets.', math: 'f(' + x + ') = ' + subLin(a, b, x) + ' = ' + fv },
+              { text: 'And into $g$.', math: 'g(' + x + ') = ' + subLin(c, d, x) + ' = ' + gv },
+              { text: op === '+' ? 'Add the two answers.' : op === '-' ? 'Subtract, $f$ minus $g$.' : 'Multiply the two answers.', math: name + '(' + x + ') = ' + fv + (op === '+' ? ' + ' : op === '-' ? ' - ' : ' \\times ') + M.paren(gv) + ' = ' + val }]
           };
         } },
 
@@ -218,6 +223,8 @@
           const fFirst = r.bool(0.5);
           const f = t => a * t + b, g = t => c * t * t + d;
           const inner = fFirst ? f(x) : g(x);
+          // keep the second step small: g(-15) = -678 tests arithmetic, not composition
+          if (Math.abs(inner) > 5) return this.make(r);
           const val = fFirst ? g(inner) : f(inner);
           return {
             prompt: 'Let $f(x) = ' + M.polyTex([a, b]) + '$ and $g(x) = ' + M.polyTex([c, 0, d]) + '$. Find $' + (fFirst ? 'g(f(' + x + '))' : 'f(g(' + x + '))') + '$.',
@@ -225,8 +232,8 @@
             hints: ['Work from the inside out — the function nearest the number goes first.',
               'That is $' + (fFirst ? 'f' : 'g') + '$, and $' + (fFirst ? 'f' : 'g') + '(' + x + ') = ' + inner + '$.',
               'Now put $' + inner + '$ into $' + (fFirst ? 'g' : 'f') + '$, in brackets.'],
-            solution: [{ text: 'Inner function first.', math: (fFirst ? 'f' : 'g') + '(' + x + ') = ' + inner },
-              { text: 'Then the outer one.', math: (fFirst ? 'g' : 'f') + '(' + inner + ') = ' + val }]
+            solution: [{ text: 'Inner function first. Put $' + x + '$ into $' + (fFirst ? 'f' : 'g') + '$, in brackets.', math: (fFirst ? 'f' : 'g') + '(' + x + ') = ' + (fFirst ? subLin(a, b, x) : subSq(c, d, x)) + ' = ' + inner },
+              { text: 'Now put that answer, $' + inner + '$, into $' + (fFirst ? 'g' : 'f') + '$.', math: (fFirst ? 'g' : 'f') + '(' + inner + ') = ' + (fFirst ? subSq(c, d, inner) : subLin(a, b, inner)) + ' = ' + val }]
           };
         } },
 
@@ -243,9 +250,10 @@
               'So substitute the whole of $' + (fFirst ? 'f' : 'g') + '$ into $' + (fFirst ? 'g' : 'f') + '$, in brackets.',
               'Then expand and collect.'],
             solution: [{ text: 'Substitute the inner function in full.',
-              math: fFirst ? 'g(f(x)) = ' + c + '(' + M.polyTex([a, b]) + ')' + (d < 0 ? ' - ' + (-d) : ' + ' + d)
-                : 'f(g(x)) = ' + a + '(' + M.polyTex([c, d]) + ')' + (b < 0 ? ' - ' + (-b) : ' + ' + b) },
-              { text: 'Expand and collect.', math: M.polyTex([m, k]) }]
+              math: fFirst ? 'g(f(x)) = ' + coef(c) + '(' + M.polyTex([a, b]) + ') ' + M.signed(d)
+                : 'f(g(x)) = ' + coef(a) + '(' + M.polyTex([c, d]) + ') ' + M.signed(b) },
+              { text: 'Multiply out the bracket.', math: '= ' + M.term(m, 'x') + ' ' + M.signed(fFirst ? c * b : a * d) + ' ' + M.signed(fFirst ? d : b) },
+              { text: 'Collect the numbers.', math: '= ' + M.polyTex([m, k]) }]
           };
         } },
 
@@ -254,7 +262,7 @@
           const p = r.int(-6, 2), q = r.int(3, 7);
           // sqrt(x - p) / (x - q)  ->  [p, q) u (q, inf)
           return {
-            prompt: 'Find the domain of $f(x) = \\dfrac{\\sqrt{x ' + (p < 0 ? '+ ' + (-p) : '- ' + p) + '}}{x ' + (q < 0 ? '+ ' + (-q) : '- ' + q) + '}$.',
+            prompt: 'Find the domain of $f(x) = \\dfrac{\\sqrt{' + M.shift('x', p) + '}}{' + M.shift('x', q) + '}$.',
             answer: { type: 'interval', value: '[' + p + ', ' + q + ') U (' + q + ', inf)', vars: ['x'] },
             hints: ['Two separate things can break: the root on top and the bottom.',
               'Root: the inside must be $\\ge 0$, so $x \\ge ' + p + '$.',

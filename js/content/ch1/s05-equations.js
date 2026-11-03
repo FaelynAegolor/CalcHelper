@@ -455,16 +455,20 @@
           const quad = M.polyTex([1, -(2 * k + 1), k * k - m]);
           return { prompt: 'Solve $\\sqrt{' + inside + '} = ' + rhs + '$.', answer: { type: 'set', value: sol, extraneousHint: true },
             hints: ['The root is already alone. Square both sides — remember $(' + rhs + ')^2$ has three terms.', 'You should get $' + quad + ' = 0$, with candidates $' + s + '$ and $' + s2 + '$. **Check both** in the original.'],
-            solution: [{ math: inside + ' = ' + M.polyTex(M.polyMul([1, -k], [1, -k])), text: 'Square both sides.' }, { math: quad + ' = 0 \\Rightarrow (x - ' + s + ')(x ' + M.signed(-s2) + ') = 0', text: 'Rearrange and factor.' },
-              { text: 'Check $x = ' + s + '$: $\\sqrt{' + (s + m) + '} = ' + (s - k) + '$ and $' + s + ' - ' + k + ' = ' + (s - k) + '$ ✓. Check $x = ' + s2 + '$: $\\sqrt{' + (s2 + m) + '} = ' + Math.abs(s2 - k) + '$ but $' + rhs.replace('x', '(' + s2 + ')') + ' = ' + (s2 - k) + '$ ' + (extraneous ? '✗ — extraneous, reject it.' : '✓.') + ' So $S = ' + setTex(sol) + '$.' }] };
+            solution: [{ math: inside + ' = ' + M.polyTex(M.polyMul([1, -k], [1, -k])), text: 'Square both sides.' }, { math: quad + ' = 0 \\Rightarrow (' + M.shift('x', s) + ')(' + M.shift('x', s2) + ') = 0', text: 'Rearrange and factor.' },
+              { text: 'Check $x = ' + s + '$: $\\sqrt{' + (s + m) + '} = ' + (s - k) + '$ and $' + rhs.replace('x', M.paren(s)) + ' = ' + (s - k) + '$ ✓. Check $x = ' + s2 + '$: $\\sqrt{' + (s2 + m) + '} = ' + Math.abs(s2 - k) + '$ but $' + rhs.replace('x', '(' + s2 + ')') + ' = ' + (s2 - k) + '$ ' + (extraneous ? '✗ — extraneous, reject it.' : '✓.') + ' So $S = ' + setTex(sol) + '$.' }] };
         } },
       { id: '1.5-g-abs', title: 'Absolute value equations', desc: 'Two cases — or none.',
         make(r) {
           const a = r.pick([1, 2, 3, 4]), b = r.nz(-9, 9), c = r.pick([-4, 0, 1, 2, 3, 5, 6, 7, 8]);
           const sols = c < 0 ? [] : c === 0 ? [-b / a] : [(c - b) / a, (-c - b) / a].sort((x, y) => x - y);
           return { prompt: 'Solve $|' + lin(a, b) + '| = ' + c + '$.', answer: { type: 'set', value: sols, display: setTex(sols.map(x => CH.C.fmtTex(x))) },
-            hints: [c < 0 ? 'Can an absolute value be negative?' : 'Split into two cases: $' + lin(a, b) + ' = ' + c + '$ or $' + lin(a, b) + ' = -' + c + '$.'],
-            solution: c < 0 ? ['An absolute value is never negative, so $S = \\varnothing$.'] : [{ math: lin(a, b) + ' = ' + c + ' \\Rightarrow x = ' + CH.C.fmtTex((c - b) / a) + ' \\qquad ' + lin(a, b) + ' = ' + (-c) + ' \\Rightarrow x = ' + CH.C.fmtTex((-c - b) / a), text: 'Solve both cases.' + (c === 0 ? ' (Both give the same value.)' : '') }] };
+            hints: c < 0 ? ['Can an absolute value ever be negative?', 'Distance from zero is never negative — so no $x$ can make this true.']
+              : c === 0 ? ['The only number whose absolute value is $0$ is $0$ itself.', 'So there is just one case: $' + lin(a, b) + ' = 0$.']
+              : ['An absolute value equal to $' + c + '$ means the inside is $' + c + '$ **or** $-' + c + '$.', 'Split into two cases: $' + lin(a, b) + ' = ' + c + '$ or $' + lin(a, b) + ' = -' + c + '$, and solve each.'],
+            solution: c < 0 ? ['An absolute value is never negative, so $S = \\varnothing$.']
+              : c === 0 ? [{ math: lin(a, b) + ' = 0 \\Rightarrow x = ' + CH.C.fmtTex(-b / a), text: 'Only one case, because only $0$ has absolute value $0$.' }]
+              : [{ math: lin(a, b) + ' = ' + c + ' \\Rightarrow x = ' + CH.C.fmtTex((c - b) / a) + ' \\qquad ' + lin(a, b) + ' = ' + (-c) + ' \\Rightarrow x = ' + CH.C.fmtTex((-c - b) / a), text: 'Solve both cases.' }] };
         } }
     ]
   });

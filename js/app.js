@@ -62,6 +62,7 @@
       '<div class="ex-head"><span class="ex-num">' + esc(opts.label || 'Exercise') + '</span>' +
       (opts.practice ? '' : '<span class="badge badge-' + status + '">' + { done: '✓ done', tried: 'in progress', new: 'not started' }[status] + '</span>') + '</div>' +
       '<div class="ex-prompt">' + R.md(ex.prompt) + '</div>' +
+      (ex.svg ? '<figure class="fig ex-fig">' + ex.svg + '</figure>' : '') +
       '<div class="ex-answer"></div>' +
       '<div class="ex-feedback" hidden></div>' +
       '<div class="ex-tools">' +
@@ -115,7 +116,7 @@
     let checkedOnce = false;
     function check() {
       const fb = $('.ex-feedback', card);
-      const results = inputs.map(i => C.checkAnswer(i.get(), i.spec));
+      const results = inputs.map(i => C.checkAnswer(i.get(), i.spec, { prompt: ex.prompt }));
       const allOk = results.every(r => r.ok);
       let html = '';
       results.forEach((r, i) => {
@@ -204,7 +205,12 @@
     try {
       let tex;
       switch (spec.type) {
-        case 'number': case 'expression': tex = P.toLatex(P.parse(text)); break;
+        case 'number': tex = P.toLatex(P.parse(text)); break;
+        case 'expression': {
+          // show "y = ..." back as typed, but parse only the expression (as the checker does)
+          const m = /^\s*((?:[a-zA-Z](?:\^\s*\(?-1\)?)?\s*\(\s*[a-z]\s*\)|[a-zA-Z]))\s*=\s*(?=\S)/.exec(text);
+          tex = (m ? m[1].replace(/\s+/g, '') + ' = ' : '') + P.toLatex(P.parse(m ? text.slice(m[0].length) : text)); break;
+        }
         case 'set': tex = C.setToLatex(C.parseNumberSet(text, spec.vars ? spec.vars[0] : 'x')); break;
         case 'interval': tex = C.intervalsToLatex(C.parseIntervalSet(text, spec.vars ? spec.vars[0] : 'x')); break;
         case 'equation': { const r = P.parseRelation(text); tex = r ? P.relationToLatex(r) : null; break; }

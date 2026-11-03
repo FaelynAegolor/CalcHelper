@@ -6,6 +6,19 @@
   const nl = V.numberLine;
   const OPS = { '<': '<', '<=': '\\le', '>': '>', '>=': '\\ge' };
   const flipOp = { '<': '>', '<=': '>=', '>': '<', '>=': '<=' };
+  /* The worked step generators used to skip: one test number in each region, and
+     the sign it gives — exactly the method the section teaches. */
+  function testStep(zeros, F) {
+    const z = zeros.slice().sort((a, b) => a - b);
+    const pts = [Math.floor(z[0]) - 1];
+    for (let i = 0; i + 1 < z.length; i++) {
+      const m = Math.floor((z[i] + z[i + 1]) / 2);
+      pts.push(m > z[i] && m < z[i + 1] ? m : (z[i] + z[i + 1]) / 2);
+    }
+    pts.push(Math.ceil(z[z.length - 1]) + 1);
+    const bits = pts.map(t => '$x = ' + C.fmtTex(t) + '$ gives ' + (F(t) > 0 ? '$+$' : '$-$'));
+    return { text: 'Test one number in each region: ' + bits.join(', ') + '.' };
+  }
 
   CH.registerSection({
     id: '1.8', chapter: 1, exam: 1, title: 'Inequalities',
@@ -252,7 +265,7 @@
           const val = between ? (closed ? '[' : '(') + p + ', ' + q + (closed ? ']' : ')') : '(-inf, ' + p + (closed ? ']' : ')') + ' U ' + (closed ? '[' : '(') + q + ', inf)';
           return { prompt: 'Solve $' + lhs + ' ' + OPS[op] + ' 0$.', answer: { type: 'interval', value: val },
             hints: [factored ? 'The zeros are $' + p + '$ and $' + q + '$.' : 'Factor: $' + M.polyTex(coeffs) + ' = ' + paren(lin(1, -p)) + paren(lin(1, -q)) + '$, so the zeros are $' + p + '$ and $' + q + '$.', 'The product is negative **between** the zeros and positive **outside**. ' + (closed ? 'Include the zeros.' : 'Do not include the zeros.')],
-            solution: [{ text: (factored ? '' : 'Factor: $' + paren(lin(1, -p)) + paren(lin(1, -q)) + '$. ') + 'Zeros $' + p + '$ and $' + q + '$ split the line into three regions with signs $+, -, +$.' }, { text: 'We want ' + (between ? 'negative' : 'positive') + (closed ? ' or zero' : '') + ':', math: 'S = ' + C.intervalsToLatex(C.parseIntervalSet(val)) }] };
+            solution: [{ text: (factored ? '' : 'Factor: $' + paren(lin(1, -p)) + paren(lin(1, -q)) + '$. ') + 'The zeros $' + p + '$ and $' + q + '$ split the line into three regions.' }, testStep([p, q], x => (x - p) * (x - q)), { text: 'We want ' + (between ? 'negative' : 'positive') + (closed ? ' or zero' : '') + ':', math: 'S = ' + C.intervalsToLatex(C.parseIntervalSet(val)) }] };
         } },
       { id: '1.8-g-cubic', title: 'Three factors', desc: 'Four regions, count the minuses.',
         make(r) {
@@ -268,7 +281,7 @@
           const val = C.intervalsToInput(C.normalizeIntervals(ints));
           return { prompt: 'Solve $' + lhs + ' ' + OPS[op] + ' 0$.', answer: { type: 'interval', value: val },
             hints: ['Zeros: $' + zs.join(', ') + '$. That makes four regions.', 'In the leftmost region all three factors are negative (product $-$); each time you pass a zero, one factor changes sign.'],
-            solution: [{ text: 'Zeros $' + zs.join(', ') + '$. The product\'s sign in the four regions, left to right, is $-, +, -, +$.' }, { text: 'We want ' + (wantNeg ? 'negative' : 'positive') + (closed ? ' or zero (include the zeros)' : ' (exclude the zeros)') + ':', math: 'S = ' + C.intervalsToLatex(C.parseIntervalSet(val)) }] };
+            solution: [{ text: 'The zeros $' + zs.join(', ') + '$ split the line into four regions.' }, testStep(zs, x => (x - zs[0]) * (x - zs[1]) * (x - zs[2])), { text: 'We want ' + (wantNeg ? 'negative' : 'positive') + (closed ? ' or zero (include the zeros)' : ' (exclude the zeros)') + ':', math: 'S = ' + C.intervalsToLatex(C.parseIntervalSet(val)) }] };
         } },
       { id: '1.8-g-quotient', title: 'Quotient inequalities', desc: 'Never include the denominator\'s zero.',
         make(r) {
@@ -285,7 +298,7 @@
           const val = C.intervalsToInput(C.normalizeIntervals(ints));
           return { prompt: 'Solve $\\dfrac{' + lin(a, p) + '}{' + lin(1, q) + '} ' + OPS[op] + ' 0$.', answer: { type: 'interval', value: val },
             hints: ['Zero of the numerator: $x = ' + C.fmtTex(zn) + '$. Zero of the denominator: $x = ' + zd + '$.', 'Sign chart with three regions. ' + (closed ? 'Include the numerator\'s zero, but never the denominator\'s.' : 'Neither endpoint is included.')],
-            solution: [{ text: 'The quotient can change sign at $x = ' + C.fmtTex(zn) + '$ (top) and $x = ' + zd + '$ (bottom). Its sign is $+$ outside these two values and $-$ between them.' }, { text: 'We want ' + (wantNeg ? 'negative' : 'positive') + (closed ? ' or zero. The numerator zero $' + C.fmtTex(zn) + '$ is included; $' + zd + '$ is excluded (division by zero).' : '.'), math: 'S = ' + C.intervalsToLatex(C.parseIntervalSet(val)) }] };
+            solution: [{ text: 'The quotient can only change sign at $x = ' + C.fmtTex(zn) + '$ (top is zero) and $x = ' + zd + '$ (bottom is zero). They split the line into three regions.' }, testStep([zn, zd], x => (a * x + p) / (x + q)), { text: 'We want ' + (wantNeg ? 'negative' : 'positive') + (closed ? ' or zero. The numerator zero $' + C.fmtTex(zn) + '$ is included; $' + zd + '$ is excluded (division by zero).' : '.'), math: 'S = ' + C.intervalsToLatex(C.parseIntervalSet(val)) }] };
         } },
       { id: '1.8-g-repeated', title: 'Repeated (squared) factors', desc: 'A squared factor never changes the sign.',
         make(r) {

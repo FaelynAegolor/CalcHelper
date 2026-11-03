@@ -74,7 +74,7 @@
         problem: 'Find all the zeros of $P(x) = x^4 - 5x^2 + 4$ and factor it completely.',
         steps: [
           { text: 'Before hunting candidates, notice the powers: $4$ and $2$, one double the other. That is a quadratic in disguise.' },
-          { text: 'Think of it as $u^2 - 5u + 4$ with $u = x^2$, which factors easily.', math: '(x^2 - 1)(x^2 - 4)' },
+          { text: 'Think of it as $u^2 - 5u + 4$ with $u = x^2$ — an ordinary quadratic, factored the usual way: two numbers multiplying to $4$ and adding to $-5$.', math: '(x^2 - 1)(x^2 - 4)' },
           { text: 'Each bracket is a difference of squares, so keep going.', math: '= (x-1)(x+1)(x-2)(x+2)' },
           { text: 'Read the zeros off the brackets.', math: 'x = 1,\\ -1,\\ 2,\\ -2' }
         ],
@@ -104,7 +104,7 @@
         answer: { type: 'set', value: [1, 2, -5], vars: ['x'] },
         hints: ['Try $x=1$ first — it is the quickest candidate to test.', '$P(1) = 0$, so divide out $(x-1)$; the quotient is $x^2+3x-10$.', 'Factor that quadratic: two numbers multiplying to $-10$ and adding to $3$.'],
         solution: [{ text: 'Test $x=1$.', math: 'P(1) = 1+2-13+10 = 0' },
-          { text: 'Divide out and factor the quotient.', math: 'P(x) = (x-1)(x+5)(x-2)' },
+          { text: 'Divide out $(x-1)$ — synthetic division turns $1, 2, -13, 10$ into $1, 3, -10$ — then factor the quadratic.', math: 'P(x) = (x-1)(x^2+3x-10) = (x-1)(x+5)(x-2)' },
           { text: 'Read off the zeros.', math: 'x = 1,\\ 2,\\ -5' }] },
 
       { id: '3.4-e3', prompt: 'Write $P(x) = x^3 + 2x^2 - 13x + 10$ in fully factored form.',
@@ -116,7 +116,7 @@
         answer: { type: 'set', value: [1, -2], vars: ['x'] },
         hints: ['Candidates are the factors of $4$: $\\pm1, \\pm2, \\pm4$. Try $1$ first.', '$P(1) = 1+3-4 = 0$. Divide out $(x-1)$ to get $x^2+4x+4$.', '$x^2+4x+4$ is a perfect square, $(x+2)^2$ — so $-2$ is a repeated zero, but it is still just one value.'],
         solution: [{ text: 'Test $x=1$.', math: 'P(1) = 0' },
-          { text: 'Divide out and factor.', math: 'P(x) = (x-1)(x+2)^2' },
+          { text: 'Divide out $(x-1)$: $1, 3, 0, -4$ becomes $1, 4, 4$ (note the $0$ for the missing $x$ term). Then factor the perfect square.', math: 'P(x) = (x-1)(x^2+4x+4) = (x-1)(x+2)^2' },
           { text: 'The distinct zeros are:', math: 'x = 1,\\ -2' }] },
 
       { id: '3.4-e5', prompt: 'Write $P(x) = x^3 + 3x^2 - 4$ in fully factored form.',
@@ -128,7 +128,7 @@
         answer: { type: 'set', value: [1, -2, -10], vars: ['x'] },
         hints: ['Try $x = 1$: $1 + 11 + 8 - 20$.', 'That is $0$, so divide out $(x-1)$; the quotient is $x^2+12x+20$.', 'Factor it: two numbers multiplying to $20$ and adding to $12$.'],
         solution: [{ text: 'Test $x=1$.', math: 'P(1) = 1+11+8-20 = 0' },
-          { text: 'Divide and factor.', math: 'P(x) = (x-1)(x+2)(x+10)' },
+          { text: 'Divide out $(x-1)$: $1, 11, 8, -20$ becomes $1, 12, 20$. Then factor the quadratic.', math: 'P(x) = (x-1)(x^2+12x+20) = (x-1)(x+2)(x+10)' },
           { text: 'Zeros:', math: 'x = 1,\\ -2,\\ -10' }] },
 
       { id: '3.4-e7', prompt: 'Find all the zeros of $P(x) = x^4 - 5x^2 + 4$. Enter them as a set.',
@@ -154,7 +154,7 @@
         answer: { type: 'set', value: [2, 0.5, -3], vars: ['x'] },
         hints: ['Test the whole-number candidates first. Try $x=2$.', '$P(2) = 16+4-26+6 = 0$. Divide out $(x-2)$ to get $2x^2+5x-3$.', 'Factor that: $(2x-1)(x+3)$, which gives a fractional zero.'],
         solution: [{ text: 'Test $x = 2$.', math: 'P(2) = 0' },
-          { text: 'Divide and factor the quotient.', math: 'P(x) = (x-2)(2x-1)(x+3)' },
+          { text: 'Divide out $(x-2)$: $2, 1, -13, 6$ becomes $2, 5, -3$. Then factor that quadratic.', math: 'P(x) = (x-2)(2x^2+5x-3) = (x-2)(2x-1)(x+3)' },
           { text: 'Zeros:', math: 'x = 2,\\ \\tfrac12,\\ -3' }] },
 
       { id: '3.4-e11', prompt: 'Find all the rational zeros of $P(x) = 4x^3 + 4x^2 - x - 1$. Enter them as a set.',
@@ -178,10 +178,11 @@
           const facs = [];
           for (let k = 1; k <= konst; k++) if (konst % k === 0) { facs.push(k); facs.push(-k); }
           facs.sort((a, b) => a - b);
+          const b2 = r.nz(-6, 6), b1 = r.nz(-9, 9);
           return {
-            prompt: 'The polynomial $P(x) = x^3 + ax^2 + bx ' + (konst < 0 ? '- ' + (-konst) : '+ ' + konst) + '$ has whole-number coefficients and leading coefficient $1$. List every possible rational zero, as a set.',
+            prompt: 'List every possible rational zero of $P(x) = ' + M.polyTex([1, b2, b1, konst]) + '$, as a set.',
             answer: { type: 'set', value: facs, vars: ['x'] },
-            hints: ['With leading coefficient $1$, the denominators are all $1$ — so the list is just the factors of the constant.',
+            hints: ['The leading coefficient is $1$, so the bottoms are all $1$ — the list is just the factors of the constant. The middle coefficients do not matter.',
               'The constant is $' + konst + '$. Write down every number that divides it.',
               'Remember both signs for each.'],
             solution: [{ text: 'Factors of the constant, both signs.', math: setTex(facs.map(String)) }]
@@ -190,20 +191,32 @@
 
       { id: '3.4-g-zeros-monic', title: 'Find the zeros', desc: 'Test, divide out, finish the quadratic.',
         make(r) {
-          const z = [r.nz(-5, 5), r.nz(-5, 5), r.nz(-5, 5)];
+          // one zero is always small (1, -1, 2 or -2), as in the textbook, so the
+          // "try 1 and -1 first" advice really works
+          const z = [r.pick([1, -1, 2, -2]), r.nz(-5, 5), r.nz(-5, 5)];
           if (z[0] === z[1] || z[1] === z[2] || z[0] === z[2]) return this.make(r);
           const c1 = M.polyMul([1, -z[0]], [1, -z[1]]);
           const co = M.polyMul(c1, [1, -z[2]]);
           const sorted = z.slice().sort((a, b) => a - b);
+          const P = t => ((co[0] * t + co[1]) * t + co[2]) * t + co[3];
+          // test candidates in the order she would: 1, -1, 2, -2
+          const tried = [];
+          let t = null;
+          for (const cand of [1, -1, 2, -2]) { const v = P(cand); tried.push([cand, v]); if (v === 0) { t = cand; break; } }
+          const q = [1, co[1] + t, co[2] + t * (co[1] + t)];          // synthetic division by x - t
+          const rest = z.filter(v => v !== t);                        // the quadratic's zeros
+          const br = v => '(' + M.shift('x', v) + ')';
           return {
             prompt: 'Find all the zeros of $P(x) = ' + M.polyTex(co) + '$. Enter them as a set.',
             answer: { type: 'set', value: sorted, vars: ['x'] },
             hints: ['The leading coefficient is $1$, so the candidates are the factors of $' + co[3] + '$, both signs.',
-              'Test $x = 1$ and $x = -1$ first — they are quickest.',
-              'Once you find one, divide it out and factor the quadratic that is left.'],
-            solution: [{ text: 'Testing the candidates finds a zero, and dividing it out leaves a quadratic.' },
-              { text: 'Factoring that gives the full factorisation.', math: '(x ' + (z[0] < 0 ? '+ ' + (-z[0]) : '- ' + z[0]) + ')(x ' + (z[1] < 0 ? '+ ' + (-z[1]) : '- ' + z[1]) + ')(x ' + (z[2] < 0 ? '+ ' + (-z[2]) : '- ' + z[2]) + ')' },
-              { text: 'Zeros:', math: setTex(sorted.map(String)) }]
+              'Test $x = 1$, then $x = -1$, then $\\pm 2$ — the small ones are quickest.',
+              'Once one gives $0$, divide it out (synthetic division) and factor the quadratic that is left.'],
+            solution: [].concat(
+              tried.map(([c, v]) => ({ text: v === 0 ? 'Try $x = ' + c + '$. It gives zero, so $' + br(c) + '$ is a factor.' : 'Try $x = ' + c + '$. Not zero, so cross it off.', math: 'P(' + c + ') = ' + v + (v === 0 ? ' \\quad\\checkmark' : '') })),
+              [{ text: 'Divide out $' + br(t) + '$ with synthetic division, $c = ' + t + '$. The coefficients $' + co.join(',\\ ') + '$ become $' + q.join(',\\ ') + '$ with remainder $0$.', math: 'P(x) = ' + br(t) + '(' + M.polyTex(q) + ')' },
+               { text: 'Now it is a quadratic, so stop hunting and factor it: two numbers that multiply to $' + q[2] + '$ and add to $' + q[1] + '$.', math: M.polyTex(q) + ' = ' + br(rest[0]) + br(rest[1]) },
+               { text: 'Each bracket gives one zero.', math: 'P(x) = ' + br(t) + br(rest[0]) + br(rest[1]) + ' \\;\\Rightarrow\\; ' + setTex(sorted.map(String)) }])
           };
         } },
 

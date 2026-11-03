@@ -537,8 +537,80 @@
     return (re ? fmt(re) + sign : (im < 0 ? '-' : '')) + mag + 'i';
   };
 
-  // spec: {type, value, vars?, form?, solveFor?}
-  function checkAnswer(input, spec) {
+  /* ---------- "you've copied the question" ----------
+     The checker compares values, so the expression in a "simplify" question is
+     always *equal* to its answer — typing it straight back used to be marked
+     correct (362 questions did this, past papers included). So an equivalent
+     answer that is structurally one of the prompt's own expressions is turned
+     away kindly — unless it is literally the model answer (a self-inverse
+     function is legitimately its own answer). Bare numbers are never caught. */
+  function astKey(n) {
+    if (!n) return '';
+    switch (n.t) {
+      case 'group': return astKey(n.a);
+      case 'num': return String(Math.round(n.v * 1e10) / 1e10);
+      case 'var': return n.name;
+      case 'const': return '#' + n.name;
+      case 'neg': return '-(' + astKey(n.a) + ')';
+      case 'bin': return '(' + astKey(n.a) + n.op + astKey(n.b) + ')';
+      case 'call': return n.fn + '[' + n.args.map(astKey).join(',') + ']';
+    }
+    return JSON.stringify(n);
+  }
+  const promptKeyCache = new Map();
+  function promptKeys(prompt) {
+    if (promptKeyCache.has(prompt)) return promptKeyCache.get(prompt);
+    const keys = new Set();
+    // A definition like f(x) = -x + 8 is skipped: that is a function being given,
+    // not an expression to simplify — and a self-inverse f is its own answer.
+    const isDef = s => /^\s*[a-zA-Z](\^\{?-1\}?)?\s*\(\s*[a-z]\s*\)\s*=/.test(s);
+    const add = piece => { try { keys.add(astKey(P.parse(piece))); } catch (e) { /* not an expression */ } };
+    for (const m of String(prompt).matchAll(/\$\$?([^$]+)\$\$?/g)) {
+      const subs = m[1].split(/,|\\quad|\\qquad|\\text\{[^}]*\}/);
+      if (!subs.some(isDef)) add(m[1]);
+      for (const sub of subs) if (!isDef(sub)) { add(sub); sub.split('=').forEach(add); }
+    }
+    promptKeyCache.set(prompt, keys);
+    return keys;
+  }
+  function copiedFromPrompt(astS, astR, ctx) {
+    if (!ctx || !ctx.prompt) return false;
+    if (astS.t === 'num' || (astS.t === 'neg' && astS.a.t === 'num')) return false;
+    if (astR && astKey(astS) === astKey(astR)) return false;
+    return promptKeys(ctx.prompt).has(astKey(astS));
+  }
+  /* a + bi with the arithmetic finished: at most one i-free term and one
+     "real × i" term. (2+3i)(4+5i) and i^45 are equal to their answers but are not
+     answers. */
+  const unwrap = n => { while (n && (n.t === 'group' || n.t === 'neg')) n = n.a; return n; };
+  function hasI(n) {
+    n = unwrap(n);
+    if (!n) return false;
+    if (n.t === 'var') return n.name === 'i';
+    if (n.t === 'bin') return hasI(n.a) || hasI(n.b);
+    if (n.t === 'call') return n.args.some(hasI);
+    return false;
+  }
+  function isImagTerm(n) {
+    n = unwrap(n);
+    if (n.t === 'var') return n.name === 'i';
+    if (n.t === 'bin' && n.op === '*') return (isImagTerm(n.a) && !hasI(n.b)) || (isImagTerm(n.b) && !hasI(n.a));
+    if (n.t === 'bin' && n.op === '/') return isImagTerm(n.a) && !hasI(n.b);
+    return false;
+  }
+  function isStandardComplex(n) {
+    n = unwrap(n);
+    if (!hasI(n) || isImagTerm(n)) return true;
+    // the real part must itself be finished: one term, not -8 + 2 + 20
+    const oneTerm = t => { t = unwrap(t); return !hasI(t) && !(t.t === 'bin' && (t.op === '+' || t.op === '-')); };
+    if (n.t === 'bin' && (n.op === '+' || n.op === '-'))
+      return (oneTerm(n.a) && isImagTerm(n.b)) || (isImagTerm(n.a) && oneTerm(n.b));
+    return false;
+  }
+  const COPIED ='That is equal to the answer — but it is the expression from the question, copied out. Work it through to its simplest form and try again.';
+
+  // spec: {type, value, vars?, form?, solveFor?}; ctx: {prompt} (optional)
+  function checkAnswer(input, spec, ctx) {
     const text = String(input || '').trim();
     if (!text) return { ok: false, message: 'Type an answer first.' };
     try {
@@ -546,18 +618,26 @@
         case 'number': {
           const v = evalConst(text);
           const ok = P.approxEq(v, spec.value) || (spec.tolerance != null && Math.abs(v - spec.value) <= spec.tolerance);
-          return { ok, readAs: P.toLatex(P.parse(text)), message: ok ? 'Correct!' : 'Not quite — your answer works out to ' + fmt(v) + '.' };
+          const astN = P.parse(text);
+          if (ok && copiedFromPrompt(astN, null, ctx)) return { ok: false, readAs: P.toLatex(astN), message: COPIED, equivalent: true };
+          return { ok, readAs: P.toLatex(astN), message: ok ? 'Correct!' : 'Not quite — your answer works out to ' + fmt(v) + '.' };
         }
         case 'expression': {
-          const astS = P.parse(text), astR = P.parse(spec.value);
+          // "y = x^2 + 4" or "f(x) = ..." is a perfectly natural way to write the
+          // answer; an expression answer never contains "=", so drop that label.
+          const body = text.replace(/^\s*(?:[a-zA-Z](?:\^\s*\(?-1\)?)?\s*\(\s*[a-z]\s*\)|[a-zA-Z])\s*=\s*(?=\S)/, '');
+          const astS = P.parse(body), astR = P.parse(spec.value);
           if (spec.complex) {
             const allowedC = new Set(spec.vars || ['i']);
             allowedC.add('i');
             const extraC = [...freeVars(astS)].filter(x => !allowedC.has(x));
             if (extraC.length) return { ok: false, readAs: P.toLatex(astS), message: 'Your answer uses ' + extraC.join(', ') + ', which should not appear here.' };
             const c = compareComplex(astS, astR, [...allowedC]);
-            if (c.equal === null) return { ok: false, readAs: P.toLatex(astS), message: 'Could not work your answer out — check it is a number in the form $a + bi$.' };
+            if (c.equal === null) return { ok: false, readAs: P.toLatex(astS), message: 'Could not work your answer out — check it is a number in the form a + bi.' };
             if (!c.equal) return { ok: false, readAs: P.toLatex(astS), message: 'Not quite — your answer comes to ' + cxText(c.s) + '.' };
+            if (copiedFromPrompt(astS, astR, ctx)) return { ok: false, readAs: P.toLatex(astS), message: COPIED, equivalent: true };
+            if (!isStandardComplex(astS)) return { ok: false, readAs: P.toLatex(astS), equivalent: true, message: 'That is equal to the answer, but it is not finished yet — finish the arithmetic and write it in the form a + bi.' };
+            if (spec.form) { const f = checkForm(astS, spec.form, astR); if (!f.ok) return { ok: false, readAs: P.toLatex(astS), message: f.msg, equivalent: true }; }
             return { ok: true, readAs: P.toLatex(astS), message: 'Correct!' };
           }
           const allowed = new Set(spec.vars || [...freeVars(astR)]);
@@ -567,6 +647,7 @@
           if (cmp.equal === null) return { ok: false, readAs: P.toLatex(astS), message: 'Could not compare — is the expression defined for ordinary values?' };
           if (!cmp.equal) return { ok: false, readAs: P.toLatex(astS), message: 'Not equivalent to the correct answer. For example, when ' + Object.entries(cmp.point).map(([k, x]) => k + ' = ' + fmt(x)).join(', ') + ' yours gives ' + fmt(cmp.s) + ' but the answer gives ' + fmt(cmp.r) + '.' };
           if (spec.form) { const f = checkForm(astS, spec.form, astR); if (!f.ok) return { ok: false, readAs: P.toLatex(astS), message: f.msg, equivalent: true }; }
+          if (copiedFromPrompt(astS, astR, ctx)) return { ok: false, readAs: P.toLatex(astS), message: COPIED, equivalent: true };
           return { ok: true, readAs: P.toLatex(astS), message: 'Correct!' };
         }
         case 'set': {

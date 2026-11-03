@@ -235,7 +235,8 @@
           // ( c x^m1 y^n1 )^p * x^m2 * y^n2
           const ex = m1 * p + m2, ey = n1 * p + n2, coef = Math.pow(c, p);
           const term = (v, e) => e === 0 ? '' : v + (e === 1 ? '' : '^{' + e + '}');
-          const prompt = 'Simplify $\\left(' + c + 'x^{' + m1 + '}y^{' + n1 + '}\\right)^{' + p + '}\\, x^{' + m2 + '}\\, y^{' + n2 + '}$. Use positive exponents only.';
+          const pw = (v, e) => v + (e === 1 ? '' : '^{' + e + '}');   // never show x^{1}
+          const prompt = 'Simplify $\\left(' + c + pw('x', m1) + pw('y', n1) + '\\right)^{' + p + '}\\, ' + pw('x', m2) + '\\, ' + pw('y', n2) + '$. Use positive exponents only.';
           const numParts = [String(coef)], denParts = [];
           if (ex > 0) numParts.push('x^' + ex); else if (ex < 0) denParts.push('x^' + (-ex));
           if (ey > 0) numParts.push('y^' + ey); else if (ey < 0) denParts.push('y^' + (-ey));
@@ -245,8 +246,8 @@
           const display = denTex ? '\\frac{' + numTex + '}{' + denTex + '}' : numTex;
           return { prompt, answer: { type: 'expression', value, form: 'positive-exponents', display },
             hints: ['Deal with the bracket first: raise every factor to the power $' + p + '$.', 'Then add exponents for each base separately. A negative result means that factor belongs underneath.'],
-            solution: [{ text: 'Power of a product: raise each factor.', math: '\\left(' + c + 'x^{' + m1 + '}y^{' + n1 + '}\\right)^{' + p + '} = ' + coef + 'x^{' + (m1 * p) + '}y^{' + (n1 * p) + '}' },
-              { text: 'Add exponents for $x$ and for $y$.', math: coef + 'x^{' + (m1 * p) + ' + (' + m2 + ')}y^{' + (n1 * p) + ' + (' + n2 + ')} = ' + coef + 'x^{' + ex + '}y^{' + ey + '}' },
+            solution: [{ text: 'Power of a product: raise each factor.', math: '\\left(' + c + pw('x', m1) + pw('y', n1) + '\\right)^{' + p + '} = ' + coef + pw('x', m1 * p) + pw('y', n1 * p) },
+              { text: 'Add exponents for $x$ and for $y$.', math: coef + 'x^{' + (m1 * p) + ' + ' + CH.M.paren(m2) + '}y^{' + (n1 * p) + ' + ' + CH.M.paren(n2) + '} = ' + coef + (ex === 0 ? '' : pw('x', ex)) + (ey === 0 ? '' : pw('y', ey)) },
               { text: 'Write negative exponents underneath.', math: '= ' + display }] };
         } },
       { id: '1.2-g-negfrac', title: 'Negative powers of numbers', desc: 'Flip, then raise to the power.',
@@ -379,11 +380,12 @@
           const body = (c === 1 ? '' : c) + (outPow === 1 ? 'x' : 'x^{' + outPow + '}');
           const needBars = !evenOut;
           const display = needBars ? (c === 1 ? '' : c) + '|x' + (outPow === 1 ? '' : '^{' + outPow + '}') + '|' : body;
-          const value = needBars ? (c === 1 ? '' : c + '*') + 'abs(x^' + outPow + ')' : (c === 1 ? '' : c + '*') + 'x^' + outPow;
+          const value = needBars ? (c === 1 ? '' : c + '*') + 'abs(x' + (outPow === 1 ? '' : '^' + outPow) + ')' : (c === 1 ? '' : c + '*') + 'x^' + outPow;
+          const xo = outPow === 1 ? 'x' : 'x^{' + outPow + '}';
           const rt = n === 2 ? '\\sqrt{' + inside + '}' : '\\sqrt[' + n + ']{' + inside + '}';
           return { prompt: 'Simplify $' + rt + '$. Do **not** assume $x$ is positive — include absolute value bars if they are needed.',
             answer: { type: 'expression', value, vars: ['x'], display },
-            hints: ['The index $' + n + '$ is even, so $\\sqrt[' + n + ']{a^{' + n + '}} = |a|$.', needBars ? 'Here what comes out is $' + body + '$, and $x^{' + outPow + '}$ **can** be negative — so it needs bars.' : 'Here what comes out is $' + body + '$, and $x^{' + outPow + '}$ is never negative — so no bars are needed.'],
+            hints: ['The index $' + n + '$ is even, so $\\sqrt[' + n + ']{a^{' + n + '}} = |a|$.', needBars ? 'Here what comes out is $' + body + '$, and $' + xo + '$ **can** be negative — so it needs bars.' : 'Here what comes out is $' + body + '$, and $' + xo + '$ is never negative — so no bars are needed.'],
             solution: [{ math: rt + ' = \\sqrt[' + n + ']{\\left(' + body + '\\right)^{' + n + '}} = ' + display, text: needBars ? 'The index is even and the result could be negative, so bars are required.' : 'The index is even, but an even power is already non-negative, so no bars are needed.' }] };
         } }
     ]

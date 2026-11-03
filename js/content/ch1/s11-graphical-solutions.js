@@ -3,6 +3,28 @@
 (function () {
   const M = CH.M, V = CH.V;
 
+  /* Pictures for the questions — this whole section is about reading graphs, so
+     every question that talks about a graph shows it. */
+  // y = f(x) crossing the x-axis at a and b (a U through both, or an upside-down one)
+  function rootsPic(a, b, up) {
+    const k = (up === false ? -1 : 1) * 3 / Math.pow((b - a) / 2, 2), f = x => k * (x - a) * (x - b);
+    const x0 = Math.min(a, b) - 2, x1 = Math.max(a, b) + 2, ext = f((a + b) / 2);
+    return V.graph({ xmin: x0, xmax: x1, ymin: Math.min(-1, Math.floor(ext)) - 1, ymax: Math.max(1, Math.ceil(ext)) + 2, width: 300, height: 220,
+      fns: [{ f, label: 'f' }], points: [{ x: a, y: 0, label: String(a) }, { x: b, y: 0, label: String(b) }],
+      alt: 'The graph of y = f(x), crossing the x-axis at x = ' + a + ' and x = ' + b });
+  }
+  // a line g and a curve f crossing at p and q; f is below g between them when fBelow
+  function twoPic(p, q, fBelow) {
+    const gf = x => 0.5 * x + 1, kk = (fBelow ? 1 : -1) * 3 / Math.pow((q - p) / 2, 2), ff = x => gf(x) + kk * (x - p) * (x - q);
+    const x0 = p - 3, x1 = q + 3, mid = ff((p + q) / 2), gl = [gf(x0), gf(x1)];
+    const yLo = Math.floor(Math.min(mid, ...gl)) - 2, yHi = Math.ceil(Math.max(mid, ...gl)) + 2;
+    return V.graph({ xmin: x0, xmax: x1, ymin: yLo, ymax: yHi, width: 300, height: 260,
+      fns: [{ f: gf, label: 'g' }, { f: ff, color: 'var(--viz-2)' }],
+      points: [{ x: p, y: gf(p), label: 'x = ' + p }, { x: q, y: gf(q), label: 'x = ' + q }],
+      texts: [{ x: (p + q) / 2, y: mid + (fBelow ? -0.8 : 0.8), text: 'f', color: 'var(--viz-2)' }],
+      alt: 'A line g and a curve f that cross at x = ' + p + ' and x = ' + q + ', with f ' + (fBelow ? 'below' : 'above') + ' g between the crossings' });
+  }
+
   CH.registerSection({
     id: '1.11', chapter: 1, title: 'Solving Equations and Inequalities Graphically',
     summary: 'Finding solutions by looking instead of rearranging: where a graph crosses the axis, where two graphs meet, and which stretches of $x$ make an inequality true.',
@@ -84,22 +106,26 @@
     ],
 
     exercises: [
-      { id: '1.11-e1', prompt: 'The graph of $y = f(x)$ crosses the $x$-axis at $x = -3$ and $x = 5$. Give the solutions of $f(x) = 0$ as a set.',
+      { id: '1.11-e1', prompt: 'The graph of $y = f(x)$ is shown. It crosses the $x$-axis at $x = -3$ and $x = 5$. Give the solutions of $f(x) = 0$ as a set.',
+        svg: rootsPic(-3, 5),
         answer: { type: 'set', value: [-3, 5], vars: ['x'] },
         hints: ['Crossing the $x$-axis means the height is zero there.', 'So the crossings are exactly the solutions.'],
         solution: [{ text: 'The $x$-intercepts are the solutions.', math: '\\{-3,\\ 5\\}' }] },
 
-      { id: '1.11-e2', prompt: 'Two graphs cross at $x = 1$ and $x = 4$. Give the solutions of $f(x) = g(x)$ as a set.',
+      { id: '1.11-e2', prompt: 'The graphs of $f$ and $g$ cross at $x = 1$ and $x = 4$. Give the solutions of $f(x) = g(x)$ as a set.',
+        svg: twoPic(1, 4, true),
         answer: { type: 'set', value: [1, 4], vars: ['x'] },
         hints: ['Where the graphs cross, the two heights are equal.', 'Read the $x$-coordinates of the crossings.'],
         solution: [{ text: 'The crossings give the solutions.', math: '\\{1,\\ 4\\}' }] },
 
       { id: '1.11-e3', prompt: 'The graphs of $y=x^2$ and $y=x+2$ cross at $x=-1$ and $x=2$, with the line above between them. Solve $x^2 < x+2$.',
+        svg: V.graph({ xmin: -4, xmax: 4, ymin: -2, ymax: 8, width: 300, fns: [{ f: x => x * x, color: 'var(--viz-2)' }, { f: x => x + 2, color: 'var(--viz-1)' }], points: [{ x: -1, y: 1, label: '(-1, 1)' }, { x: 2, y: 4, label: '(2, 4)' }], texts: [{ x: -2.9, y: 7.4, text: 'y = x²', color: 'var(--viz-2)', anchor: 'end' }, { x: -3.8, y: 0.4, text: 'y = x + 2', color: 'var(--viz-1)', anchor: 'start' }], alt: 'The parabola y = x squared and the line y = x + 2, crossing at (-1, 1) and (2, 4), with the line above the parabola between them' }),
         answer: { type: 'interval', value: '(-1, 2)', vars: ['x'] },
         hints: ['You want where the parabola is **below** the line.', 'That is between the crossings.', 'Strict $<$, so the crossings are excluded.'],
         solution: [{ text: 'Between the crossings the line is on top.', math: '(-1, 2)' }] },
 
       { id: '1.11-e4', prompt: 'With the same two graphs, solve $x^2 \\ge x+2$.',
+        svg: V.graph({ xmin: -4, xmax: 4, ymin: -2, ymax: 8, width: 300, fns: [{ f: x => x * x, color: 'var(--viz-2)' }, { f: x => x + 2, color: 'var(--viz-1)' }], points: [{ x: -1, y: 1, label: '(-1, 1)' }, { x: 2, y: 4, label: '(2, 4)' }], texts: [{ x: -2.9, y: 7.4, text: 'y = x²', color: 'var(--viz-2)', anchor: 'end' }, { x: -3.8, y: 0.4, text: 'y = x + 2', color: 'var(--viz-1)', anchor: 'start' }], alt: 'The parabola y = x squared and the line y = x + 2, crossing at (-1, 1) and (2, 4)' }),
         answer: { type: 'interval', value: '(-inf, -1] U [2, inf)', vars: ['x'] },
         hints: ['Now you want where the parabola is **above or equal to** the line.', 'That is outside the crossings — two separate stretches.', 'The sign is $\\ge$, so the crossings are included.'],
         solution: [{ text: 'Outside the crossings the parabola is on top.' },
@@ -123,17 +149,20 @@
         solution: [{ text: 'Move everything one side.', math: 'x^2 - x - 2 = 0' },
           { text: 'Now the solutions are the $x$-intercepts of $y = x^2-x-2$.' }] },
 
-      { id: '1.11-e8', prompt: 'A graph is above the $x$-axis exactly on $(-2, 3)$. Solve $f(x) > 0$.',
+      { id: '1.11-e8', prompt: 'The graph shown is above the $x$-axis exactly on $(-2, 3)$. Solve $f(x) > 0$.',
+        svg: rootsPic(-2, 3, false),
         answer: { type: 'interval', value: '(-2, 3)', vars: ['x'] },
         hints: ['$f(x) > 0$ means the height is positive — the graph is above the axis.', 'You are told exactly where that happens.'],
         solution: [{ text: 'Above the axis means a positive height.', math: '(-2, 3)' }] },
 
       { id: '1.11-e9', prompt: 'That same graph is above the axis on $(-2,3)$ and below it elsewhere, touching at $-2$ and $3$. Solve $f(x) \\le 0$.',
+        svg: rootsPic(-2, 3, false),
         answer: { type: 'interval', value: '(-inf, -2] U [3, inf)', vars: ['x'] },
         hints: ['$f(x) \\le 0$ means at or below the axis.', 'That is everywhere outside $(-2,3)$, plus the two crossing points themselves.'],
         solution: [{ text: 'Below the axis is outside the interval; the crossings give equality.', math: '(-\\infty,-2] \\cup [3,\\infty)' }] },
 
       { id: '1.11-e10', prompt: 'The line $y = 2x - 1$ crosses the $x$-axis at one point. What is its $x$-intercept?',
+        svg: V.graph({ xmin: -3, xmax: 3, ymin: -4, ymax: 4, width: 280, fns: [{ f: x => 2 * x - 1 }], alt: 'The line y = 2x - 1 crossing the x-axis between 0 and 1' }),
         answer: { type: 'number', value: 0.5 },
         hints: ['Set the height to zero: $2x - 1 = 0$.', 'Solve for $x$.'],
         solution: [{ text: 'Set $y = 0$.', math: '2x - 1 = 0 \\Rightarrow x = \\tfrac12' }] }
@@ -146,7 +175,8 @@
           if (a === b) return this.make(r);
           const s = [a, b].sort((x, y) => x - y);
           return {
-            prompt: 'The graph of $y = f(x)$ crosses the $x$-axis at $x = ' + s[0] + '$ and $x = ' + s[1] + '$. Give the solutions of $f(x) = 0$ as a set.',
+            prompt: 'The graph of $y = f(x)$ is shown. It crosses the $x$-axis at $x = ' + s[0] + '$ and $x = ' + s[1] + '$. Give the solutions of $f(x) = 0$ as a set.',
+            svg: rootsPic(s[0], s[1], r.bool(0.5)),
             answer: { type: 'set', value: s, vars: ['x'] },
             hints: ['On the $x$-axis the height is zero.', 'So each crossing is a solution of $f(x)=0$.'],
             solution: [{ text: 'The $x$-intercepts are exactly the solutions.', math: '\\{' + s[0] + ',\\ ' + s[1] + '\\}' }]
@@ -163,7 +193,8 @@
           // f is below g between the crossings when `inside`
           const answerIsBetween = (wantBelow === inside);
           return {
-            prompt: 'Two graphs cross at $x = ' + p + '$ and $x = ' + q + '$. Between the crossings, $f$ is **' + (inside ? 'below' : 'above') + '** $g$. Solve $f(x) ' + (wantBelow ? (strict ? '<' : '\\le') : (strict ? '>' : '\\ge')) + ' g(x)$.',
+            svg: twoPic(p, q, inside),
+            prompt: 'The graphs of $f$ and $g$ cross at $x = ' + p + '$ and $x = ' + q + '$. Between the crossings, $f$ is **' + (inside ? 'below' : 'above') + '** $g$. Solve $f(x) ' + (wantBelow ? (strict ? '<' : '\\le') : (strict ? '>' : '\\ge')) + ' g(x)$.',
             answer: { type: 'interval',
               value: answerIsBetween ? lo + p + ', ' + q + hi : '(-inf, ' + p + hi + ' U ' + lo + q + ', inf)',
               vars: ['x'] },

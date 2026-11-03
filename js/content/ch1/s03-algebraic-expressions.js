@@ -311,7 +311,7 @@
           const [lo, hi] = p < q ? [p, q] : [q, p];
           return { prompt: 'Factor $' + M.polyTex(coeffs) + '$.', answer: { type: 'expression', value: paren(linS(1, lo)) + paren(linS(1, hi)), form: 'factored', display: '(' + lin(1, lo) + ')(' + lin(1, hi) + ')' },
             hints: ['Two numbers that multiply to $' + (p * q) + '$ and add to $' + (p + q) + '$.', (p * q > 0 ? 'Same signs (both ' + (p + q > 0 ? 'positive' : 'negative') + ').' : 'Opposite signs; the larger one is ' + (p + q >= 0 ? 'positive' : 'negative') + '.')],
-            solution: ['$' + lo + ' \\cdot ' + hi + ' = ' + (p * q) + '$ and $' + lo + ' + ' + hi + ' = ' + (p + q) + '$, so $' + M.polyTex(coeffs) + ' = (' + lin(1, lo) + ')(' + lin(1, hi) + ')$.'] };
+            solution: ['$' + lo + ' \\cdot ' + M.paren(hi) + ' = ' + (p * q) + '$ and $' + lo + ' + ' + M.paren(hi) + ' = ' + (p + q) + '$, so $' + M.polyTex(coeffs) + ' = (' + lin(1, lo) + ')(' + lin(1, hi) + ')$.'] };
         } },
       { id: '1.3-g-trinomial-a', title: 'Factor ax² + bx + c', desc: 'The ac method: split the middle term, then group.',
         make(r) {
@@ -406,15 +406,15 @@
           const outer = r.int(d + 1, 2 * d + 1);        // outer power p/d
           const t1 = r.int(1, 2 * d), t2 = r.int(1, 2 * d);
           if ((outer + t1) % d !== 0 || (outer + t2) % d !== 0 || t1 === t2) return this.make(r);
+          // every exponent shown must be a real fraction in lowest terms — never 4/2 or 2/2
+          if (M.gcd(outer, d) !== 1 || M.gcd(t1, d) !== 1 || M.gcd(t2, d) !== 1) return this.make(r);
           const e1 = (outer + t1) / d, e2 = (outer + t2) / d;
-          const pw = (n) => n % d === 0 ? (n / d === 1 ? '' : '^{' + (n / d) + '}') : '^{' + n + '/' + d + '}';
-          const term = (n, v) => v + pw(n);
-          const res = M.polyStr([0, 0]) && (term(e1 * d, 'y').replace('y', 'x') + ' + ' + term(e2 * d, 'y').replace('y', 'x'));
           const value = 'x^' + e1 + ' + x^' + e2;
+          const xp = e => e === 1 ? 'x' : 'x^{' + e + '}';
           return { prompt: 'Expand and simplify $x^{' + outer + '/' + d + '}\\left(x^{' + t1 + '/' + d + '} + x^{' + t2 + '/' + d + '}\\right)$ (assume $x > 0$).',
-            answer: { type: 'expression', value, form: 'expanded', vars: ['x'], assume: 'x > 0', display: 'x^{' + e1 + '} + x^{' + e2 + '}' },
+            answer: { type: 'expression', value, form: 'expanded', vars: ['x'], assume: 'x > 0', display: xp(e1) + ' + ' + xp(e2) },
             hints: ['Multiply into the bracket — when you multiply powers of the same base you **add** the exponents.', '$\\tfrac{' + outer + '}{' + d + '} + \\tfrac{' + t1 + '}{' + d + '} = ' + e1 + '$ and $\\tfrac{' + outer + '}{' + d + '} + \\tfrac{' + t2 + '}{' + d + '} = ' + e2 + '$.'],
-            solution: [{ math: 'x^{' + outer + '/' + d + ' + ' + t1 + '/' + d + '} + x^{' + outer + '/' + d + ' + ' + t2 + '/' + d + '} = x^{' + e1 + '} + x^{' + e2 + '}', text: 'Add the exponents term by term.' }] };
+            solution: [{ math: 'x^{' + outer + '/' + d + ' + ' + t1 + '/' + d + '} + x^{' + outer + '/' + d + ' + ' + t2 + '/' + d + '} = ' + xp(e1) + ' + ' + xp(e2), text: 'Add the exponents term by term.' }] };
         } },
       { id: '1.3-g-bracket-factor', title: 'Factoring when A is a bracket', desc: 'Common bracket, or a difference of squares of brackets.',
         make(r) {

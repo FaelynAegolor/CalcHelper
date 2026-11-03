@@ -3,7 +3,7 @@
   const M = CH.M, V = CH.V, C = CH.C;
   const pt = (x, y) => '(' + x + ',\\ ' + y + ')';
   const sh = v => v < 0 ? '+ ' + (-v) : '- ' + v;           // (x - h): sh(h)
-  const circleTex = (h, k, r2) => '(x ' + sh(h) + ')^2 + (y ' + sh(k) + ')^2 = ' + r2;
+  const circleTex = (h, k, r2) => (h === 0 ? 'x^2' : '(x ' + sh(h) + ')^2') + ' + ' + (k === 0 ? 'y^2' : '(y ' + sh(k) + ')^2') + ' = ' + r2;
   const circleStr = (h, k, r2) => '(x ' + sh(h) + ')^2 + (y ' + sh(k) + ')^2 = ' + r2;
   const sym = { x: 'the x-axis only', y: 'the y-axis only', o: 'the origin only', all: 'the x-axis, the y-axis and the origin', none: 'none of them' };
 
@@ -156,7 +156,9 @@
       { id: '1.9-e7', prompt: 'Write the equation of the circle with centre $(2, -5)$ and radius $5$.',
         answer: { type: 'equation', value: '(x-2)^2 + (y+5)^2 = 25' },
         hints: ['$(x - h)^2 + (y - k)^2 = r^2$ with $h = 2$, $k = -5$.', 'Careful: $y - (-5) = y + 5$, and $r^2 = 25$.'],
-        solution: [{ math: '(x - 2)^2 + (y + 5)^2 = 25' }] },
+        solution: [{ text: 'Start from the standard form and read off what you have.', math: '(x - h)^2 + (y - k)^2 = r^2 \\qquad h = 2,\\ k = -5,\\ r = 5' },
+          { text: 'Substitute. Subtracting $-5$ is adding $5$, and the radius gets squared.', math: '(x - 2)^2 + (y - (-5))^2 = 5^2' },
+          { text: 'Tidy up.', math: '(x - 2)^2 + (y + 5)^2 = 25' }] },
       { id: '1.9-e8', prompt: 'Write the equation of the circle with centre $(-2, 1)$ that passes through $(4, 3)$.',
         answer: { type: 'equation', value: '(x+2)^2 + (y-1)^2 = 40' },
         hints: ['$r^2$ is the squared distance from the centre to the point.', '$r^2 = 6^2 + 2^2 = 40$'],
@@ -167,8 +169,11 @@
         solution: [{ math: '(x^2 - 4x + 4) + (y^2 + 6y + 9) = -9 + 4 + 9 \\Rightarrow (x - 2)^2 + (y + 3)^2 = 4', text: 'Centre $(2, -3)$, radius $2$.' }] },
       { id: '1.9-e10', prompt: 'Find the centre and radius of the circle $x^2 + y^2 - 6x + 4 = 0$.',
         answer: { type: 'multi', parts: [{ label: 'Centre', type: 'point', value: [3, 0] }, { label: 'Radius', type: 'number', value: Math.sqrt(5), display: '\\sqrt5' }] },
-        hints: ['Only the $x$ part needs completing: add $9$ to both sides.'],
-        solution: [{ math: '(x - 3)^2 + y^2 = 5', text: 'Centre $(3, 0)$, radius $\\sqrt5$.' }] },
+        hints: ['Group the $x$ terms together and move the plain number to the other side: $x^2 - 6x + y^2 = -4$.', 'Complete the square on the $x$ terms: half of $-6$ is $-3$, and $(-3)^2 = 9$. Add $9$ to **both** sides.', 'There is no $y$ term, so $y^2$ is already $(y - 0)^2$.'],
+        solution: [{ text: 'Put the $x$ terms together and move the number across.', math: 'x^2 - 6x + y^2 = -4' },
+          { text: 'Complete the square: half of $-6$ is $-3$, squared is $9$. Add $9$ to both sides.', math: 'x^2 - 6x + 9 + y^2 = -4 + 9' },
+          { text: 'Fold the $x$ terms into a bracket.', math: '(x - 3)^2 + y^2 = 5' },
+          { text: 'Compare with $(x-h)^2 + (y-k)^2 = r^2$. Here $r^2 = 5$, so take the square root for the radius.', math: '\\text{centre } (3, 0), \\qquad r = \\sqrt5' }] },
       { id: '1.9-e11', prompt: 'Find the equation of the circle with $A(2, 1)$ and $B(4, -3)$ as endpoints of a diameter.',
         answer: { type: 'equation', value: '(x-3)^2 + (y+1)^2 = 5' },
         hints: ['Centre = midpoint of $AB$ = $(3, -1)$.', '$r^2$ = squared distance from the centre to $A$ $= 1 + 4 = 5$.'],
@@ -243,7 +248,7 @@
           if (r.bool(0.5)) {
             const a = r.nz(-5, 5), b = r.nz(-5, 5), cc = r.nz(-12, 12);
             return { prompt: 'Find the $x$-intercept and the $y$-intercept of $' + M.polyTex([a, 0]) + ' ' + (b > 0 ? '+ ' + (b === 1 ? '' : b) : '- ' + (b === -1 ? '' : -b)) + 'y = ' + cc + '$.', answer: { type: 'multi', parts: [{ label: '$x$-intercept', type: 'number', value: cc / a, display: C.fmtTex(cc / a) }, { label: '$y$-intercept', type: 'number', value: cc / b, display: C.fmtTex(cc / b) }] },
-              hints: ['$x$-intercept: put $y = 0$ and solve. $y$-intercept: put $x = 0$ and solve.'], solution: ['$y = 0$: $' + a + 'x = ' + cc + ' \\Rightarrow x = ' + C.fmtTex(cc / a) + '$. $\\;x = 0$: $' + b + 'y = ' + cc + ' \\Rightarrow y = ' + C.fmtTex(cc / b) + '$.'] };
+              hints: ['An $x$-intercept is on the $x$-axis, where $y = 0$. Put $y = 0$ and solve for $x$.', 'A $y$-intercept is on the $y$-axis, where $x = 0$. Put $x = 0$ and solve for $y$.'], solution: ['$y = 0$: $' + M.term(a, 'x') + ' = ' + cc + ' \\Rightarrow x = ' + C.fmtTex(cc / a) + '$. $\\;x = 0$: $' + M.term(b, 'y') + ' = ' + cc + ' \\Rightarrow y = ' + C.fmtTex(cc / b) + '$.'] };
           }
           const p = r.nz(-5, 5), q = r.nz(-5, 5); if (p === q) return this.make(r);
           const coeffs = M.polyMul([1, -p], [1, -q]);
@@ -256,11 +261,13 @@
           if (r.bool(0.5)) {
             const rad = r.int(1, 7);
             return { prompt: 'Write the equation of the circle with centre $' + pt(h, k) + '$ and radius $' + rad + '$.', answer: { type: 'equation', value: circleStr(h, k, rad * rad), display: circleTex(h, k, rad * rad) },
-              hints: ['$(x - h)^2 + (y - k)^2 = r^2$. Watch the signs: $x - (' + h + ')$ and $y - (' + k + ')$.', 'Remember to square the radius: $r^2 = ' + (rad * rad) + '$.'], solution: [{ math: circleTex(h, k, rad * rad) }] };
+              hints: ['$(x - h)^2 + (y - k)^2 = r^2$. Watch the signs: $x - ' + M.paren(h) + '$ and $y - ' + M.paren(k) + '$.', 'Remember to square the radius: $r^2 = ' + (rad * rad) + '$.'],
+              solution: [{ text: 'Read off the centre and radius, and put them into $(x - h)^2 + (y - k)^2 = r^2$.', math: 'h = ' + h + ',\\quad k = ' + k + ',\\quad r^2 = ' + rad + '^2 = ' + (rad * rad) },
+                { text: 'Substitute' + (h < 0 || k < 0 ? ' — subtracting a negative turns into a plus.' : '.'), math: circleTex(h, k, rad * rad) }] };
           }
           const dx = r.nz(-5, 5), dy = r.nz(-5, 5), px = h + dx, py = k + dy, r2 = dx * dx + dy * dy;
           return { prompt: 'Write the equation of the circle with centre $' + pt(h, k) + '$ that passes through the point $' + pt(px, py) + '$.', answer: { type: 'equation', value: circleStr(h, k, r2), display: circleTex(h, k, r2) },
-            hints: ['The radius is the distance from the centre to the point — but you only need $r^2$.', '$r^2 = (' + px + ' - (' + h + '))^2 + (' + py + ' - (' + k + '))^2 = ' + r2 + '$.'], solution: [{ math: 'r^2 = ' + (dx * dx) + ' + ' + (dy * dy) + ' = ' + r2 + ' \\;\\Rightarrow\\; ' + circleTex(h, k, r2) }] };
+            hints: ['The radius is the distance from the centre to the point — but you only need $r^2$.', '$r^2 = (' + px + ' - ' + M.paren(h) + ')^2 + (' + py + ' - ' + M.paren(k) + ')^2 = ' + r2 + '$.'], solution: [{ math: 'r^2 = ' + (dx * dx) + ' + ' + (dy * dy) + ' = ' + r2 + ' \\;\\Rightarrow\\; ' + circleTex(h, k, r2) }] };
         } },
       { id: '1.9-g-circle-general', title: 'Centre and radius from the general form', desc: 'Complete the square twice.',
         make(r) {
@@ -268,8 +275,17 @@
           const a = -2 * h, b = -2 * k, c = h * h + k * k - r2;
           const eq = 'x^2 + y^2 ' + (a ? M.signed(a) + 'x ' : '') + (b ? M.signed(b) + 'y ' : '') + (c ? M.signed(c) + ' ' : '') + '= 0';
           return { prompt: 'Find the centre and radius of the circle $' + eq + '$.', answer: { type: 'multi', parts: [{ label: 'Centre', type: 'point', value: [h, k] }, { label: 'Radius', type: 'number', value: Math.sqrt(r2), display: M.sqrtTex(r2) }] },
-            hints: ['Group $x$ terms and $y$ terms, move the constant to the right.', 'Complete the square: add $' + (h * h) + '$ for $x$ and $' + (k * k) + '$ for $y$ — to both sides.'],
-            solution: [{ math: '(x^2 ' + (a ? M.signed(a) + 'x ' : '') + '+ ' + (h * h) + ') + (y^2 ' + (b ? M.signed(b) + 'y ' : '') + '+ ' + (k * k) + ') = ' + (-c) + ' + ' + (h * h) + ' + ' + (k * k), text: 'Complete both squares.' }, { math: circleTex(h, k, r2), text: 'Centre $' + pt(h, k) + '$, radius $\\sqrt{' + r2 + '} = ' + M.sqrtTex(r2) + '$.' }] };
+            hints: ['Group the $x$ terms and the $y$ terms, and move the plain number to the right.',
+              'Complete the square for each letter that has a middle term: half its coefficient, squared' + (h ? ' — that is $' + (h * h) + '$ for $x$' : '') + (k ? (h ? ' and' : ' — that is') + ' $' + (k * k) + '$ for $y$' : '') + '. Add to **both** sides.'],
+            solution: (() => {
+              const xs = 'x^2' + (a ? ' ' + M.signed(a) + 'x' : ''), ys = 'y^2' + (b ? ' ' + M.signed(b) + 'y' : '');
+              const added = [h ? h * h : 0, k ? k * k : 0].filter(Boolean);
+              return [{ text: 'Group the letters and move the number across.', math: xs + ' + ' + ys + ' = ' + (-c) },
+                { text: added.length ? 'Complete the square: add ' + added.map(v => '$' + v + '$').join(' and ') + ' to both sides.' : 'There are no middle terms, so nothing needs completing.',
+                  math: (h ? '(' + xs + ' + ' + (h * h) + ')' : 'x^2') + ' + ' + (k ? '(' + ys + ' + ' + (k * k) + ')' : 'y^2') + ' = ' + (-c) + added.map(v => ' + ' + v).join('') },
+                { text: 'Fold each group into a bracket and add up the right-hand side.', math: circleTex(h, k, r2) },
+                { text: 'Read off the centre — the signs flip — and square-root the right-hand side for the radius.', math: '\\text{centre } ' + pt(h, k) + ', \\qquad r = \\sqrt{' + r2 + '}' + (M.sqrtTex(r2) !== '\\sqrt{' + r2 + '}' ? ' = ' + M.sqrtTex(r2) : '') }];
+            })() };
         } },
       { id: '1.9-g-diameter', title: 'Circle from a diameter', desc: 'Midpoint for the centre, distance for the radius.',
         make(r) {

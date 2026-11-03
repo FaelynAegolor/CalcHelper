@@ -15,6 +15,11 @@
       alt: 'A parabola with its turning point at (' + h + ', ' + k + ')'
     }, o || {}));
   }
+  /* a(x - h)^2 + k written the way a person would: -(x + 3)^2, x^2 - 1, 2(x - 2)^2 */
+  function vform(a, h, k) {
+    const sq = h === 0 ? 'x^2' : '(' + M.shift('x', h) + ')^2';
+    return (a === 1 ? '' : a === -1 ? '-' : a) + sq + (k === 0 ? '' : k < 0 ? ' - ' + (-k) : ' + ' + k);
+  }
 
   CH.registerSection({
     id: '2.3', chapter: 2, exam: 2, title: 'Getting Information from the Graph',
@@ -86,55 +91,69 @@
 
     exercises: [
       { id: '2.3-e1', prompt: 'The graph of $f(x) = (x-1)^2 - 4$ is shown. What is the local minimum **value**?',
+        svg: parab(1, 1, -4),
         answer: { type: 'number', value: -4 },
         hints: ['Find the lowest point of the curve.', 'The turning point is at $(1,-4)$. The value is the height, not the $x$.'],
         solution: [{ text: 'The trough is at $(1,-4)$, so the minimum value is its height.', math: '-4' }] },
 
       { id: '2.3-e2', prompt: 'For that same $f(x) = (x-1)^2-4$, at what value of $x$ does the minimum occur?',
+        svg: parab(1, 1, -4),
         answer: { type: 'number', value: 1 },
         hints: ['This time the question wants **where**, not how high.', 'The turning point is at $(1,-4)$, so read off the $x$.'],
         solution: [{ text: 'The turning point sits at $x = 1$.', math: 'x = 1' }] },
 
-      { id: '2.3-e3', prompt: 'For $f(x) = (x-1)^2 - 4$, on which interval is $f$ **increasing**?',
+      { id: '2.3-e3', prompt: 'The graph shows $f(x) = (x-1)^2 - 4$. On which interval is $f$ **increasing**?',
+        svg: parab(1, 1, -4),
         answer: { type: 'interval', value: '(1, inf)', vars: ['x'] },
         hints: ['Trace the curve left to right and find where it goes uphill.', 'It falls until $x=1$, then climbs from there onwards.'],
         solution: [{ text: 'To the right of the turning point the curve climbs.', math: '(1, \\infty)' }] },
 
-      { id: '2.3-e4', prompt: 'For $f(x) = (x-1)^2 - 4$, what is the range?',
+      { id: '2.3-e4', prompt: 'The graph shows $f(x) = (x-1)^2 - 4$. What is the range?',
+        svg: parab(1, 1, -4),
         answer: { type: 'interval', value: '[-4, inf)', vars: ['x'] },
         hints: ['Range is about heights — how far up and down the graph reaches.', 'The lowest height is $-4$, and it goes up forever. Is $-4$ itself reached?'],
         solution: [{ text: 'The lowest height reached is $-4$, at the turning point, and it climbs without limit.', math: '[-4, \\infty)' },
           { text: 'Square bracket because the height $-4$ really is reached.' }] },
 
-      { id: '2.3-e5', prompt: 'A graph starts at the filled point $(-3, 2)$ and ends at the filled point $(4, 5)$, with no breaks. What is its domain?',
+      { id: '2.3-e5', prompt: 'The graph starts at the filled point $(-3, 2)$ and ends at the filled point $(4, 5)$, with no breaks. What is its domain?',
+        svg: V.graph({ xmin: -5, xmax: 6, ymin: -1, ymax: 7, width: 300, fns: [{ f: x => 2 + 3 * (x + 3) / 7 + 1.2 * Math.sin((x + 3) * Math.PI / 7), domain: [-3, 4] }],
+          points: [{ x: -3, y: 2, label: '(-3, 2)' }, { x: 4, y: 5, label: '(4, 5)' }], alt: 'A curve from the filled point (-3, 2) to the filled point (4, 5)' }),
         answer: { type: 'interval', value: '[-3, 4]', vars: ['x'] },
         hints: ['Domain is how far it spreads left to right.', 'It runs from $x=-3$ to $x=4$. Filled dots mean both ends are included.'],
         solution: [{ text: 'The graph covers every $x$ from $-3$ to $4$.' },
           { text: 'Both dots are filled, so both ends are included.', math: '[-3, 4]' }] },
 
-      { id: '2.3-e6', prompt: 'Two graphs cross at $x = -2$ and $x = 3$, and $g$ is above $f$ between them. Find the values of $x$ where $f(x) < g(x)$.',
+      { id: '2.3-e6', prompt: 'The graphs of $f$ and $g$ cross at $x = -2$ and $x = 3$. Find the values of $x$ where $f(x) < g(x)$.',
+        svg: V.graph({ xmin: -5, xmax: 6, ymin: -4, ymax: 8, width: 300,
+          fns: [{ f: x => 0.5 * x + 2, label: 'g' }, { f: x => 0.5 * x + 2 + 0.5 * (x + 2) * (x - 3), label: 'f', color: 'var(--viz-2)' }],
+          points: [{ x: -2, y: 1 }, { x: 3, y: 3.5 }], texts: [{ x: 0.5, y: -2.3, text: 'f', color: 'var(--viz-2)' }], alt: 'A line g and a U-shaped curve f crossing at x = -2 and x = 3, with f below g between them' }),
         answer: { type: 'interval', value: '(-2, 3)', vars: ['x'] },
         hints: ['$f(x) < g(x)$ means $f$ is **below** $g$.', 'That happens between the two crossing points.', 'Strict inequality, so the crossings themselves are not included.'],
         solution: [{ text: '$f$ is below $g$ exactly between the crossings.', math: '(-2, 3)' },
           { text: 'At the crossings they are equal, so a strict $<$ excludes them.' }] },
 
-      { id: '2.3-e7', prompt: 'For $f(x) = -(x+2)^2 + 9$, what is the local maximum value?',
+      { id: '2.3-e7', prompt: 'The graph shows $f(x) = -(x+2)^2 + 9$. What is the local maximum value?',
+        svg: parab(-1, -2, 9, { ymin: -4, ymax: 11 }),
         answer: { type: 'number', value: 9 },
         hints: ['The minus in front flips the U upside down, so this one has a peak.', 'The turning point is at $(-2, 9)$.'],
         solution: [{ text: 'The negative coefficient makes it an upside-down U, peaking at $(-2,9)$.' },
           { text: 'The maximum value is the height.', math: '9' }] },
 
-      { id: '2.3-e8', prompt: 'For $f(x) = -(x+2)^2 + 9$, on which interval is $f$ **decreasing**?',
+      { id: '2.3-e8', prompt: 'The graph shows $f(x) = -(x+2)^2 + 9$. On which interval is $f$ **decreasing**?',
+        svg: parab(-1, -2, 9, { ymin: -4, ymax: 11 }),
         answer: { type: 'interval', value: '(-2, inf)', vars: ['x'] },
         hints: ['It is an upside-down U peaking at $x = -2$.', 'Reading left to right: it climbs up to the peak, then falls away after it.'],
         solution: [{ text: 'After the peak at $x=-2$ the curve heads downwards.', math: '(-2, \\infty)' }] },
 
-      { id: '2.3-e9', prompt: 'For $f(x) = -(x+2)^2 + 9$, what is the range?',
+      { id: '2.3-e9', prompt: 'The graph shows $f(x) = -(x+2)^2 + 9$. What is the range?',
+        svg: parab(-1, -2, 9, { ymin: -4, ymax: 11 }),
         answer: { type: 'interval', value: '(-inf, 9]', vars: ['x'] },
         hints: ['The highest height is $9$, at the peak.', 'From there it falls away forever downwards.'],
         solution: [{ text: 'The greatest height is $9$ and the curve drops without limit below it.', math: '(-\\infty, 9]' }] },
 
-      { id: '2.3-e10', prompt: 'A graph has a peak at $(1, 4)$ and a trough at $(3, 0)$. On which interval is it decreasing?',
+      { id: '2.3-e10', prompt: 'The graph has a peak at $(1, 4)$ and a trough at $(3, 0)$. On which interval is it decreasing?',
+        svg: V.graph({ xmin: -1, xmax: 5, ymin: -2, ymax: 6, width: 300, fns: [{ f: x => x * x * x - 6 * x * x + 9 * x }],
+          points: [{ x: 1, y: 4, label: '(1, 4)' }, { x: 3, y: 0, label: '(3, 0)' }], alt: 'A curve rising to a peak at (1, 4), falling to a trough at (3, 0), then rising again' }),
         answer: { type: 'interval', value: '(1, 3)', vars: ['x'] },
         hints: ['Between a peak and the trough that follows it, the curve must be heading downhill.', 'So the answer runs from the peak at $x=1$ to the trough at $x=3$.'],
         solution: [{ text: 'From the peak down to the trough the curve falls.', math: '(1, 3)' }] }
@@ -148,10 +167,11 @@
           const h = r.int(-3, 3), k = r.int(-4, 4);
           const askValue = r.bool(0.5);
           return {
-            prompt: 'The graph below is $f(x) = ' + (a === 1 ? '' : a === -1 ? '-' : a) + '(x ' + (h < 0 ? '+ ' + (-h) : '- ' + h) + ')^2 ' + (k < 0 ? '- ' + (-k) : '+ ' + k) + '$.\n\n' +
+            prompt: 'The graph shows $y = f(x)$.\n\n' +
               (askValue ? 'What is the local ' + (up ? 'minimum' : 'maximum') + ' **value**?' : 'At what value of **$x$** does the local ' + (up ? 'minimum' : 'maximum') + ' occur?'),
+            svg: parab(a, h, k),
             answer: { type: 'number', value: askValue ? k : h },
-            hints: [up ? 'The coefficient is positive, so it is a U with a lowest point.' : 'The coefficient is negative, so it is an upside-down U with a highest point.',
+            hints: [up ? 'It is a U shape, so it has a lowest point.' : 'It is an upside-down U, so it has a highest point.',
               'The turning point is at $(' + h + ', ' + k + ')$.',
               askValue ? 'The **value** is the height there, so read off the second coordinate.' : 'The question asks **where**, so read off the first coordinate.'],
             solution: [{ text: 'The turning point is at $(' + h + ', ' + k + ')$.' },
@@ -169,7 +189,8 @@
           const rightIsInc = up;
           const wantRight = (askInc === rightIsInc);
           return {
-            prompt: 'For $f(x) = ' + (up ? '' : '-') + '(x ' + (h < 0 ? '+ ' + (-h) : '- ' + h) + ')^2 ' + (k < 0 ? '- ' + (-k) : '+ ' + k) + '$, on which interval is $f$ **' + (askInc ? 'increasing' : 'decreasing') + '**?',
+            prompt: 'The graph shows $f(x) = ' + vform(a, h, k) + '$. On which interval is $f$ **' + (askInc ? 'increasing' : 'decreasing') + '**?',
+            svg: parab(a, h, k),
             answer: { type: 'interval', value: wantRight ? '(' + h + ', inf)' : '(-inf, ' + h + ')', vars: ['x'] },
             hints: [up ? 'A positive coefficient gives a U, with its lowest point at $x = ' + h + '$.' : 'A negative coefficient gives an upside-down U, peaking at $x = ' + h + '$.',
               'Trace the curve left to right and watch where it climbs and where it falls.',
@@ -185,7 +206,8 @@
           const up = r.bool(0.5);
           const h = r.int(-4, 4), k = r.int(-4, 4);
           return {
-            prompt: 'Find the range of $f(x) = ' + (up ? '' : '-') + '(x ' + (h < 0 ? '+ ' + (-h) : '- ' + h) + ')^2 ' + (k < 0 ? '- ' + (-k) : '+ ' + k) + '$.',
+            prompt: 'The graph shows $f(x) = ' + vform(up ? 1 : -1, h, k) + '$. Find its range.',
+            svg: parab(up ? 1 : -1, h, k),
             answer: { type: 'interval', value: up ? '[' + k + ', inf)' : '(-inf, ' + k + ']', vars: ['x'] },
             hints: ['Range is about **heights**, not about $x$.',
               up ? 'It is a U, so there is a lowest height and nothing above it is out of reach.' : 'It is an upside-down U, so there is a highest height and it falls away below.',
@@ -203,8 +225,17 @@
           const strict = r.bool(0.5);
           const want = below ? 'f(x) ' + (strict ? '<' : '\\le') + ' g(x)' : 'f(x) ' + (strict ? '>' : '\\ge') + ' g(x)';
           const lo = strict ? '(' : '[', hi = strict ? ')' : ']';
+          // draw it: a line g, and a U-shaped f that dips below g between the crossings
+          const gf = x => 0.5 * x + 1, kk = 3 / Math.pow((q - p) / 2, 2), ff = x => gf(x) + kk * (x - p) * (x - q);
+          const x0 = p - 3, x1 = q + 3, yLo = Math.floor(ff((p + q) / 2)) - 1, yHi = Math.ceil(Math.max(gf(x0), gf(x1))) + 4;
+          const svg = V.graph({ xmin: x0, xmax: x1, ymin: yLo, ymax: yHi, width: 300, height: 260,
+            fns: [{ f: gf, label: 'g' }, { f: ff, label: 'f', color: 'var(--viz-2)' }],
+            points: [{ x: p, y: gf(p), label: 'x = ' + p }, { x: q, y: gf(q), label: 'x = ' + q }],
+            texts: [{ x: (p + q) / 2, y: ff((p + q) / 2) - 0.7, text: 'f', color: 'var(--viz-2)' }],
+            alt: 'A line g and a U-shaped curve f that cross at x = ' + p + ' and x = ' + q + ', with f below g between the crossings' });
           return {
-            prompt: 'Two graphs cross at $x = ' + p + '$ and $x = ' + q + '$, and **$g$ is above $f$** between them. Find the values of $x$ for which $' + want + '$.',
+            prompt: 'The graphs of $f$ and $g$ cross at $x = ' + p + '$ and $x = ' + q + '$. Find the values of $x$ for which $' + want + '$.',
+            svg,
             answer: { type: 'interval', value: below ? lo + p + ', ' + q + hi : '(-inf, ' + p + hi + ' U ' + lo + q + ', inf)', vars: ['x'] },
             hints: [below ? 'You want where $f$ is **below** $g$.' : 'You want where $f$ is **above** $g$.',
               below ? '$g$ is on top between the crossings, so that is the stretch you want.' : '$g$ is on top between the crossings, so $f$ must be on top **outside** them — two pieces.',

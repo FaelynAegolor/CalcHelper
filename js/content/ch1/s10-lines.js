@@ -144,11 +144,11 @@
       { id: '1.10-e5', prompt: 'Write the equation of the **horizontal** line through $(3, 4)$.',
         answer: { type: 'equation', value: 'y = 4' },
         hints: ['On a horizontal line every point has the same $y$-coordinate.'],
-        solution: ['$y = 4$'] },
+        solution: ['A horizontal line keeps the same height all the way along. This one goes through $(3, 4)$, so its height is always $4$: $y = 4$. (The $3$ does not appear — a horizontal line is not pinned to any one $x$.)'] },
       { id: '1.10-e6', prompt: 'Write the equation of the **vertical** line through $(3, 4)$.',
         answer: { type: 'equation', value: 'x = 3' },
         hints: ['On a vertical line every point has the same $x$-coordinate.'],
-        solution: ['$x = 3$'] },
+        solution: ['A vertical line stays at the same across-position all the way up. This one goes through $(3, 4)$, so every point on it has $x = 3$: the equation is $x = 3$.'] },
       { id: '1.10-e7', prompt: 'Find the slope of the line $5y = -2x + 3$.',
         answer: { type: 'number', value: -0.4, display: '-\\tfrac25' },
         hints: ['Divide everything by $5$ to get $y = mx + b$.'],
@@ -233,8 +233,8 @@
           const f = M.frac(y2 - y1, x2 - x1);
           const L = standardForm(x1, y1, f.n, f.d);
           return { prompt: 'Find the equation of the line through $' + pt(x1, y1) + '$ and $' + pt(x2, y2) + '$.', answer: { type: 'equation', value: lineStr(L), display: lineTex(L) },
-            hints: ['Find the slope: $m = \\dfrac{' + y2 + ' - (' + y1 + ')}{' + x2 + ' - (' + x1 + ')} = ' + fr(f.n, f.d) + '$.', 'Then use point–slope with either point.'],
-            solution: [{ math: 'm = \\frac{' + (y2 - y1) + '}{' + (x2 - x1) + '} = ' + fr(f.n, f.d), text: 'Slope.' }, { math: 'y - (' + y1 + ') = ' + fr(f.n, f.d) + '(x - (' + x1 + ')) \\;\\Rightarrow\\; ' + lineTex(L), text: 'Point–slope, then tidy.' }] };
+            hints: ['Find the slope: $m = \\dfrac{' + y2 + ' - ' + M.paren(y1) + '}{' + x2 + ' - ' + M.paren(x1) + '} = ' + fr(f.n, f.d) + '$.', 'Then use point–slope with either point.'],
+            solution: [{ math: 'm = \\frac{' + (y2 - y1) + '}{' + (x2 - x1) + '} = ' + fr(f.n, f.d), text: 'Slope.' }, { math: M.shift('y', y1) + ' = ' + fr(f.n, f.d) + '(' + M.shift('x', x1) + ') \\;\\Rightarrow\\; ' + lineTex(L), text: 'Point–slope, then tidy.' }] };
         } },
       { id: '1.10-g-read', title: 'Slope and intercept from an equation', desc: 'Solve for y.',
         make(r) {
@@ -252,10 +252,10 @@
           const m0 = M.frac(-A, B);
           const m = perp ? M.frac(-m0.d, m0.n) : m0;
           const L = standardForm(x1, y1, m.n, m.d);
-          const given = M.polyTex([A, 0]) + ' ' + (B > 0 ? '+ ' : '- ') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + 'y ' + (Cc >= 0 ? '+ ' + Cc : '- ' + (-Cc)) + ' = 0';
+          const given = M.polyTex([A, 0]) + ' ' + (B > 0 ? '+ ' : '- ') + (Math.abs(B) === 1 ? '' : Math.abs(B)) + 'y' + (Cc === 0 ? '' : Cc > 0 ? ' + ' + Cc : ' - ' + (-Cc)) + ' = 0';
           return { prompt: 'Find the equation of the line through $' + pt(x1, y1) + '$ that is **' + (perp ? 'perpendicular' : 'parallel') + '** to $' + given + '$.', answer: { type: 'equation', value: lineStr(L), display: lineTex(L) },
             hints: ['Slope of the given line: $-\\tfrac{A}{B} = ' + fr(m0.n, m0.d) + '$.', perp ? 'Perpendicular slope: flip it and change the sign → $' + fr(m.n, m.d) + '$.' : 'Parallel → use the same slope $' + fr(m.n, m.d) + '$.', 'Then point–slope through $' + pt(x1, y1) + '$.'],
-            solution: [{ math: 'm_{\\text{given}} = ' + fr(m0.n, m0.d) + (perp ? ' \\;\\Rightarrow\\; m_\\perp = ' + fr(m.n, m.d) : ' \\;\\Rightarrow\\; m_\\parallel = ' + fr(m.n, m.d)), text: 'Find the slope you need.' }, { math: 'y - (' + y1 + ') = ' + fr(m.n, m.d) + '(x - (' + x1 + ')) \\;\\Rightarrow\\; ' + lineTex(L), text: 'Point–slope, then tidy.' }] };
+            solution: [{ math: 'm_{\\text{given}} = ' + fr(m0.n, m0.d) + (perp ? ' \\;\\Rightarrow\\; m_\\perp = ' + fr(m.n, m.d) : ' \\;\\Rightarrow\\; m_\\parallel = ' + fr(m.n, m.d)), text: 'Find the slope you need.' }, { math: M.shift('y', y1) + ' = ' + fr(m.n, m.d) + '(' + M.shift('x', x1) + ') \\;\\Rightarrow\\; ' + lineTex(L), text: 'Point–slope, then tidy.' }] };
         } },
       { id: '1.10-g-classify', title: 'Parallel, perpendicular or neither?', desc: 'Compare the slopes.',
         make(r) {
@@ -302,10 +302,10 @@
           const L = standardForm(a, 0, f.n, f.d);
           return { prompt: 'Find the equation of the line with $x$-intercept $' + a + '$ and $y$-intercept $' + b + '$.',
             answer: { type: 'equation', value: lineStr(L), display: lineTex(L) },
-            hints: ['An $x$-intercept of $' + a + '$ means the line goes through $' + pt(a, 0) + '$; a $y$-intercept of $' + b + '$ means it goes through $' + pt(0, b) + '$.', 'Now it is a line through two points: $m = \\dfrac{' + b + ' - 0}{0 - (' + a + ')} = ' + fr(f.n, f.d) + '$.'],
+            hints: ['An $x$-intercept of $' + a + '$ means the line goes through $' + pt(a, 0) + '$; a $y$-intercept of $' + b + '$ means it goes through $' + pt(0, b) + '$.', 'Now it is a line through two points: $m = \\dfrac{' + b + ' - 0}{0 - ' + M.paren(a) + '} = ' + fr(f.n, f.d) + '$.'],
             solution: [{ text: 'Turn the intercepts into points.', math: pt(a, 0) + ' \\text{ and } ' + pt(0, b) },
-              { text: 'Find the slope.', math: 'm = \\frac{' + b + ' - 0}{0 - (' + a + ')} = ' + fr(f.n, f.d) },
-              { text: 'The $y$-intercept is already known, so use $y = mx + b$ and tidy.', math: 'y = ' + fr(f.n, f.d) + 'x ' + M.signed(b) + ' \\;\\Rightarrow\\; ' + lineTex(L) }] };
+              { text: 'Find the slope.', math: 'm = \\frac{' + b + ' - 0}{0 - ' + M.paren(a) + '} = ' + fr(f.n, f.d) },
+              { text: 'The $y$-intercept is already known, so use $y = mx + b$ and tidy.', math: 'y = ' + (f.d === 1 ? M.term(f.n, 'x') : fr(f.n, f.d) + 'x') + ' ' + M.signed(b) + ' \\;\\Rightarrow\\; ' + lineTex(L) }] };
         } },
       { id: '1.10-g-perp-twopoints', title: 'Perpendicular to a line through two points', desc: 'Two steps: slope of theirs, then flip it.',
         make(r) {

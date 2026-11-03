@@ -244,7 +244,7 @@
           { text: 'Remainder $2$, so it equals $i^2 = -1$.', math: 'i^{38} = -1' }] },
 
       { id: '1.6-e11', prompt: 'Simplify $\\sqrt{-72}$. Write it in the form $bi\\sqrt{c}$ with $c$ as small as possible.',
-        answer: { type: 'expression', value: '6*i*sqrt(2)', vars: ['i'], complex: true, display: '6i\\sqrt{2}' },
+        answer: { type: 'expression', value: '6*i*sqrt(2)', vars: ['i'], complex: true, form: 'simplified-radical',display: '6i\\sqrt{2}' },
         hints: ['Deal with the minus sign first: $\\sqrt{-r} = i\\sqrt{r}$.', 'So this is $i\\sqrt{72}$. Now simplify $\\sqrt{72}$ the usual way.', '$72 = 36 \\times 2$, and $36$ is a perfect square.'],
         solution: [{ text: 'Take the $i$ out first.', math: '\\sqrt{-72} = i\\sqrt{72}' },
           { text: 'Pull out the biggest perfect square.', math: '= i\\sqrt{36 \\cdot 2} = 6i\\sqrt2' }] },
@@ -310,7 +310,7 @@
             hints: [sub ? 'Subtracting changes the sign of **both** terms in the second bracket.' : 'Add the real parts, then add the imaginary parts.',
               'Real: $' + a + (sub ? ' - ' : ' + ') + '(' + c + ')$. Imaginary: $' + b + (sub ? ' - ' : ' + ') + '(' + d + ')$.'],
             solution: [{ text: sub ? 'Change both signs in the second bracket, then collect each part.' : 'Collect the real parts and the imaginary parts separately.',
-              math: '(' + a + (sub ? ' - ' : ' + ') + '(' + c + ')) + (' + b + (sub ? ' - ' : ' + ') + '(' + d + '))i' },
+              math: '(' + a + (sub ? ' - ' : ' + ') + M.paren(c) + ') + (' + b + (sub ? ' - ' : ' + ') + M.paren(d) + ')i' },
               { text: 'Tidy up.', math: cxTex(ra, rb) }]
           };
         } },
@@ -325,7 +325,8 @@
             hints: ['Expand it like any two brackets — every term by every term.',
               'The last term gives $' + (b * d) + 'i^2$. Replace $i^2$ with $-1$, so it becomes $' + (-b * d) + '$.'],
             solution: [{ text: 'Expand.', math: '(' + a + ')(' + c + ') + (' + a + ')(' + d + ')i + (' + b + ')(' + c + ')i + (' + b + ')(' + d + ')i^2' },
-              { text: 'Replace $i^2$ with $-1$.', math: '= ' + (a * c) + ' + ' + (a * d + b * c) + 'i - (' + (b * d) + ')' },
+              { text: 'Work out each product.', math: '= ' + (a * c) + M.term(a * d, 'i', false) + M.term(b * c, 'i', false) + M.term(b * d, 'i^2', false) },
+              { text: 'Replace $i^2$ with $-1$, so $' + M.term(b * d, 'i^2') + '$ becomes $' + (-b * d) + '$.', math: '= ' + (a * c) + M.term(a * d + b * c, 'i', false) + ' ' + M.signed(-b * d) },
               { text: 'Collect.', math: cxTex(ra, rb) }]
           };
         } },
@@ -345,7 +346,8 @@
               'The bottom becomes $' + c + '^2 + (' + d + ')^2 = ' + den + '$.'],
             solution: [{ text: 'Multiply top and bottom by the conjugate of the bottom.', math: '\\frac{' + cxTex(a, b) + '}{' + cxTex(c, d) + '}\\cdot\\frac{' + cxTex(c, -d) + '}{' + cxTex(c, -d) + '}' },
               { text: 'The bottom becomes a real number.', math: '(' + cxTex(c, d) + ')(' + cxTex(c, -d) + ') = ' + den },
-              { text: 'Expand the top, then divide both parts by ' + den + '.', math: cxTex(ra, rb) }]
+              { text: 'Expand the top the same way as any product, replacing $i^2$ with $-1$.', math: '(' + cxTex(a, b) + ')(' + cxTex(c, -d) + ') = ' + cxTex(a * c + b * d, b * c - a * d) },
+              { text: 'Divide both parts by ' + den + '.', math: '\\frac{' + cxTex(a * c + b * d, b * c - a * d) + '}{' + den + '} = ' + cxTex(ra, rb) }]
           };
         } },
 
@@ -364,7 +366,7 @@
               '$' + n + ' = 4 \\times ' + Math.floor(n / 4) + ' + ' + k + '$, so $i^{' + n + '} = i^{' + k + '}$.',
               'Remainder $0,1,2,3$ gives $1,\\ i,\\ -1,\\ -i$.'],
             solution: [{ text: 'Divide the power by $4$.', math: '' + n + ' = 4(' + Math.floor(n / 4) + ') + ' + k },
-              { text: 'Only the remainder matters.', math: 'i^{' + n + '} = i^{' + k + '} = ' + vals[k] }]
+              { text: 'Every four powers of $i$ bring you back to $1$, so only the remainder matters.', math: 'i^{' + n + '} = ' + (k === 1 ? 'i' : 'i^{' + k + '} = ' + vals[k]) }]
           };
         } },
 
@@ -374,7 +376,7 @@
           const n = sq * rest, root = Math.sqrt(sq);
           return {
             prompt: 'Simplify $\\sqrt{-' + n + '}$. Write it as a whole number times $i$ times a square root.',
-            answer: { type: 'expression', value: root + '*i*sqrt(' + rest + ')', vars: ['i'], complex: true, display: root + 'i\\sqrt{' + rest + '}' },
+            answer: { type: 'expression', value: root + '*i*sqrt(' + rest + ')', vars: ['i'], complex: true, form: 'simplified-radical', display: root + 'i\\sqrt{' + rest + '}' },
             hints: ['Deal with the minus sign first: $\\sqrt{-r} = i\\sqrt{r}$.',
               'So this is $i\\sqrt{' + n + '}$. Now simplify that root the ordinary way.',
               '$' + n + ' = ' + sq + ' \\times ' + rest + '$, and $' + sq + '$ is a perfect square.'],

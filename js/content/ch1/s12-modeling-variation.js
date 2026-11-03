@@ -173,6 +173,7 @@
       { id: '1.12-g-direct', title: 'Direct variation', desc: 'Find $k$, then the new value.',
         make(r) {
           const k = r.int(2, 9), x1 = r.int(2, 9), x2 = r.int(2, 12);
+          if (x2 === x1) return this.make(r);    // "find y when x = 3" given y at x = 3 is no question at all
           const y1 = k * x1;
           const askK = r.bool(0.4);
           return {

@@ -137,7 +137,8 @@
         answer: { type: 'number', value: 5000 },
         hints: ['Let $x$ be the amount at $3\\%$; the rest is $8000 - x$.', 'Interest: $0.03x + 0.06(8000-x) = 330$.', 'Expand: $0.03x + 480 - 0.06x = 330$.'],
         solution: [{ text: 'Set up the total interest.', math: '0.03x + 0.06(8000-x) = 330' },
-          { text: 'Expand and collect.', math: '-0.03x = -150' },
+          { text: 'Expand the bracket.', math: '0.03x + 480 - 0.06x = 330' },
+          { text: 'Collect the $x$ terms, and move the $480$ across.', math: '-0.03x = -150' },
           { text: 'Solve.', math: 'x = 5000' }] },
 
       { id: '1.7-e5', prompt: 'How many litres of acid are in $10$ litres of a $30\\%$ acid solution?',
@@ -217,7 +218,7 @@
               'Expand: $4w + ' + (2 * extra) + ' = ' + per + '$.' + (askLength ? ' Then remember to add $' + extra + '$ at the end.' : '')],
             solution: [{ text: 'Set up the perimeter.', math: '2w + 2(w+' + extra + ') = ' + per },
               { text: 'Solve for the width.', math: '4w = ' + (per - 2 * extra) + ' \\Rightarrow w = ' + w },
-              { text: askLength ? 'The question asked for the length.' : 'That is the width.', math: askLength ? 'l = ' + (w + extra) : 'w = ' + w }]
+              { text: askLength ? 'The question asked for the **length**, which is ' + extra + ' more than the width.' : 'That is the width the question asked for.', math: askLength ? 'l = ' + w + ' + ' + extra + ' = ' + (w + extra) : 'w = ' + w }]
           };
         } },
 
@@ -234,8 +235,13 @@
             hints: ['Turn each time into a rate: $\\tfrac1{' + t1 + '}$ and $\\tfrac1{' + t2 + '}$ of the job per hour.',
               'Add the rates over a common bottom.',
               'Then flip the total rate to get the time. It must come out **less** than $' + Math.min(t1, t2) + '$.'],
-            solution: [{ text: 'Add the rates.', math: '\\frac1{' + t1 + '} + \\frac1{' + t2 + '} = \\frac{1}{' + (Math.round(t * 1000) / 1000) + '}' },
-              { text: 'Flip to get the time.', math: 't = ' + (Math.round(t * 1000) / 1000) + ' \\text{ hours}' }]
+            solution: (() => {
+              // rates over the common bottom L, summed and reduced: 1/t1 + 1/t2 = n/d
+              const L = M.lcm(t1, t2), top = L / t1 + L / t2, g = M.gcd(top, L), n = top / g, d = L / g;
+              const tt = Math.round(t * 1000) / 1000;
+              return [{ text: 'Write both rates over the common bottom $' + L + '$, and add.', math: '\\frac1{' + t1 + '} + \\frac1{' + t2 + '} = \\frac{' + (L / t1) + '}{' + L + '} + \\frac{' + (L / t2) + '}{' + L + '} = \\frac{' + top + '}{' + L + '}' + (g > 1 ? ' = ' + (d === 1 ? n : '\\frac{' + n + '}{' + d + '}') : '') },
+                { text: 'That is how much of the job gets done in one hour. Flip it to get the time for the whole job.', math: 't = ' + (n === 1 ? d : '\\frac{' + d + '}{' + n + '}' + (Number.isInteger(tt) ? ' = ' + tt : ' = ' + tt)) + ' \\text{ hours}' }];
+            })()
           };
         } },
 

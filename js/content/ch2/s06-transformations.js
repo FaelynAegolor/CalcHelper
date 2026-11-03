@@ -223,16 +223,19 @@
       { id: '2.6-g-evenodd', title: 'Even, odd or neither', desc: 'Substitute $-x$ and compare.',
         make(r) {
           const kind = r.pick(['even', 'odd', 'neither', 'neither']);
-          let tex, ans;
+          let tex, ans, neg;   // neg = f(-x), simplified
           if (kind === 'even') {
             const a = r.nz(-5, 5), p = r.pick([2, 4]), c = r.nz(-6, 6);
-            tex = (a === 1 ? '' : a === -1 ? '-' : a) + 'x^' + p + (c < 0 ? ' - ' + (-c) : ' + ' + c); ans = 'even';
+            tex = M.term(a, 'x^' + p) + ' ' + M.signed(c); ans = 'even';
+            neg = tex;
           } else if (kind === 'odd') {
-            const a = r.nz(-5, 5), p = r.pick([1, 3, 5]), b = r.nz(-5, 5);
-            tex = (a === 1 ? '' : a === -1 ? '-' : a) + 'x^' + p + (b < 0 ? ' - ' + (-b) : ' + ' + b) + 'x'; ans = 'odd';
+            const a = r.nz(-5, 5), p = r.pick([3, 5]), b = r.nz(-5, 5);
+            tex = M.term(a, 'x^' + p) + M.term(b, 'x', false); ans = 'odd';
+            neg = M.term(-a, 'x^' + p) + M.term(-b, 'x', false);
           } else {
             const a = r.nz(-5, 5), b = r.nz(-5, 5);
-            tex = (a === 1 ? '' : a === -1 ? '-' : a) + 'x^2' + (b < 0 ? ' - ' + (-b) : ' + ' + b) + 'x'; ans = 'neither';
+            tex = M.term(a, 'x^2') + M.term(b, 'x', false); ans = 'neither';
+            neg = M.term(a, 'x^2') + M.term(-b, 'x', false);
           }
           return {
             prompt: 'Is $f(x) = ' + tex + '$ even, odd or neither?',
@@ -242,7 +245,8 @@
             hints: ['Replace every $x$ with $-x$ and simplify.',
               'Even powers survive the minus; odd powers flip sign.',
               'Shortcut: all powers even → even; all odd → odd; mixed → neither. (A constant counts as an even power.)'],
-            solution: [{ text: 'Substitute $-x$ and simplify.' },
+            solution: [{ text: 'Substitute $-x$ for every $x$. Even powers lose the minus; odd powers keep it.', math: 'f(-x) = ' + neg },
+              { text: 'Compare with $f(x) = ' + tex + '$.' },
               { text: ans === 'even' ? 'Every power is even, so $f(-x) = f(x)$ — even.'
                 : ans === 'odd' ? 'Every power is odd, so $f(-x) = -f(x)$ — odd.'
                 : 'The powers are mixed, so $f(-x)$ matches neither $f(x)$ nor $-f(x)$ — neither.' }]
@@ -251,7 +255,10 @@
 
       { id: '2.6-g-reflect', title: 'Which flip is it?', desc: 'Tell the two reflections apart.',
         make(r) {
-          const base = r.pick([{ t: '\\sqrt{x}', neg: '-\\sqrt{x}', inn: '\\sqrt{-x}' }, { t: 'x^3', neg: '-x^3', inn: '(-x)^3' }, { t: '|x|', neg: '-|x|', inn: '|-x|' }]);
+          // Only lopsided shapes: for x^3 or |x| the two flips give the SAME picture,
+          // which makes "which reflection is it?" a trick question.
+          const base = r.pick([{ t: '\\sqrt{x}', neg: '-\\sqrt{x}', inn: '\\sqrt{-x}' }, { t: '(x-2)^2', neg: '-(x-2)^2', inn: '(-x-2)^2' },
+            { t: 'x^3 + 1', neg: '-(x^3 + 1)', inn: '(-x)^3 + 1' }, { t: '2^x', neg: '-2^x', inn: '2^{-x}' }]);
           const outside = r.bool(0.5);
           return {
             prompt: 'The graph of $y = ' + base.t + '$ becomes $y = ' + (outside ? base.neg : base.inn) + '$. Which reflection is that?',

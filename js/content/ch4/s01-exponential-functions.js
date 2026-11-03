@@ -167,7 +167,7 @@
             prompt: 'For $f(x) = ' + a + '^x$, find $f(' + x + ')$.',
             answer: { type: 'number', value: val },
             hints: [x === 0 ? 'Anything to the power zero is $1$.' : x < 0 ? 'A negative exponent means "one over" — the answer stays positive.' : 'Multiply the base by itself that many times.',
-              x < 0 ? '$' + a + '^{' + x + '} = \\dfrac{1}{' + a + '^{' + (-x) + '}}$.' : 'Work it out step by step.'],
+              x < 0 ? '$' + a + '^{' + x + '} = \\dfrac{1}{' + (x === -1 ? a : a + '^{' + (-x) + '}') + '}$.' : x === 0 ? 'So $f(0) = 1$, whatever the base.' : '$' + a + '^{' + x + '}$ means ' + (x === 1 ? 'just $' + a + '$' : '$' + Array(x).fill(a).join(' \\times ') + '$') + '.'],
             solution: [{ text: x === 0 ? 'Any base to the power zero gives 1.' : x < 0 ? 'Flip it to make the exponent positive.' : 'Multiply it out.',
               math: a + '^{' + x + '} = ' + (x < 0 ? '\\frac{1}{' + Math.pow(a, -x) + '}' : String(val)) }]
           };
@@ -196,7 +196,7 @@
           const a = r.pick([2, 3, 4, 5, 10]);
           const shown = up ? String(a) : '\\tfrac{1}{' + a + '}';
           return {
-            prompt: 'Does the graph of $f(x) = \\left(' + shown + '\\right)^x$ climb or fall as $x$ increases?',
+            prompt: 'Does the graph of $f(x) = ' + (/frac/.test(shown) ? '\\left(' + shown + '\\right)' : shown) + '^x$ climb or fall as $x$ increases?',
             answer: { type: 'choice', value: up ? 'climb' : 'fall',
               options: [{ id: 'climb', label: 'It climbs' }, { id: 'fall', label: 'It falls' }],
               wrongMessage: 'Not quite — compare the base with $1$.' },

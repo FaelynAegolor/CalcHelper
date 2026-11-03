@@ -3,6 +3,22 @@
    the Factor Theorem, and building a polynomial from its zeros. */
 (function () {
   const M = CH.M, V = CH.V;
+  /* worked lines for the generators */
+  const coef = a => a === 1 ? '' : a === -1 ? '-' : String(a);
+  const xc = c => c < 0 ? 'x - (' + c + ')' : 'x - ' + c;          // the divisor as x - c
+  const pw = (c, n) => '(' + c + ')' + (n === 1 ? '' : '^' + n);     // (c)^n
+  // substitute c into the polynomial with these coefficients (highest power first)
+  function subPoly(co, c) {
+    const n = co.length - 1, parts = [];
+    co.forEach((a, i) => {
+      const d = n - i; if (a === 0) return;
+      const body = d === 0 ? String(Math.abs(a)) : (Math.abs(a) === 1 ? '' : Math.abs(a)) + pw(c, d);
+      parts.push(parts.length ? (a < 0 ? ' - ' : ' + ') + body : (a < 0 ? '-' : '') + body);
+    });
+    const vals = []; co.forEach((a, i) => { const d = n - i; if (a !== 0) vals.push(a * Math.pow(c, d)); });
+    const nums = vals.map((v, i) => i === 0 ? String(v) : (v < 0 ? ' - ' + (-v) : ' + ' + v)).join('');
+    return parts.join('') + ' = ' + nums;
+  }
 
   CH.registerSection({
     id: '3.3', chapter: 3, exam: 2, title: 'Dividing Polynomials',
@@ -126,8 +142,11 @@
       { id: '3.3-e1', prompt: 'Divide $2x^2 - 5x - 7$ by $x - 2$. Enter the **quotient** $Q(x)$ in terms of $x$.',
         answer: { type: 'expression', value: '2*x - 1', vars: ['x'] },
         hints: ['Start by dividing the leading terms: $2x^2 \\div x$.', 'That gives $2x$. Multiply back, subtract, then repeat.'],
-        solution: [{ text: 'First term of the quotient.', math: '2x^2 \\div x = 2x' },
-          { text: 'After subtracting and repeating, the second term is $-1$.', math: 'Q(x) = 2x - 1' }] },
+        solution: [{ text: 'Divide the leading terms. That is the first piece of the quotient.', math: '2x^2 \\div x = 2x' },
+          { text: 'Multiply $2x$ by the whole divisor, then subtract it — every sign flips.', math: '2x(x-2) = 2x^2 - 4x; \\qquad (2x^2 - 5x) - (2x^2 - 4x) = -x' },
+          { text: 'Bring down the $-7$ and divide the leading terms again.', math: '-x \\div x = -1' },
+          { text: 'Multiply back and subtract once more. What is left, $-9$, has no $x$, so stop.', math: '-1(x-2) = -x + 2; \\qquad (-x - 7) - (-x + 2) = -9' },
+          { text: 'The quotient is the two pieces you found on the way: $2x$ and $-1$.', math: 'Q(x) = 2x - 1' }] },
 
       { id: '3.3-e2', prompt: 'For that same division, what is the **remainder**?',
         answer: { type: 'number', value: -9 },
@@ -195,17 +214,19 @@
     generators: [
       { id: '3.3-g-remainder', title: 'Remainder by substitution', desc: 'The Remainder Theorem in one step.',
         make(r) {
-          const a = r.nz(-4, 4), b = r.nz(-6, 6), c0 = r.nz(-9, 9), c = r.nz(-4, 4);
+          const a = r.nz(-4, 4), b = r.nz(-6, 6), c0 = r.nz(-9, 9), c = r.nz(-3, 3);
           const val = a * c * c * c + b * c * c + c0;
+          if (Math.abs(val) > 60) return this.make(r);   // keep the arithmetic human-sized
           const dTex = 'x ' + (c < 0 ? '+ ' + (-c) : '- ' + c);
           return {
             prompt: 'Find the remainder when $P(x) = ' + M.polyTex([a, b, 0, c0]) + '$ is divided by $' + dTex + '$.',
             answer: { type: 'number', value: val },
             hints: ['Use the Remainder Theorem rather than dividing — the remainder is $P(c)$.',
-              'Here the divisor is $x - (' + c + ')$, so $c = ' + c + '$.',
+              'Here the divisor is $' + xc(c) + '$, so $c = ' + c + '$.',
               'Substitute $' + c + '$ into $P$, keeping it in brackets.'],
-            solution: [{ text: 'Read $c$ off the divisor.', math: 'c = ' + c },
-              { text: 'Substitute.', math: 'P(' + c + ') = ' + val }]
+            solution: [{ text: 'Write the divisor as $x - c$ to read off $c$.', math: dTex + ' = ' + xc(c) + ' \\;\\Rightarrow\\; c = ' + c },
+              { text: 'Substitute $' + c + '$ into $P$, in brackets.', math: 'P(' + c + ') = ' + subPoly([a, b, 0, c0], c) },
+              { text: 'Add up. By the Remainder Theorem, this is the remainder.', math: 'P(' + c + ') = ' + val }]
           };
         } },
 
@@ -223,9 +244,9 @@
               options: [{ id: 'yes', label: 'Yes' }, { id: 'no', label: 'No' }],
               wrongMessage: 'Not quite — substitute and see whether you get zero.' },
             hints: ['The Factor Theorem turns this into one substitution.',
-              'The divisor is $x - (' + c + ')$, so work out $P(' + c + ')$.',
+              'The divisor is $' + xc(c) + '$, so work out $P(' + c + ')$.',
               'Zero means it is a factor; anything else means it is not.'],
-            solution: [{ text: 'Substitute $c = ' + c + '$.', math: 'P(' + c + ') = ' + val },
+            solution: [{ text: 'The divisor is $' + xc(c) + '$, so substitute $c = ' + c + '$, in brackets.', math: 'P(' + c + ') = ' + subPoly(coeffs, c) + ' = ' + val },
               { text: val === 0 ? 'It is zero, so by the Factor Theorem it is a factor.' : 'Not zero, so it is not a factor — that value is the remainder.' }]
           };
         } },
@@ -239,10 +260,12 @@
             prompt: 'Use synthetic division to divide $' + M.polyTex([p2, p1, p0]) + '$ by $x ' + (c < 0 ? '+ ' + (-c) : '- ' + c) + '$. Enter the **quotient** in terms of $x$.',
             answer: { type: 'expression', value: '(' + q1 + ')*x + (' + q0 + ')', vars: ['x'] },
             hints: ['Write the coefficients: $' + p2 + ', ' + p1 + ', ' + p0 + '$.',
-              'The divisor is $x - (' + c + ')$, so use $c = ' + c + '$' + (c < 0 ? ' — note the sign.' : '.'),
+              'The divisor is $' + xc(c) + '$, so use $c = ' + c + '$' + (c < 0 ? ' — note the sign.' : '.'),
               'Bring down $' + p2 + '$, multiply by $' + c + '$ and add to $' + p1 + '$ to get $' + q0 + '$.'],
-            solution: [{ text: 'Bring down, multiply by $' + c + '$, add.', math: '' + p2 + ',\\ ' + q0 + ' \\quad\\text{remainder } ' + rem },
-              { text: 'The quotient is one degree lower.', math: M.polyTex([q1, q0]) }]
+            solution: [{ text: 'Coefficients, and $c$ from the divisor $' + xc(c) + '$.', math: p2 + ',\\ ' + p1 + ',\\ ' + p0 + ' \\qquad c = ' + c },
+              { text: 'Bring down the first one, $' + p2 + '$. Multiply it by $' + c + '$ and add to the next.', math: p2 + ' \\times ' + M.paren(c) + ' = ' + (p2 * c) + '; \\quad ' + p1 + ' + ' + M.paren(p2 * c) + ' = ' + q0 },
+              { text: 'Same again with $' + q0 + '$.', math: q0 + ' \\times ' + M.paren(c) + ' = ' + (q0 * c) + '; \\quad ' + p0 + ' + ' + M.paren(q0 * c) + ' = ' + rem },
+              { text: 'The bottom row is $' + p2 + ',\\ ' + q0 + '$ and then the remainder $' + rem + '$. The quotient is one degree lower than $P$.', math: 'Q(x) = ' + M.polyTex([q1, q0]) }]
           };
         } },
 

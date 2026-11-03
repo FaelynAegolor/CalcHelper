@@ -98,15 +98,19 @@
   // opts: {xmin,xmax,ymin,ymax, fns:[{f, color, label, dashed}], points:[{x,y,label,color,open}],
   //        segments:[{x1,y1,x2,y2,color,dashed,label}], circles:[{cx,cy,r,color}], texts:[{x,y,text,color,anchor}],
   //        shade:[{x1,y1,x2,y2}], size}
+  let graphCount = 0;
   function graph(o) {
     o = o || {};
     const xmin = o.xmin ?? -6, xmax = o.xmax ?? 6, ymin = o.ymin ?? -6, ymax = o.ymax ?? 6;
     const W = o.width || 420, H = o.height || Math.round(W * (ymax - ymin) / (xmax - xmin));
+    // Unique per graph: SVG ids are page-global, so when several graphs share a
+    // page a repeated clipPath id makes every one clip to the FIRST graph's size.
+    const clipId = 'clip-' + (o.id || 'g') + '-' + (++graphCount);
     const pad = 8;
     const sx = x => pad + (x - xmin) / (xmax - xmin) * (W - 2 * pad);
     const sy = y => H - pad - (y - ymin) / (ymax - ymin) * (H - 2 * pad);
     let s = '<svg class="viz viz-graph" viewBox="0 0 ' + W + ' ' + H + '" style="max-width:' + W + 'px" role="img" aria-label="' + esc(o.alt || 'graph') + '">';
-    s += '<defs><marker id="g-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker><clipPath id="clip-' + (o.id || 'g') + '"><rect x="0" y="0" width="' + W + '" height="' + H + '"/></clipPath></defs>';
+    s += '<defs><marker id="g-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker><clipPath id="' + clipId + '"><rect x="0" y="0" width="' + W + '" height="' + H + '"/></clipPath></defs>';
     // grid
     if (o.grid !== false) {
       for (let x = Math.ceil(xmin); x <= xmax; x++) s += '<line x1="' + sx(x) + '" y1="0" x2="' + sx(x) + '" y2="' + H + '" class="viz-grid"/>';
@@ -137,7 +141,7 @@
         d += (pen ? 'L' : 'M') + sx(x).toFixed(1) + ' ' + sy(y).toFixed(1) + ' ';
         pen = true;
       }
-      s += '<path d="' + d + '" fill="none" stroke="' + col + '" stroke-width="2.4" clip-path="url(#clip-' + (o.id || 'g') + ')"' + (fn.dashed ? ' stroke-dasharray="6 4"' : '') + '/>';
+      s += '<path d="' + d + '" fill="none" stroke="' + col + '" stroke-width="2.4" clip-path="url(#' + clipId + ')"' + (fn.dashed ? ' stroke-dasharray="6 4"' : '') + '/>';
       if (fn.label) { const lx = fn.labelAt ?? (b - (b - a) * 0.15); const ly = fn.f(lx); if (isFinite(ly)) s += '<text x="' + (sx(lx) + 6) + '" y="' + (sy(ly) - 6) + '" class="viz-label" fill="' + col + '">' + esc(fn.label) + '</text>'; }
     });
     (o.circles || []).forEach((c, i) => {

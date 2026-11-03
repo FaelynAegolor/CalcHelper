@@ -35,12 +35,12 @@ function refInput(spec) {
   }
   return null;
 }
-function checkSpec(ctx, spec) {
+function checkSpec(ctx, spec, prompt) {
   if (!spec || !spec.type) return err(ctx, 'answer has no type');
-  if (spec.type === 'multi') { spec.parts.forEach((p, i) => checkSpec(ctx + ' part ' + (i + 1), p)); return; }
+  if (spec.type === 'multi') { spec.parts.forEach((p, i) => checkSpec(ctx + ' part ' + (i + 1), p, prompt)); return; }
   const inp = refInput(spec);
   if (inp == null) return err(ctx, 'unknown answer type ' + spec.type);
-  const r = C.checkAnswer(inp, spec);
+  const r = C.checkAnswer(inp, spec, { prompt: prompt || '' });
   if (!r.ok) err(ctx, 'reference answer does not check as correct: ' + r.message + ' (input: ' + inp + ')');
   if (spec.type === 'number' && !isFinite(spec.value)) err(ctx, 'non-finite number');
   if (spec.type === 'choice' && !(spec.options || []).some(o => o.id === spec.value)) err(ctx, 'choice value not among options');
@@ -68,7 +68,7 @@ for (const s of CH.sections) {
   s.exercises.forEach((ex, i) => {
     const c = ctx + ' exercise ' + (i + 1) + ' (' + ex.id + ')';
     if (!ex.id) err(c, 'no id'); else if (ids.has(ex.id)) err(c, 'duplicate id'); ids.add(ex.id);
-    checkText(c, ex.prompt); checkSpec(c, ex.answer); checkSteps(c, ex.solution); (ex.hints || []).forEach(h => checkText(c + ' hint', h));
+    checkText(c, ex.prompt); checkSpec(c, ex.answer, ex.prompt); checkSteps(c, ex.solution); (ex.hints || []).forEach(h => checkText(c + ' hint', h));
   });
   s.generators.forEach(g => {
     const c = ctx + ' generator ' + g.id;
@@ -76,7 +76,7 @@ for (const s of CH.sections) {
       let q;
       try { q = g.make(CH.M.makeRng(k * 7919)); } catch (e) { err(c + ' seed ' + k, 'threw: ' + e.message); break; }
       if (!q.prompt) err(c + ' seed ' + k, 'no prompt');
-      checkText(c + ' seed ' + k, q.prompt); checkSpec(c + ' seed ' + k, q.answer); checkSteps(c + ' seed ' + k, q.solution);
+      checkText(c + ' seed ' + k, q.prompt); checkSpec(c + ' seed ' + k, q.answer, q.prompt); checkSteps(c + ' seed ' + k, q.solution);
       if (errors > 40) break;
     }
   });
@@ -99,7 +99,7 @@ for (const e of CH.exams || []) {
     (q.hints || []).forEach((hh, i) => checkText(c + ' hint ' + (i + 1), hh));
     if (!(q.hints || []).length) warn(c, 'no hints — there is nothing to talk her through it');
     checkSteps(c, q.solution);
-    checkSpec(c, q.answer);
+    checkSpec(c, q.answer, q.prompt);
     if (q.topic && !CH.sectionById(q.topic)) err(c, 'topic ' + q.topic + ' is not a section');
     if (q.note) checkText(c + ' note', q.note);
     if (q.answerText) checkText(c + ' answerText', q.answerText);

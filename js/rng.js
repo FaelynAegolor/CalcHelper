@@ -159,9 +159,24 @@
 
   function isPerfectSquare(n) { const r = Math.round(Math.sqrt(n)); return n >= 0 && r * r === n; }
 
+  /* Small display helpers so generated questions never show 1x, -1y, x - 0,
+     + -3 or (2) — each of which looks like a typo to a nervous reader. */
+  // c·v as a term: term(1,'x') "x", term(-1,'x') "-x", term(3,'x',false) "+ 3x", term(0,'x') ""
+  function term(c, v, first) {
+    if (c === 0) return '';
+    const mag = Math.abs(c) === 1 && v ? '' : String(Math.abs(c));
+    const body = mag + (v || '');
+    if (first === false) return (c < 0 ? ' - ' : ' + ') + body;
+    return (c < 0 ? '-' : '') + body;
+  }
+  // v - h, written properly: shift('x',2) "x - 2", shift('x',-3) "x + 3", shift('x',0) "x"
+  function shift(v, h) { return h === 0 ? v : v + (h > 0 ? ' - ' + h : ' + ' + (-h)); }
+  // a number as it appears after an operator: brackets only when negative
+  function paren(n) { return n < 0 ? '(' + n + ')' : String(n); }
+
   const M = {
     makeRng, gcd, lcm, frac, fracTex, fracStr, signed, coefTex, polyTex, polyStr, polyMul, polyAdd,
-    linTex, linStr, sqrtSimplify, sqrtTex, sqrtStr, pointTex, isPerfectSquare
+    linTex, linStr, sqrtSimplify, sqrtTex, sqrtStr, pointTex, isPerfectSquare, term, shift, paren
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = M;

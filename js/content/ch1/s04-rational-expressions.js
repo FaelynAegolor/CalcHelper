@@ -304,14 +304,14 @@
             const k = r.pick([1, 2, 3]);
             const kt = k === 1 ? '' : k;
             return { prompt: 'Simplify $\\dfrac{\\;\\dfrac{' + kt + (k === 1 ? '1' : '') + '}{a + h} - \\dfrac{' + kt + (k === 1 ? '1' : '') + '}{a}\\;}{h}$.', answer: { type: 'expression', value: '-' + k + '/(a(a+h))', form: 'single-fraction', vars: ['a', 'h'], display: '-' + frac(k, 'a(a + h)') },
-              hints: ['Combine the top over $a(a + h)$ first.', 'The numerator becomes $' + k + 'a - ' + k + '(a + h) = -' + k + 'h$; then the $h$ cancels.'],
-              solution: [{ math: '\\frac{' + k + 'a - ' + k + '(a + h)}{a(a + h)} = \\frac{-' + k + 'h}{a(a + h)}', text: 'Combine the top.' }, { math: '\\frac{-' + k + 'h}{a(a+h)} \\cdot \\frac{1}{h} = -\\frac{' + k + '}{a(a + h)}', text: 'Divide by $h$ — the $h$ cancels.' }] };
+              hints: ['Combine the top over $a(a + h)$ first.', 'The numerator becomes $' + kt + 'a - ' + (k === 1 ? '' : k) + '(a + h) = -' + kt + 'h$; then the $h$ cancels.'],
+              solution: [{ math: '\\frac{' + kt + 'a - ' + (k === 1 ? '' : k) + '(a + h)}{a(a + h)} = \\frac{-' + kt + 'h}{a(a + h)}', text: 'Combine the top.' }, { math: '\\frac{-' + kt + 'h}{a(a+h)} \\cdot \\frac{1}{h} = -\\frac{' + k + '}{a(a + h)}', text: 'Divide by $h$ — the $h$ cancels.' }] };
           }
           const c = r.int(1, 5);
           // (1 + c/x)/(1 - c^2/x^2) = x/(x - c)
           return { prompt: 'Simplify $\\dfrac{\\;1 + \\dfrac{' + c + '}{x}\\;}{\\;1 - \\dfrac{' + (c * c) + '}{x^2}\\;}$.', answer: { type: 'expression', value: 'x/(x-' + c + ')', form: 'single-fraction', display: frac('x', 'x - ' + c) },
-            hints: ['Multiply top and bottom by $x^2$.', 'You get $\\dfrac{x^2 + ' + c + 'x}{x^2 - ' + (c * c) + '}$ — factor and cancel.'],
-            solution: [{ math: '\\frac{x^2 + ' + c + 'x}{x^2 - ' + (c * c) + '} = \\frac{x(x + ' + c + ')}{(x - ' + c + ')(x + ' + c + ')} = \\frac{x}{x - ' + c + '}', text: 'Clear denominators with $x^2$, factor, cancel $(x + ' + c + ')$.' }] };
+            hints: ['Multiply top and bottom by $x^2$.', 'You get $\\dfrac{x^2' + M.term(c, 'x', false) + '}{x^2 - ' + (c * c) + '}$ — factor and cancel.'],
+            solution: [{ math: '\\frac{x^2' + M.term(c, 'x', false) + '}{x^2 - ' + (c * c) + '} = \\frac{x(x + ' + c + ')}{(x - ' + c + ')(x + ' + c + ')} = \\frac{x}{x - ' + c + '}', text: 'Clear denominators with $x^2$, factor, cancel $(x + ' + c + ')$.' }] };
         } }
     ]
   });

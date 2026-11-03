@@ -137,7 +137,8 @@
         answer: { type: 'expression', value: '(x-5)/3', vars: ['x'] },
         hints: ['Write $y = 3x+5$, then swap the letters: $x = 3y+5$.', 'Now solve for $y$: subtract $5$, then divide by $3$.'],
         solution: [{ text: 'Swap.', math: 'x = 3y + 5' },
-          { text: 'Solve for $y$.', math: 'y = \\frac{x-5}{3}' }] },
+          { text: 'Subtract $5$ from both sides.', math: 'x - 5 = 3y' },
+          { text: 'Divide by $3$.', math: 'f^{-1}(x) = \\frac{x-5}{3}' }] },
 
       { id: '2.8-e5', prompt: 'Find the inverse of $f(x) = \\dfrac{1}{x+2}$. Give $f^{-1}(x)$ in terms of $x$.',
         answer: { type: 'expression', value: '1/x - 2', vars: ['x'] },
@@ -156,7 +157,8 @@
         answer: { type: 'expression', value: '(x^2-5)/8', vars: ['x'] },
         hints: ['Swap: $x = \\sqrt{5+8y}$.', 'Square both sides to get rid of the root: $x^2 = 5+8y$.', 'Then solve for $y$.'],
         solution: [{ text: 'Swap and square.', math: 'x^2 = 5 + 8y' },
-          { text: 'Solve for $y$.', math: 'y = \\frac{x^2-5}{8}' }] },
+          { text: 'Subtract $5$, then divide by $8$.', math: 'f^{-1}(x) = \\frac{x^2-5}{8}' },
+          { text: 'One extra detail for full marks: a square root never gives a negative answer, so the outputs of $f$ — which become the inputs of $f^{-1}$ — are all $\\ge 0$. Write $x \\ge 0$ next to the answer.', math: 'f^{-1}(x) = \\frac{x^2-5}{8}, \\quad x \\ge 0' }] },
 
       { id: '2.8-e8', prompt: 'Find the inverse of $f(x) = 4 - x^2$ for $x \\ge 0$. Give $f^{-1}(x)$ in terms of $x$.',
         answer: { type: 'expression', value: 'sqrt(4-x)', vars: ['x'] },
@@ -195,10 +197,13 @@
             prompt: 'Find the inverse of $f(x) = ' + M.polyTex([m, c]) + '$. Give $f^{-1}(x)$ in terms of $x$.',
             answer: { type: 'expression', value: '(x - (' + c + '))/(' + m + ')', vars: ['x'] },
             hints: ['Write $y = ' + M.polyTex([m, c]) + '$, then swap $x$ and $y$.',
-              'That gives $x = ' + m + 'y' + (c < 0 ? ' - ' + (-c) : ' + ' + c) + '$.',
-              'Now undo: ' + (c < 0 ? 'add ' + (-c) : 'subtract ' + c) + ', then divide by $' + m + '$.'],
-            solution: [{ text: 'Swap the letters.', math: 'x = ' + m + 'y' + (c < 0 ? ' - ' + (-c) : ' + ' + c) },
-              { text: 'Solve for $y$.', math: 'y = \\frac{x ' + (c < 0 ? '+ ' + (-c) : '- ' + c) + '}{' + m + '}' }]
+              'That gives $x = ' + M.term(m, 'y') + ' ' + M.signed(c) + '$.',
+              'Now undo: ' + (c < 0 ? 'add ' + (-c) : 'subtract ' + c) + (m === 1 ? '.' : ', then divide by $' + m + '$.')],
+            solution: [{ text: 'Swap the letters.', math: 'x = ' + M.term(m, 'y') + ' ' + M.signed(c) },
+              { text: c < 0 ? 'Add ' + (-c) + ' to both sides.' : 'Subtract ' + c + ' from both sides.', math: M.shift('x', c) + ' = ' + M.term(m, 'y') },
+              m === 1 ? { text: 'That is already $y$ on its own.', math: 'f^{-1}(x) = ' + M.shift('x', c) }
+                : m === -1 ? { text: 'Multiply both sides by $-1$.', math: 'f^{-1}(x) = ' + M.term(-1, 'x') + ' ' + M.signed(c) }
+                : { text: 'Divide by $' + m + '$.', math: 'f^{-1}(x) = ' + (m < 0 ? '-' : '') + '\\frac{' + M.shift('x', c) + '}{' + Math.abs(m) + '}' }]
           };
         } },
 
@@ -210,12 +215,13 @@
           return {
             prompt: 'Find the inverse of $f(x) = \\dfrac{' + M.polyTex([a, b]) + '}{x ' + (d < 0 ? '- ' + (-d) : '+ ' + d) + '}$. Give $f^{-1}(x)$ in terms of $x$.',
             answer: { type: 'expression', value: '(' + (-d) + '*x + (' + b + '))/(x - (' + a + '))', vars: ['x'] },
-            hints: ['Swap first: $x = \\dfrac{' + a + 'y ' + (b < 0 ? '- ' + (-b) : '+ ' + b) + '}{y ' + (d < 0 ? '- ' + (-d) : '+ ' + d) + '}$.',
+            hints: ['Swap first: $x = \\dfrac{' + M.term(a, 'y') + ' ' + M.signed(b) + '}{' + M.shift('y', -d) + '}$.',
               'Multiply both sides by the bottom to clear the fraction, then expand.',
               'Gather every $y$ term on one side, factor $y$ out, then divide.'],
-            solution: [{ text: 'Swap and multiply up.', math: 'x(y ' + (d < 0 ? '- ' + (-d) : '+ ' + d) + ') = ' + a + 'y ' + (b < 0 ? '- ' + (-b) : '+ ' + b) },
-              { text: 'Expand and gather the $y$ terms on one side.', math: 'xy - ' + a + 'y = ' + b + ' - ' + d + 'x' },
-              { text: 'Factor $y$ out and divide.', math: 'y = \\frac{' + (-d) + 'x ' + (b < 0 ? '- ' + (-b) : '+ ' + b) + '}{x ' + (a < 0 ? '+ ' + (-a) : '- ' + a) + '}' }]
+            solution: [{ text: 'Swap and multiply up.', math: 'x(' + M.shift('y', -d) + ') = ' + M.term(a, 'y') + ' ' + M.signed(b) },
+              { text: 'Expand, then move the $y$ terms to the left and everything else to the right.', math: 'xy' + M.term(-a, 'y', false) + ' = ' + b + M.term(-d, 'x', false) },
+              { text: 'Factor $y$ out of the left.', math: 'y(' + M.shift('x', a) + ') = ' + b + M.term(-d, 'x', false) },
+              { text: 'Divide, and write the top in the usual order.', math: 'f^{-1}(x) = \\frac{' + M.term(-d, 'x') + ' ' + M.signed(b) + '}{' + M.shift('x', a) + '}' }]
           };
         } },
 

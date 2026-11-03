@@ -260,7 +260,7 @@
             answer: { type: 'number', value: val },
             hints: ['Put $' + x + '$ in wherever $x$ appears — in brackets.',
               x < 0 ? 'Careful: $(' + x + ')^2 = ' + (x * x) + '$, a positive number.' : 'Work out the square first, then the rest.'],
-            solution: [{ text: 'Substitute with brackets.', math: 'f(' + x + ') = ' + a + '(' + x + ')^2 ' + (b < 0 ? '-' : '+') + ' ' + Math.abs(b) + '(' + x + ')' },
+            solution: [{ text: 'Substitute with brackets.', math: 'f(' + x + ') = ' + (a === 1 ? '' : a === -1 ? '-' : a) + '(' + x + ')^2 ' + (b < 0 ? '-' : '+') + ' ' + (Math.abs(b) === 1 ? '' : Math.abs(b)) + '(' + x + ')' },
               { text: 'Work it out.', math: '= ' + (a * x * x) + ' ' + (b * x < 0 ? '-' : '+') + ' ' + Math.abs(b * x) + ' = ' + val }]
           };
         } },
@@ -291,8 +291,9 @@
             answer: { type: 'number', value: val },
             hints: ['Compare $' + x + '$ with $' + cut + '$ to see which rule applies.',
               below ? '$' + x + ' \\le ' + cut + '$, so use the first rule.' : '$' + x + ' > ' + cut + '$, so use the second rule — which ignores the input entirely.'],
-            solution: [{ text: below ? '$' + x + '$ is at or below the cut, so the first rule applies.' : '$' + x + '$ is above the cut, so the second rule applies.' },
-              { text: 'Work it out.', math: 'f(' + x + ') = ' + val }]
+            solution: [{ text: below ? 'Is $' + x + ' \\le ' + cut + '$? Yes — so the **first** rule applies.' : 'Is $' + x + ' \\le ' + cut + '$? No, $' + x + ' > ' + cut + '$ — so the **second** rule applies.' },
+              below ? { text: 'Put $' + x + '$ into that rule, in brackets.', math: 'f(' + x + ') = ' + (a === 1 ? '' : a === -1 ? '-' : a) + '(' + x + ') ' + M.signed(b) + ' = ' + (a * x) + ' ' + M.signed(b) + ' = ' + val }
+                : { text: 'That rule is just the number $' + c + '$ — it ignores the input completely.', math: 'f(' + x + ') = ' + val }]
           };
         } },
 
@@ -303,11 +304,11 @@
             prompt: 'For $f(x) = ' + M.polyTex([m, c]) + '$, find $\\dfrac{f(a+h) - f(a)}{h}$, where $h \\ne 0$.',
             answer: { type: 'number', value: m },
             hints: ['Work out $f(a+h)$ first, keeping $a+h$ in brackets.',
-              '$f(a+h) = ' + m + '(a+h)' + (c < 0 ? ' - ' : ' + ') + Math.abs(c) + '$, and $f(a) = ' + m + 'a' + (c < 0 ? ' - ' : ' + ') + Math.abs(c) + '$.',
-              'Subtracting leaves $' + m + 'h$. Now divide by $h$.'],
-            solution: [{ text: 'The two pieces.', math: 'f(a+h) = ' + m + 'a + ' + m + 'h' + (c < 0 ? ' - ' : ' + ') + Math.abs(c) + ', \\qquad f(a) = ' + m + 'a' + (c < 0 ? ' - ' : ' + ') + Math.abs(c) },
-              { text: 'Subtract — everything except the $h$ term cancels.', math: '= ' + m + 'h' },
-              { text: 'Divide by $h$.', math: '\\frac{' + m + 'h}{h} = ' + m }]
+              '$f(a+h) = ' + (m === 1 ? '' : m === -1 ? '-' : m) + '(a+h) ' + M.signed(c) + '$, and $f(a) = ' + M.term(m, 'a') + ' ' + M.signed(c) + '$.',
+              'Subtracting leaves $' + M.term(m, 'h') + '$. Now divide by $h$.'],
+            solution: [{ text: 'The two pieces. Multiply the bracket out in the first.', math: 'f(a+h) = ' + M.term(m, 'a') + M.term(m, 'h', false) + ' ' + M.signed(c) + ', \\qquad f(a) = ' + M.term(m, 'a') + ' ' + M.signed(c) },
+              { text: 'Subtract — the $a$ terms cancel and so do the numbers, leaving only the $h$ term.', math: 'f(a+h) - f(a) = ' + M.term(m, 'h') },
+              { text: 'Divide by $h$.', math: '\\frac{' + M.term(m, 'h') + '}{h} = ' + m }]
           };
         } },
 
@@ -342,8 +343,9 @@
               'So solve $' + M.polyTex([m, c]) + ' \\ge 0$.',
               m < 0 ? 'You will divide by a negative, so remember to **flip** the inequality sign.' : 'Dividing by a positive, so the sign stays as it is.'],
             solution: [{ text: 'The inside must not be negative.', math: M.polyTex([m, c]) + ' \\ge 0' },
-              { text: m < 0 ? 'Solve, flipping the sign when dividing by the negative.' : 'Solve.', math: 'x ' + (m > 0 ? '\\ge ' : '\\le ') + txt },
-              { text: 'Write it as an interval.', math: m > 0 ? '[' + txt + ', \\infty)' : '(-\\infty, ' + txt + ']' }]
+              { text: 'Move the number across.', math: M.term(m, 'x') + ' \\ge ' + (-c) },
+              { text: m === 1 ? 'That is already $x$ on its own.' : m < 0 ? 'Divide by $' + m + '$. It is negative, so the sign **flips**.' : 'Divide by $' + m + '$. It is positive, so the sign stays.', math: 'x ' + (m > 0 ? '\\ge ' : '\\le ') + M.fracTex(-c, m) },
+              { text: 'Write it as an interval. The endpoint is allowed (the root of $0$ is fine), so use a square bracket.', math: m > 0 ? '\\left[' + M.fracTex(-c, m) + ', \\infty\\right)' : '\\left(-\\infty, ' + M.fracTex(-c, m) + '\\right]' }]
           };
         } }
     ]
