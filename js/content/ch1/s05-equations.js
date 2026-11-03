@@ -8,7 +8,7 @@
   const sq = M.sqrtTex;
 
   CH.registerSection({
-    id: '1.5', chapter: 1, title: 'Equations',
+    id: '1.5', chapter: 1, exam: 1, title: 'Equations',
     summary: 'Solving for x: linear equations, formulas with several letters, quadratics (factoring, completing the square, the formula), equations with fractions, roots and absolute values.',
 
     theory: [

@@ -8,7 +8,7 @@
   const flipOp = { '<': '>', '<=': '>=', '>': '<', '>=': '<=' };
 
   CH.registerSection({
-    id: '1.8', chapter: 1, title: 'Inequalities',
+    id: '1.8', chapter: 1, exam: 1, title: 'Inequalities',
     summary: 'Solving inequalities: the sign-flip rule, sign charts for products and quotients, and absolute-value inequalities — with answers as intervals.',
 
     theory: [

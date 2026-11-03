@@ -283,6 +283,7 @@
     html += '<section class="how"><div class="how-step"><div class="how-n">1</div><div><strong>Learn</strong><br>Short, plain-English explanations with pictures.</div></div><div class="how-step"><div class="how-n">2</div><div><strong>See examples</strong><br>Reveal worked solutions one step at a time.</div></div><div class="how-step"><div class="how-n">3</div><div><strong>Practise</strong><br>Type an answer to get it marked; write your steps to find slips.</div></div></section>';
     html += '<section class="hero-note"><p><strong>Before you start.</strong> Nothing here is timed, nothing is graded, and nothing leaves this device. You can get a question wrong as many times as you like — the hints appear one at a time, and the full worked solution is always there if you want it.</p><p>Every section opens with a panel called <em>The short version</em>: five lines telling you what the whole topic is actually about. If a page ever feels like too much, that panel is the part that matters.</p></section>';
     for (const ch of CH.chapters) {
+      if (!CH.sectionsOf(ch.num).length) continue;   // nothing examinable here yet
       html += '<section class="chapter"><h2><span class="ch-num">Chapter ' + ch.num + '</span> ' + esc(ch.title) + '</h2>' + (ch.blurb ? '<p class="muted">' + esc(ch.blurb) + '</p>' : '') + '<div class="section-grid">';
       for (const s of CH.sectionsOf(ch.num)) {
         const st = S.sectionStats(s);
@@ -301,11 +302,13 @@
     const isPractice = tab === 'exercises' || tab === 'practice';
     setMode(isPractice ? 'practice' : 'learn');
     const ch = CH.chapterOf(s);
-    const list = CH.sectionsOf(s.chapter);
+    const list = CH.isExtra(s) ? CH.allSectionsOf(s.chapter) : CH.sectionsOf(s.chapter);
     const idx = list.indexOf(s);
     const st = S.sectionStats(s);
     const tabs = [['learn', '📘 Learn'], ['examples', '🧭 Examples (' + s.examples.length + ')'], ['exercises', '✏️ Exercises (' + st.done + '/' + s.exercises.length + ')'], ['practice', '🎲 Practice']];
-    let html = '<div class="page section-page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Chapter ' + s.chapter + (ch ? ': ' + esc(ch.title) : '') + '</div><h1><span class="sec-id">' + s.id + '</span> ' + esc(s.title) + '</h1>' + (s.summary ? '<p class="lead">' + R.inlineMath(s.summary) + '</p>' : '') + '</div>';
+    let html = '<div class="page section-page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Chapter ' + s.chapter + (ch ? ': ' + esc(ch.title) : '') + '</div><h1><span class="sec-id">' + s.id + '</span> ' + esc(s.title) + '</h1>' + (s.summary ? '<p class="lead">' + R.inlineMath(s.summary) + '</p>' : '') +
+      /* reached by a direct link while extra topics are switched off */
+      (CH.isExtra(s) && !CH.showExtra() ? '<p class="extra-flag">This topic is in the textbook but is <strong>not on either midterm</strong>, so it is normally hidden. You can switch the extra topics on in <a href="#/settings">Settings</a>.</p>' : '') + '</div>';
     html += '<nav class="tabs">' + tabs.map(([k, label]) => '<a class="tab' + (k === tab ? ' active' : '') + '" href="#/s/' + s.id + '/' + k + '">' + label + '</a>').join('') + '</nav>';
     html += '<div class="tab-body" id="tab-body"></div>';
     html += '<nav class="pager">' + (idx > 0 ? '<a href="#/s/' + list[idx - 1].id + '/' + tab + '">← ' + list[idx - 1].id + ' ' + esc(list[idx - 1].title) + '</a>' : '<span></span>') + (idx < list.length - 1 ? '<a href="#/s/' + list[idx + 1].id + '/' + tab + '">' + list[idx + 1].id + ' ' + esc(list[idx + 1].title) + ' →</a>' : '<span></span>') + '</nav></div>';
@@ -356,7 +359,7 @@
     setMode('practice');
     const num = parseInt(chNum, 10);
     const ch = isNaN(num) ? null : CH.chapters.find(c => c.num === num);
-    const secs = ch ? CH.sectionsOf(ch.num) : CH.sections.slice();
+    const secs = ch ? CH.sectionsOf(ch.num) : CH.visibleSections();
     const gens = [];
     secs.forEach(s => s.generators.forEach(g => gens.push({ s, g })));
     /* Which topics are ticked is remembered between visits, so she can set the
@@ -446,10 +449,17 @@
     let html = '<div class="page settings"><h1>Settings</h1>';
     html += '<section class="card"><h2>You</h2><label class="field">Name <input type="text" id="set-name" value="' + esc(S.setting('name') || '') + '"></label>' +
       '<label class="field">Theme <select id="set-theme">' + ['auto', 'light', 'dark'].map(t => '<option value="' + t + '"' + (S.setting('theme') === t ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></label></section>';
+    html += '<section class="card"><h2>What to show</h2>' +
+      '<p>By default the site shows only the topics that are actually on the midterms, so nothing on screen is wasted effort. The textbook has a few extra sections that are not examined.</p>' +
+      '<label class="field field-check"><input type="checkbox" id="set-extra"' + (S.setting('showExtra') ? ' checked' : '') + '> Also show the ' + CH.extraCount() + ' extra topics that are not on either midterm</label>' +
+      '<p class="muted" id="extra-list"></p></section>';
     html += '<section class="card"><h2>Progress</h2><p>Progress lives in this browser. Export it to move to another device.</p><div class="row"><button class="btn" id="prog-export">Export progress</button> <label class="btn">Import progress <input type="file" id="prog-import" accept="application/json" hidden></label> <button class="btn btn-danger" id="prog-reset">Reset all progress</button></div><p id="prog-status" class="muted"></p></section></div>';
     main().innerHTML = html;
     $('#set-name').addEventListener('input', e => S.setting('name', e.target.value.trim() || 'Z'));
     $('#set-theme').addEventListener('change', e => { S.setting('theme', e.target.value); applyTheme(); });
+    const extraNames = () => CH.sections.filter(CH.isExtra).map(x => x.id + ' ' + x.title).join(', ');
+    $('#extra-list').textContent = CH.extraCount() ? 'Those are: ' + extraNames() + '.' : '';
+    $('#set-extra').addEventListener('change', e => { S.setting('showExtra', e.target.checked); buildSidebar(); });
     $('#prog-export').addEventListener('click', () => {
       const blob = new Blob([S.exportJSON()], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'calchelper-progress.json'; a.click();
@@ -490,6 +500,7 @@
     const sb = $('#sidebar');
     let html = '';
     for (const ch of CH.chapters) {
+      if (!CH.sectionsOf(ch.num).length) continue;
       html += '<div class="sb-ch">Chapter ' + ch.num + ' · ' + esc(ch.title) + '</div><ul class="sb-list">';
       for (const s of CH.sectionsOf(ch.num)) html += '<li><a href="#/s/' + s.id + '" data-sec="' + s.id + '"><span class="sb-id">' + s.id + '</span><span class="sb-title">' + esc(s.title) + '</span><span class="sb-dot" data-dot="' + s.id + '"></span></a></li>';
       html += '</ul>';

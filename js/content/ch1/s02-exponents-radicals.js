@@ -5,7 +5,7 @@
   const CUBES = [8, 27, 64, 125];
 
   CH.registerSection({
-    id: '1.2', chapter: 1, title: 'Exponents and Radicals',
+    id: '1.2', chapter: 1, exam: 1, title: 'Exponents and Radicals',
     summary: 'Powers and the rules for combining them, negative and fractional exponents, simplifying square roots, and getting roots out of denominators.',
 
     theory: [

@@ -21,7 +21,7 @@
   }
 
   CH.registerSection({
-    id: '2.1', chapter: 2, title: 'Functions',
+    id: '2.1', chapter: 2, exam: 2, title: 'Functions',
     summary: 'What a function is, and how to read $f(x)$. Putting numbers and whole expressions in, piecewise rules, the difference quotient, and working out which inputs are allowed.',
 
     theory: [

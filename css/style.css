@@ -399,3 +399,6 @@ figcaption, .figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 6
 .chapter-chip.is-on { border-color: var(--accent); background: var(--accent-soft); }
 .chapter-chip input { accent-color: var(--accent); width: 17px; height: 17px; cursor: pointer; }
 .mix-filters.is-collapsed { display: none; }
+.field-check { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.field-check input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+.extra-flag { margin: 10px 0 0; padding: 10px 14px; border-radius: var(--radius-sm); background: color-mix(in srgb, #fab219 14%, var(--surface)); border-left: 4px solid #fab219; font-size: 0.9rem; }

@@ -8,7 +8,7 @@
   const sym = { x: 'the x-axis only', y: 'the y-axis only', o: 'the origin only', all: 'the x-axis, the y-axis and the origin', none: 'none of them' };
 
   CH.registerSection({
-    id: '1.9', chapter: 1, title: 'The Coordinate Plane; Graphs; Circles',
+    id: '1.9', chapter: 1, exam: 1, title: 'The Coordinate Plane; Graphs; Circles',
     summary: 'Points as pairs of numbers, the distance and midpoint formulas, intercepts, the equation of a circle, and testing a graph for symmetry.',
 
     theory: [

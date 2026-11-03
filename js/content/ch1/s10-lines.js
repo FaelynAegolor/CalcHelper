@@ -15,7 +15,7 @@
   const lineStr = ({ A, B, C: Cc }) => A + 'x + ' + B + 'y = ' + Cc;
 
   CH.registerSection({
-    id: '1.10', chapter: 1, title: 'Lines',
+    id: '1.10', chapter: 1, exam: 1, title: 'Lines',
     summary: 'Slope as steepness, the different forms of the equation of a line, horizontal and vertical lines, and parallel and perpendicular lines.',
 
     theory: [

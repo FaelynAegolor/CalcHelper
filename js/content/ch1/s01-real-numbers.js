@@ -14,7 +14,7 @@
     '</table></div>';
 
   CH.registerSection({
-    id: '1.1', chapter: 1, title: 'Real Numbers',
+    id: '1.1', chapter: 1, exam: 1, title: 'Real Numbers',
     summary: 'The kinds of numbers, turning repeating decimals into fractions, working with fractions, intervals on the number line, and absolute value.',
 
     theory: [

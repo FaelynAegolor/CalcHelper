@@ -8,7 +8,7 @@
   const paren = s => '(' + s + ')';
 
   CH.registerSection({
-    id: '1.3', chapter: 1, title: 'Algebraic Expressions',
+    id: '1.3', chapter: 1, exam: 1, title: 'Algebraic Expressions',
     summary: 'Polynomials, multiplying out brackets, the special product patterns, and — going the other way — factoring.',
 
     theory: [

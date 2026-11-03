@@ -7,7 +7,7 @@
   const frac = (n, d) => '\\frac{' + n + '}{' + d + '}';
 
   CH.registerSection({
-    id: '1.4', chapter: 1, title: 'Rational Expressions',
+    id: '1.4', chapter: 1, exam: 1, title: 'Rational Expressions',
     summary: 'Fractions with variables in them: where they are defined, and how to simplify, multiply, divide, add and subtract them.',
 
     theory: [
