@@ -387,3 +387,5 @@ figcaption, .figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 6
 .mock-seed { font-size: 1rem; color: var(--muted); font-weight: 600; }
 .mock-actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
 .mock-keep { margin-top: 8px; font-size: 0.84rem; color: var(--muted); }
+.mix-group { width: 100%; }
+.mix-group-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin: 10px 0 4px; }

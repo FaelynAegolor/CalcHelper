@@ -279,7 +279,7 @@
     let html = '<div class="page home">';
     html += '<section class="hero"><h1>Hi ' + esc(name) + ' 👋</h1><p class="lead">Your own precalculus textbook. Read a topic in plain English, watch it worked through one step at a time, then practise — your answers <em>and</em> your working get marked straight away.</p>';
     html += '<div class="hero-actions">' + (last ? '<a class="btn btn-primary" href="#/s/' + last.id + '">Continue: ' + esc(last.id + ' ' + last.title) + '</a>' : '<a class="btn btn-primary" href="#/s/' + (CH.sections[0] ? CH.sections[0].id : '') + '">Start at the beginning</a>') +
-      '<a class="btn" href="#/practice/1">🎲 Mixed practice</a><a class="btn btn-ghost" href="#/help">How to type maths</a></div></section>';
+      '<a class="btn" href="#/practice">🎲 Mixed practice</a><a class="btn btn-ghost" href="#/help">How to type maths</a></div></section>';
     html += '<section class="how"><div class="how-step"><div class="how-n">1</div><div><strong>Learn</strong><br>Short, plain-English explanations with pictures.</div></div><div class="how-step"><div class="how-n">2</div><div><strong>See examples</strong><br>Reveal worked solutions one step at a time.</div></div><div class="how-step"><div class="how-n">3</div><div><strong>Practise</strong><br>Type an answer to get it marked; write your steps to find slips.</div></div></section>';
     html += '<section class="hero-note"><p><strong>Before you start.</strong> Nothing here is timed, nothing is graded, and nothing leaves this device. You can get a question wrong as many times as you like — the hints appear one at a time, and the full worked solution is always there if you want it.</p><p>Every section opens with a panel called <em>The short version</em>: five lines telling you what the whole topic is actually about. If a page ever feels like too much, that panel is the part that matters.</p></section>';
     for (const ch of CH.chapters) {
@@ -349,15 +349,30 @@
     });
   }
 
+  /* chNum is optional: without it the pool is every chapter, so this page keeps
+     covering everything as chapters are added rather than being pinned to the
+     first one. "#/practice/2" still narrows to a single chapter. */
   function renderMixedPractice(chNum) {
     setMode('practice');
-    chNum = parseInt(chNum, 10) || (CH.chapters[0] && CH.chapters[0].num);
-    const ch = CH.chapters.find(c => c.num === chNum);
-    const secs = CH.sectionsOf(chNum);
+    const num = parseInt(chNum, 10);
+    const ch = isNaN(num) ? null : CH.chapters.find(c => c.num === num);
+    const secs = ch ? CH.sectionsOf(ch.num) : CH.sections.slice();
     const gens = [];
     secs.forEach(s => s.generators.forEach(g => gens.push({ s, g })));
-    let html = '<div class="page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Mixed practice</div><h1>🎲 Mixed practice' + (ch ? ' — ' + esc(ch.title) : '') + '</h1><p class="lead">Random questions from across the chapter, like a revision test. Tick the topics you want.</p></div>';
-    html += '<div class="mix-filters">' + secs.map(s => '<label class="chk"><input type="checkbox" checked data-sec="' + s.id + '"> ' + s.id + ' ' + esc(s.title) + '</label>').join('') + '</div>';
+    const scope = ch ? 'across ' + esc(ch.title) : (CH.chapters.length > 1 ? 'from every chapter so far' : 'from across the chapter');
+    let html = '<div class="page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Mixed practice</div><h1>🎲 Mixed practice' + (ch ? ' — ' + esc(ch.title) : '') + '</h1><p class="lead">Random questions ' + scope + ', like a revision test. Tick the topics you want.</p></div>';
+    html += '<div class="mix-filters">';
+    if (!ch && CH.chapters.length > 1) {
+      for (const c of CH.chapters) {
+        const inChapter = secs.filter(s => s.chapter === c.num);
+        if (!inChapter.length) continue;
+        html += '<div class="mix-group"><div class="mix-group-title">Chapter ' + c.num + ' · ' + esc(c.title) + '</div>' +
+          inChapter.map(s => '<label class="chk"><input type="checkbox" checked data-sec="' + s.id + '"> ' + s.id + ' ' + esc(s.title) + '</label>').join('') + '</div>';
+      }
+    } else {
+      html += secs.map(s => '<label class="chk"><input type="checkbox" checked data-sec="' + s.id + '"> ' + s.id + ' ' + esc(s.title) + '</label>').join('');
+    }
+    html += '</div>';
     html += '<div class="mix-score" id="mix-score"></div><div id="mix-body"></div><div class="mix-ctrl"><button class="btn btn-primary" id="mix-next">Next question →</button></div></div>';
     main().innerHTML = html;
     let score = { n: 0, ok: 0 };
@@ -428,7 +443,7 @@
       for (const s of CH.sectionsOf(ch.num)) html += '<li><a href="#/s/' + s.id + '" data-sec="' + s.id + '"><span class="sb-id">' + s.id + '</span><span class="sb-title">' + esc(s.title) + '</span><span class="sb-dot" data-dot="' + s.id + '"></span></a></li>';
       html += '</ul>';
     }
-    html += '<div class="sb-ch">More</div><ul class="sb-list"><li><a href="#/exams">📄 Past papers</a></li><li><a href="#/mock">📝 Mock paper</a></li><li><a href="#/practice/1">🎲 Mixed practice</a></li><li><a href="#/help">⌨️ Typing maths</a></li><li><a href="#/settings">⚙️ Settings</a></li></ul>';
+    html += '<div class="sb-ch">More</div><ul class="sb-list"><li><a href="#/exams">📄 Past papers</a></li><li><a href="#/mock">📝 Mock paper</a></li><li><a href="#/practice">🎲 Mixed practice</a></li><li><a href="#/help">⌨️ Typing maths</a></li><li><a href="#/settings">⚙️ Settings</a></li></ul>';
     sb.innerHTML = html;
     refreshSidebar();
   }
