@@ -31,6 +31,7 @@
 
       { h: 'The horizontal line test' },
       { key: 'Flat lines this time, not upright ones', md: 'In 2.2 the **vertical** line test asked "is this a function at all?". This one asks a different question.\n\n**A function is one-to-one exactly when no horizontal line crosses its graph more than once.**\n\nA horizontal line is "all the points at this height". If it hits twice, two inputs share that output.' },
+      { widget: 'horizontal-line-test', hint: 'Try it: pick a function and slide the flat line up and down' },
       { cols: [
         { svg: V.graph({ xmin: -4, xmax: 4, ymin: -4, ymax: 4, width: 240, tick: 2, fns: [{ f: x => x * x * x / 4 + x / 2 }], segments: [{ x1: -4, y1: 1.5, x2: 4, y2: 1.5, dashed: true, color: 'var(--viz-2)' }], alt: 'An always-increasing curve crossed once by a horizontal line' }), caption: '**One-to-one.** Every flat line hits it at most once, so it can be undone.' },
         { svg: V.graph({ xmin: -4, xmax: 4, ymin: -2, ymax: 6, width: 240, tick: 2, fns: [{ f: x => x * x }], segments: [{ x1: -4, y1: 4, x2: 4, y2: 4, dashed: true, color: 'var(--viz-2)' }], points: [{ x: -2, y: 4, color: 'var(--viz-2)' }, { x: 2, y: 4, color: 'var(--viz-2)' }], alt: 'A parabola crossed twice by a horizontal line' }), caption: '**Not one-to-one.** The height $4$ comes from both $-2$ and $2$.' }
@@ -41,6 +42,7 @@
       { def: 'Inverse function', md: 'If $f$ is one-to-one, its **inverse** $f^{-1}$ sends each output back to the input it came from:\n\n$$f^{-1}(y) = x \\quad\\Longleftrightarrow\\quad f(x) = y$$\n\nSo the inverse just reads the arrows backwards.' },
       { warn: '$f^{-1}$ is not $\\dfrac{1}{f}$', md: 'The $-1$ here is **not** a power. $f^{-1}(x)$ means "the inverse function", not "one over $f(x)$".\n\nIt is an unfortunate piece of notation that everyone has to live with. When you see $f^{-1}$, read it as "f inverse".' },
       { key: 'The property that checks it', md: 'Two functions undo each other exactly when **both** of these hold:\n\n$$f^{-1}(f(x)) = x \\qquad\\text{and}\\qquad f(f^{-1}(x)) = x$$\n\nPut one into the other, in both orders, and you should get a bare $x$ each time. If you do, they are inverses.' },
+      { widget: 'inverse-mirror', hint: 'Try it: move the point and watch its mirror image' },
       { example: {
         title: 'Checking a pair', label: 'Worked example',
         problem: 'Show that $f(x) = 3x+4$ and $g(x) = \\dfrac{x-4}{3}$ are inverses of each other.',

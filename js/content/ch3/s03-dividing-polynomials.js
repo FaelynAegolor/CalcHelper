@@ -64,6 +64,7 @@
         checklist: ['Write every coefficient, zeros included.', 'For $x - c$ use $c$; for $x + c$ use $-c$.', 'Bring down, multiply, add, repeat.', 'Last number is the remainder; the rest drop one degree.']
       } },
       { warn: 'The sign of $c$ catches everyone', md: 'Synthetic division divides by $x - c$. So:\n\n- for $x - 3$, use $c = 3$\n- for $x + 1$, use $c = -1$, because $x+1 = x - (-1)$\n\nGet this wrong and every number afterwards is wrong.' },
+      { widget: 'synthetic-stepper', hint: 'Try it: press Next step and watch each number arrive' },
 
       { h: 'The Remainder and Factor Theorems' },
       { def: 'Remainder Theorem', md: 'When you divide $P(x)$ by $x - c$, the remainder is exactly $P(c)$.\n\nSo you can find a remainder by **substituting a number**, with no division at all.' },

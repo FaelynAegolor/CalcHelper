@@ -145,6 +145,7 @@
   }
   // LaTeX for c*sqrt(n) simplified; e.g. sqrtTex(72) -> "6\sqrt{2}", sqrtTex(9) -> "3"
   function sqrtTex(n) {
+    if (n === 0) return '0';
     const s = sqrtSimplify(n);
     if (s.rad === 1) return String(s.coef);
     return (s.coef === 1 ? '' : s.coef) + '\\sqrt{' + s.rad + '}';

@@ -47,6 +47,7 @@
 
       { h: 'The vertical line test' },
       { key: 'One input, one output — so one height per $x$', md: 'A function gives **exactly one** output for each input. On a graph that means: directly above any $x$ there can be at most **one** point.\n\nSo slide an upright line across the picture. If it ever hits the curve **twice at once**, the curve is not the graph of a function.' },
+      { widget: 'vertical-line-test', hint: 'Try it: pick a curve and slide the line across' },
       { cols: [
         { svg: V.graph({ xmin: -4, xmax: 4, ymin: -4, ymax: 4, width: 240, tick: 2, fns: [{ f: x => x * x * x / 6 + 1 }], segments: [{ x1: 1.5, y1: -4, x2: 1.5, y2: 4, dashed: true, color: 'var(--viz-2)' }], points: [{ x: 1.5, y: 1.5625, color: 'var(--viz-2)' }], alt: 'A curve crossed once by a vertical line' }), caption: '**A function.** Every upright line hits it at most once.' },
         { svg: V.graph({ xmin: -4, xmax: 4, ymin: -4, ymax: 4, width: 240, tick: 2, fns: [{ f: x => Math.sqrt(x + 3), domain: [-3, 4] }, { f: x => -Math.sqrt(x + 3), domain: [-3, 4], color: 'var(--viz-1)' }], segments: [{ x1: 1, y1: -4, x2: 1, y2: 4, dashed: true, color: 'var(--viz-2)' }], points: [{ x: 1, y: 2, color: 'var(--viz-2)' }, { x: 1, y: -2, color: 'var(--viz-2)' }], alt: 'A sideways parabola crossed twice by a vertical line' }), caption: '**Not a function.** At $x = 1$ there are two heights, so one input would have two outputs.' }

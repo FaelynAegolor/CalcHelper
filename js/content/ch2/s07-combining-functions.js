@@ -51,6 +51,7 @@
       { h: 'Composition: one machine feeding another' },
       { def: 'Composition', md: '$$(f \\circ g)(x) = f(g(x))$$\n\nRun $g$ on $x$ first. Whatever comes out, put **that** into $f$.' },
       { warn: 'Read it right to left', md: 'In $f \\circ g$, the one **nearest the $x$** goes first. That is $g$.\n\nIt reads backwards compared with how it is written, which is why so many people do it the wrong way round. If it helps: the brackets in $f(g(x))$ make the order obvious — you always work from the inside out, exactly like arithmetic.' },
+      { widget: 'composition-chain', hint: 'Try it: change x, then swap the order' },
       { example: {
         title: 'Composition at a point', label: 'Worked example',
         problem: 'Let $f(x) = 2x-3$ and $g(x) = 4 - x^2$. Find $f(g(0))$ and $g(f(0))$.',

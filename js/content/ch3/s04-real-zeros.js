@@ -35,6 +35,7 @@
       { h: 'The method, end to end' },
       { key: 'Find one, divide it out, repeat', md: '1. Write the candidate list.\n2. Test candidates until $P(c) = 0$. (Synthetic division does the test and the division in one go.)\n3. **Divide out** $(x-c)$ — the quotient is one degree lower.\n4. Repeat on the quotient, until you are down to a **quadratic**.\n5. Factor or use the formula on that quadratic.' },
       { tip: 'Stop hunting once you reach a quadratic', md: 'There is no need to keep testing candidates all the way down. The moment the quotient is a quadratic, switch to factoring or the quadratic formula — both are faster and will not miss an irrational zero.' },
+      { widget: 'zero-hunter', hint: 'Try it: click the candidates to test them' },
       { example: {
         title: 'All the way through', label: 'Worked example',
         problem: 'Find all the zeros of $P(x) = x^3 + 2x^2 - 13x + 10$ and write it in factored form.',

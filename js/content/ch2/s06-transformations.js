@@ -31,6 +31,7 @@
 
       { h: 'Doing both at once' },
       { key: 'Inside moves sideways, outside moves up and down', md: 'In $y = f(x - h) + k$:\n\n- the $h$ **inside** the bracket moves it sideways (right if $h$ is positive)\n- the $k$ **outside** moves it up and down (up if $k$ is positive)\n\nSo $g(x) = |x-2| + 3$ is the V shifted $2$ right and $3$ up, putting its corner at $(2, 3)$.' },
+      { widget: 'transform-explorer', hint: 'Try it: drag h and k, and tick the flips' },
       { example: {
         title: 'Two shifts together', label: 'Worked example',
         problem: 'Describe how to get the graph of $g(x) = (x-1)^2 + 3$ from the graph of $y = x^2$, and say where the lowest point ends up.',

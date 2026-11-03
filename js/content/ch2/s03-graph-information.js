@@ -44,6 +44,7 @@
       { h: 'Local maximum and local minimum' },
       { def: 'Peaks and troughs', md: 'A **local maximum** is the height at the top of a hump — a point higher than everything immediately around it. A **local minimum** is the height at the bottom of a dip.\n\n"Local" because it only has to beat its neighbours, not the whole graph.' },
       { note: 'The value is the height', md: 'If the peak is at the point $(2, 5)$, then the local maximum **value** is $5$, and it **occurs at** $x = 2$. Questions ask for one or the other, so read carefully which.' },
+      { widget: 'graph-reader', hint: 'Try it: move the input and read the graph' },
       { svg: V.graph({ xmin: -4, xmax: 4, ymin: -4, ymax: 5, width: 320, fns: [{ f: x => x * x * x / 3 - 3 * x }], points: [{ x: -1.732, y: 3.46, label: 'local max', dx: -30, dy: -12, color: 'var(--viz-3)' }, { x: 1.732, y: -3.46, label: 'local min', dx: 8, dy: 16, color: 'var(--viz-2)' }], alt: 'A curve with one peak and one trough' }),
         caption: 'Up to the peak, down to the trough, then up again. Increasing, then decreasing, then increasing.' },
 

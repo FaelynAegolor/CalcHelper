@@ -54,6 +54,7 @@
       { h: 'Putting a whole expression in' },
       { warn: '$f(x+2)$ and $f(x) + f(2)$ are different things', md: 'This is the single most common mistake in this section, and it is worth getting straight now.\n\n- $f(x+2)$ means put $x+2$ **into the machine**.\n- $f(x) + f(2)$ means run the machine twice and **add the two outputs**.\n\nThey almost never come out the same. Try $f(x) = x^2$: $f(x+2) = (x+2)^2 = x^2+4x+4$, but $f(x)+f(2) = x^2 + 4$.' },
       { note: 'Same story for $f(x^2)$ and $(f(x))^2$', md: '$f(x^2)$ puts $x^2$ **in**. $(f(x))^2$ takes the output and **squares it**. For $f(x)=x+4$: $f(x^2) = x^2+4$, but $(f(x))^2 = (x+4)^2 = x^2+8x+16$.' },
+      { widget: 'function-machine', hint: 'Try it: pick a function and what to put in' },
 
       { h: 'Piecewise functions' },
       { key: 'Check the condition first, then use that rule', md: 'A **piecewise** function gives you two or three rules, each with a condition. Only one rule applies to any given input.\n\nSo the order is: look at the input, find which condition it satisfies, then use **that** rule and ignore the others.' },

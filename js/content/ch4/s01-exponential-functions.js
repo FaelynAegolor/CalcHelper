@@ -29,6 +29,7 @@
         { svg: expGraph(1 / 3, 'y = (1/3)ˣ'), caption: '$0 < a < 1$: the curve **falls**. It is the mirror image of the other.' }
       ] },
       { key: 'Four facts true of every one of them', md: '1. It passes through $(0, 1)$ — because $a^0 = 1$ for every base.\n2. The **domain** is all real numbers: you can raise $a$ to anything.\n3. The **range** is $(0, \\infty)$: the output is always positive, never zero.\n4. The $x$-axis ($y = 0$) is a **horizontal asymptote**.' },
+      { widget: 'exp-explorer', hint: 'Try it: move the base, then move the input' },
       { def: 'Horizontal asymptote', md: 'A line the curve creeps towards without ever reaching. For $y = a^x$ with $a>1$, as $x$ heads left the heights shrink — $2^{-10}$ is about $0.001$ — but they never actually hit zero, because a positive number raised to any power stays positive.' },
       { warn: 'A negative input does not give a negative output', md: 'This catches people out. $2^{-3}$ is **not** negative — it is $\\tfrac{1}{2^3} = \\tfrac18$, which is small and positive.\n\nA negative exponent means "one over", exactly as in 1.2. It never flips the sign of the answer.' },
 

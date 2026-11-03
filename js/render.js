@@ -137,7 +137,7 @@
     }
     if (b.svg) return '<figure class="fig">' + b.svg + (b.caption ? '<figcaption>' + md(b.caption) + '</figcaption>' : '') + '</figure>';
     if (b.html) return '<div class="fig-html">' + b.html + (b.caption ? '<div class="figcaption">' + md(b.caption) + '</div>' : '') + '</div>';
-    if (b.widget) return '<div class="widget" data-widget="' + esc(b.widget) + '"></div>';
+    if (b.widget) return '<div class="widget" data-widget="' + esc(b.widget) + '"' + (b.hint ? ' data-hint="' + esc(b.hint) + '"' : '') + '></div>';
     if (b.example) return exampleHtml(b.example, true);
     if (b.cols) return '<div class="cols">' + b.cols.map(c => '<div class="col">' + block(c) + '</div>').join('') + '</div>';
     return '';
