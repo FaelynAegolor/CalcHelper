@@ -359,27 +359,78 @@
     const secs = ch ? CH.sectionsOf(ch.num) : CH.sections.slice();
     const gens = [];
     secs.forEach(s => s.generators.forEach(g => gens.push({ s, g })));
-    const scope = ch ? 'across ' + esc(ch.title) : (CH.chapters.length > 1 ? 'from every chapter so far' : 'from across the chapter');
-    let html = '<div class="page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Mixed practice</div><h1>🎲 Mixed practice' + (ch ? ' — ' + esc(ch.title) : '') + '</h1><p class="lead">Random questions ' + scope + ', like a revision test. Tick the topics you want.</p></div>';
-    html += '<div class="mix-filters">';
-    if (!ch && CH.chapters.length > 1) {
+    /* Which topics are ticked is remembered between visits, so she can set the
+       practice to the chapters she is revising and it stays that way. A section
+       with no saved answer defaults to ticked. */
+    const saved = S.setting('practiceOff') || {};
+    const isOn = id => !saved[id];
+    const scope = ch ? 'across ' + esc(ch.title) : (CH.chapters.length > 1 ? 'from the chapters you pick' : 'from across the chapter');
+    let html = '<div class="page"><div class="section-head"><div class="crumb"><a href="#/">Home</a> › Mixed practice</div><h1>🎲 Mixed practice' + (ch ? ' — ' + esc(ch.title) : '') + '</h1><p class="lead">Random questions ' + scope + ', like a revision test.</p></div>';
+
+    const multi = !ch && CH.chapters.length > 1;
+    if (multi) {
+      html += '<div class="mix-chapters"><div class="mix-chapters-title">Which chapters?</div><div class="mix-chapter-row">';
       for (const c of CH.chapters) {
         const inChapter = secs.filter(s => s.chapter === c.num);
         if (!inChapter.length) continue;
-        html += '<div class="mix-group"><div class="mix-group-title">Chapter ' + c.num + ' · ' + esc(c.title) + '</div>' +
-          inChapter.map(s => '<label class="chk"><input type="checkbox" checked data-sec="' + s.id + '"> ' + s.id + ' ' + esc(s.title) + '</label>').join('') + '</div>';
+        const onCount = inChapter.filter(s => isOn(s.id)).length;
+        html += '<label class="chapter-chip' + (onCount ? ' is-on' : '') + '"><input type="checkbox" class="mix-ch" data-ch="' + c.num + '"' + (onCount === inChapter.length ? ' checked' : '') + '>' +
+          '<span><strong>Chapter ' + c.num + '</strong> ' + esc(c.title) + '</span></label>';
+      }
+      html += '</div><button class="btn btn-ghost btn-sm" id="mix-toggle-topics">Choose individual topics</button></div>';
+    }
+
+    html += '<div class="mix-filters' + (multi ? ' is-collapsed' : '') + '">';
+    if (multi) {
+      for (const c of CH.chapters) {
+        const inChapter = secs.filter(s => s.chapter === c.num);
+        if (!inChapter.length) continue;
+        html += '<div class="mix-group" data-ch="' + c.num + '"><div class="mix-group-title">Chapter ' + c.num + ' · ' + esc(c.title) + '</div>' +
+          inChapter.map(s => '<label class="chk"><input type="checkbox"' + (isOn(s.id) ? ' checked' : '') + ' data-sec="' + s.id + '" data-ch="' + s.chapter + '"> ' + s.id + ' ' + esc(s.title) + '</label>').join('') + '</div>';
       }
     } else {
-      html += secs.map(s => '<label class="chk"><input type="checkbox" checked data-sec="' + s.id + '"> ' + s.id + ' ' + esc(s.title) + '</label>').join('');
+      html += secs.map(s => '<label class="chk"><input type="checkbox"' + (isOn(s.id) ? ' checked' : '') + ' data-sec="' + s.id + '" data-ch="' + s.chapter + '"> ' + s.id + ' ' + esc(s.title) + '</label>').join('');
     }
     html += '</div>';
     html += '<div class="mix-score" id="mix-score"></div><div id="mix-body"></div><div class="mix-ctrl"><button class="btn btn-primary" id="mix-next">Next question →</button></div></div>';
     main().innerHTML = html;
+
+    /* Keep the chapter chips and the per-topic boxes agreeing with each other, and
+       remember the result. A chapter chip is half-lit when only some of its topics
+       are on, so the two controls can never silently disagree. */
+    const sectionBoxes = () => $$('.mix-filters input[data-sec]');
+    function saveChoice() {
+      const off = {};
+      sectionBoxes().forEach(b => { if (!b.checked) off[b.dataset.sec] = 1; });
+      S.setting('practiceOff', off);
+    }
+    function syncChips() {
+      $$('.mix-ch').forEach(chip => {
+        const mine = sectionBoxes().filter(b => b.dataset.ch === chip.dataset.ch);
+        const on = mine.filter(b => b.checked).length;
+        chip.checked = on === mine.length && mine.length > 0;
+        chip.indeterminate = on > 0 && on < mine.length;
+        chip.closest('.chapter-chip').classList.toggle('is-on', on > 0);
+      });
+    }
+    syncChips();
+    $$('.mix-ch').forEach(chip => chip.addEventListener('change', () => {
+      sectionBoxes().forEach(b => { if (b.dataset.ch === chip.dataset.ch) b.checked = chip.checked; });
+      syncChips(); saveChoice();
+    }));
+    $$('.mix-filters input[data-sec]').forEach(b => b.addEventListener('change', () => { syncChips(); saveChoice(); }));
+    const toggleBtn = $('#mix-toggle-topics');
+    if (toggleBtn) toggleBtn.addEventListener('click', () => {
+      const box = $('.mix-filters');
+      const hidden = box.classList.toggle('is-collapsed');
+      toggleBtn.textContent = hidden ? 'Choose individual topics' : 'Hide individual topics';
+    });
+
     let score = { n: 0, ok: 0 };
     const next = () => {
-      const chosen = new Set($$('.mix-filters input:checked').map(i => i.dataset.sec));
+      const chosen = new Set(sectionBoxes().filter(i => i.checked).map(i => i.dataset.sec));
       const pool = gens.filter(x => chosen.has(x.s.id));
-      if (!pool.length) { $('#mix-body').innerHTML = '<p class="muted">Tick at least one topic.</p>'; return; }
+      if (!pool.length) { $('#mix-body').innerHTML = '<p class="muted">Pick at least one chapter to practise.</p>'; return; }
       const { s, g } = pool[Math.floor(Math.random() * pool.length)];
       const ex = makeGenerated(s, g);
       const body = $('#mix-body'); body.innerHTML = '';

@@ -389,3 +389,13 @@ figcaption, .figcaption { font-size: 0.92rem; color: var(--muted); margin-top: 6
 .mock-keep { margin-top: 8px; font-size: 0.84rem; color: var(--muted); }
 .mix-group { width: 100%; }
 .mix-group-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin: 10px 0 4px; }
+
+/* ---- choosing chapters in mixed practice --------------------------------- */
+.mix-chapters { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin: 0 0 14px; box-shadow: var(--shadow); }
+.mix-chapters-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 9px; }
+.mix-chapter-row { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 10px; }
+.chapter-chip { display: inline-flex; align-items: center; gap: 9px; padding: 9px 15px; border-radius: 999px; border: 2px solid var(--border); background: var(--surface); cursor: pointer; font-size: 0.93rem; transition: border-color 0.15s, background 0.15s; }
+.chapter-chip:hover { border-color: var(--accent); }
+.chapter-chip.is-on { border-color: var(--accent); background: var(--accent-soft); }
+.chapter-chip input { accent-color: var(--accent); width: 17px; height: 17px; cursor: pointer; }
+.mix-filters.is-collapsed { display: none; }
